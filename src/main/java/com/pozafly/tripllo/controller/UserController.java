@@ -45,6 +45,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/valid/{id}")
+    public Boolean userIdvValid(@PathVariable String id) {
+        return userService.userIdValid(id);
+    }
+
     @PostMapping("")
     public ResponseEntity<Message> createUser(@RequestBody UserApiRequest request) {
         UserApiResponse user = userService.createUser(request);

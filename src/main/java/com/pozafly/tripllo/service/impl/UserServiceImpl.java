@@ -21,25 +21,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserApiResponse getUser(String id) {
         User user = userDao.getUser(id);
-        UserApiResponse userInfo = new UserApiResponse(user);
+        return new UserApiResponse(user);
+    }
 
-        return userInfo;
+    @Override
+    public Boolean userIdValid(String id) {
+
+        User user = userDao.getUser(id);
+        if (!ObjectUtils.isEmpty(user)) {
+            return !user.getId().equals(id);
+        } else {
+            return true;
+        }
     }
 
     @Transactional
     @Override
     public UserApiResponse createUser(UserApiRequest request) {
-        User user = userDao.getUser(request.getId());
-
-        if(ObjectUtils.isEmpty(user)) {
-            int successNum = userDao.createUser(request);
-            if(successNum == 1) {
-                return new UserApiResponse(request.getId(),null, request.getEmail(), request.getName(), null, null);
-            } else {
-                return null;
-            }
-        } else {
-            return null;
-        }
+        userDao.createUser(request);
+        return new UserApiResponse(request.getId(),null, request.getEmail(), request.getName(), null, null);
     }
 }

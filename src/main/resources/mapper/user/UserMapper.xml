@@ -18,7 +18,7 @@
         where id = #{id}
     </select>
 
-    <insert id="createUser" parameterType="com.pozafly.tripllo.model.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="createUser" parameterType="com.pozafly.tripllo.model.User">
         insert into user
         values (#{id}, #{password}, #{email}, #{name}, now(), #{id}, null, null)
     </insert>

@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserDao {
     public User getUser(String id);
-    public int createUser(UserApiRequest request);
+    public void createUser(UserApiRequest request);
 }
