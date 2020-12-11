@@ -1,9 +1,9 @@
 package com.pozafly.tripllo.controller;
 
-import com.pozafly.tripllo.model.User;
 import com.pozafly.tripllo.model.network.Message;
 import com.pozafly.tripllo.model.network.ResponseMessage;
 import com.pozafly.tripllo.model.network.StatusEnum;
+import com.pozafly.tripllo.model.request.UserApiRequest;
 import com.pozafly.tripllo.model.response.UserApiResponse;
 import com.pozafly.tripllo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.Charset;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
     Message message = new Message();
@@ -41,6 +41,24 @@ public class UserController {
         } else {
             message.setStatus(StatusEnum.NOT_FOUND);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Message> createUser(@RequestBody UserApiRequest request) {
+        UserApiResponse user = userService.createUser(request);
+
+        if (!ObjectUtils.isEmpty(user)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.CREATED_USER);
+            message.setData(user);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.ALREADY_USE);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }

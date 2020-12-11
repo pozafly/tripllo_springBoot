@@ -8,8 +8,8 @@
         select
             id,
             password,
-            name,
             email,
+            name,
             created_at,
             created_by,
             updated_at,
@@ -17,5 +17,10 @@
         from user
         where id = #{id}
     </select>
+
+    <insert id="createUser" parameterType="com.pozafly.tripllo.model.User" useGeneratedKeys="true" keyProperty="id">
+        insert into user
+        values (#{id}, #{password}, #{email}, #{name}, now(), #{id}, null, null)
+    </insert>
 
 </mapper>

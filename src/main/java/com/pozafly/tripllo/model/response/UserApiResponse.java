@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserApiResponse {
 
     private String id;
