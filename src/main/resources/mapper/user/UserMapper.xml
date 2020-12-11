@@ -4,7 +4,7 @@
 
 <mapper namespace="com.pozafly.tripllo.dao.UserDao">
 
-    <select id="getUser" parameterType="String" resultType="com.pozafly.tripllo.model.User">
+    <select id="getUser" parameterType="String" resultType="com.pozafly.tripllo.model.response.UserApiResponse">
         select
             id,
             password,
@@ -18,9 +18,24 @@
         where id = #{id}
     </select>
 
-    <insert id="createUser" parameterType="com.pozafly.tripllo.model.User">
+    <insert id="createUser" parameterType="com.pozafly.tripllo.model.response.UserApiResponse">
         insert into user
         values (#{id}, #{password}, #{email}, #{name}, now(), #{id}, null, null)
     </insert>
+
+    <update id="updateUser" parameterType="com.pozafly.tripllo.model.response.UserApiResponse">
+        update user set
+            password = #{password},
+            email = #{email},
+            name = #{name},
+            updated_at = now(),
+            updated_by = #{id}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="String">
+        delete from user
+        where id = #{id}
+    </delete>
 
 </mapper>

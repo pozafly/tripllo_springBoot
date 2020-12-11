@@ -20,14 +20,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserApiResponse getUser(String id) {
-        User user = userDao.getUser(id);
-        return new UserApiResponse(user);
+        return userDao.getUser(id);
     }
 
     @Override
     public Boolean userIdValid(String id) {
 
-        User user = userDao.getUser(id);
+        UserApiResponse user = userDao.getUser(id);
         if (!ObjectUtils.isEmpty(user)) {
             return !user.getId().equals(id);
         } else {
@@ -35,10 +34,33 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional
     @Override
     public UserApiResponse createUser(UserApiRequest request) {
-        userDao.createUser(request);
-        return new UserApiResponse(request.getId(),null, request.getEmail(), request.getName(), null, null);
+        if(userIdValid(request.getId())) {
+            userDao.createUser(request);
+            return getUser(request.getId());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserApiResponse updateUser(UserApiRequest request) {
+        if(!userIdValid(request.getId())) {
+            userDao.updateUser(request);
+            return getUser(request.getId());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public UserApiResponse deleteUser(String id) {
+        if(!userIdValid(id)) {
+            userDao.deleteUser(id);
+            return new UserApiResponse(id, null, null, null, null, null);
+        } else {
+            return null;
+        }
     }
 }

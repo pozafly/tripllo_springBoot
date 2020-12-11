@@ -52,18 +52,54 @@ public class UserController {
 
     @PostMapping("")
     public ResponseEntity<Message> createUser(@RequestBody UserApiRequest request) {
-        UserApiResponse user = userService.createUser(request);
+        UserApiResponse userInfo = userService.createUser(request);
 
-        if (!ObjectUtils.isEmpty(user)) {
+        if (!ObjectUtils.isEmpty(userInfo)) {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.CREATED_USER);
-            message.setData(user);
+            message.setData(userInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.ALREADY_USE);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("")
+    public ResponseEntity<Message> updateUser(@RequestBody UserApiRequest request) {
+        UserApiResponse userInfo = userService.updateUser(request);
+
+        if (!ObjectUtils.isEmpty(userInfo)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.UPDATE_USER);
+            message.setData(userInfo);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Message> deleteUser(@PathVariable String id) {
+        UserApiResponse userInfo = userService.deleteUser(id);
+
+        if (!ObjectUtils.isEmpty(userInfo)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.DELETE_USER);
+            message.setData(userInfo.getId());
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
