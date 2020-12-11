@@ -1,16 +1,13 @@
 package com.pozafly.tripllo.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.pozafly.tripllo.model.User;
+import lombok.*;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
-@Builder
 public class UserApiResponse {
 
     private String id;
@@ -20,4 +17,14 @@ public class UserApiResponse {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    public UserApiResponse(User user) {
+        if(!ObjectUtils.isEmpty(user)) {
+            this.id = user.getId();
+            this.password = user.getPassword();
+            this.email = user.getEmail();
+            this.name = user.getName();
+            this.createdAt = user.getCreatedAt();
+            this.updatedAt = user.getUpdatedAt();
+        }
+    }
 }

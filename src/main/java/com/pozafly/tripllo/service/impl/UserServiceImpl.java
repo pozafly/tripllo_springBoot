@@ -2,12 +2,13 @@ package com.pozafly.tripllo.service.impl;
 
 import com.pozafly.tripllo.dao.UserDao;
 import com.pozafly.tripllo.model.User;
-import com.pozafly.tripllo.model.network.Header;
 import com.pozafly.tripllo.model.response.UserApiResponse;
 import com.pozafly.tripllo.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -15,18 +16,10 @@ public class UserServiceImpl implements UserService {
     UserDao userDao;
 
     @Override
-    public Header<UserApiResponse> getUser(String id) {
+    public UserApiResponse getUser(String id) {
         User user = userDao.getUser(id);
-        UserApiResponse newUser = UserApiResponse.builder()
-                .id(user.getId())
-                .password(user.getPassword())
-                .email(user.getEmail())
-                .name(user.getEmail())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
-                .build();
-        System.out.println("@@@@@@@@@@");
-        System.out.println(user);
-        return Header.OK(newUser);
+        UserApiResponse userInfo = new UserApiResponse(user);
+
+        return userInfo;
     }
 }
