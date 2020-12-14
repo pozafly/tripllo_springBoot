@@ -4,7 +4,7 @@
 
 <mapper namespace="com.pozafly.tripllo.dao.UserDao">
 
-    <select id="readUser" parameterType="String" resultType="com.pozafly.tripllo.model.response.UserApiResponse">
+    <select id="readUser" parameterType="String" resultType="com.pozafly.tripllo.model.User">
         select
             id,
             password,

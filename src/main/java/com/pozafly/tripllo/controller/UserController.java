@@ -1,32 +1,17 @@
 package com.pozafly.tripllo.controller;
 
-import com.pozafly.tripllo.model.network.Message;
-import com.pozafly.tripllo.model.network.ResponseMessage;
-import com.pozafly.tripllo.model.network.StatusEnum;
+import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.model.request.UserApiRequest;
-import com.pozafly.tripllo.model.response.UserApiResponse;
 import com.pozafly.tripllo.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @Api(value = "User V1")
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
-
-    Message message = new Message();
-    HttpHeaders headers = new HttpHeaders();
 
     @Autowired
     UserService userService;
@@ -41,20 +26,7 @@ public class UserController {
             @ApiParam(value = "아이디로 유저 정보 조회", required = true, example = "Guest01")
             @PathVariable String id
     ) {
-        UserApiResponse userInfo = userService.readUser(id);
-
-        if (!StringUtils.isEmpty(userInfo.getId())) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_USER);
-            message.setData(userInfo);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
+        return userService.readUser(id);
     }
 
     @ApiOperation(value = "userIdvValid", notes = "회원가입 가능한 ID인지 판별")
@@ -63,26 +35,12 @@ public class UserController {
             @ApiResponse(code = 401, message = "이미 회원 ID가 사용되고 있습니다.")
     })
     @GetMapping("/valid/{id}")
-    public ResponseEntity<Message> userIdvValid(
+    public ResponseEntity<Message> rtnIdValid(
             @ApiParam(value = "회원가입 가능한 ID", required = true, example = "Guest01")
             @PathVariable String id
     ) {
-        Boolean valid = userService.userIdValid(id);
-        Map<String, Boolean> rtnMap = new HashMap<>();
+        return userService.rtnIdValid(id);
 
-        if (valid) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.POSSIBLE_CREATE);
-            message.setData(rtnMap.put("value", true));
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.ALREADY_USE);
-            message.setData(rtnMap.put("value", false));
-            return new ResponseEntity<>(message, headers, HttpStatus.UNAUTHORIZED);
-        }
     }
 
     @ApiOperation(value = "createUser", notes = "회원가입")
@@ -95,20 +53,7 @@ public class UserController {
             @ApiParam(value = "회원가입 폼", required = true)
             @RequestBody UserApiRequest request
     ) {
-        UserApiResponse userInfo = userService.createUser(request);
-
-        if (!ObjectUtils.isEmpty(userInfo)) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.CREATED_USER);
-            message.setData(userInfo);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.ALREADY_USE);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
+        return userService.createUser(request);
     }
 
     @ApiOperation(value = "updateUser", notes = "회원 정보 수정")
@@ -121,20 +66,7 @@ public class UserController {
             @ApiParam(value = "회원 수정 폼", required = true)
             @RequestBody UserApiRequest request
     ) {
-        UserApiResponse userInfo = userService.updateUser(request);
-
-        if (!ObjectUtils.isEmpty(userInfo)) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.UPDATE_USER);
-            message.setData(userInfo);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
+        return userService.updateUser(request);
     }
 
     @ApiOperation(value = "deleteUser", notes = "회원탈퇴")
@@ -147,19 +79,6 @@ public class UserController {
             @ApiParam(value = "회원탈퇴 ID", required = true)
             @PathVariable String id
     ) {
-        UserApiResponse userInfo = userService.deleteUser(id);
-
-        if (!ObjectUtils.isEmpty(userInfo)) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.DELETE_USER);
-            message.setData(userInfo.getId());
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
+        return userService.deleteUser(id);
     }
 }

@@ -1,5 +1,7 @@
 package com.pozafly.tripllo.service;
 
-public interface LoginService {
+import com.pozafly.tripllo.model.request.LoginApiRequest;
 
+public interface LoginService {
+    public String createToken(LoginApiRequest loginRequest);
 }

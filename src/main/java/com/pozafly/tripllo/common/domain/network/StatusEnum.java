@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.model.network;
+package com.pozafly.tripllo.common.domain.network;
 
 public enum StatusEnum {
 

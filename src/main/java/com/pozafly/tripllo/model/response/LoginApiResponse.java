@@ -1,7 +1,13 @@
 package com.pozafly.tripllo.model.response;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
 public class LoginApiResponse {
 
-    // jwt
+    private String token;
+    private String userName;
 
 }

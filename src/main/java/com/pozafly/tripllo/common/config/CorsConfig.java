@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.config;
+package com.pozafly.tripllo.common.config;
 
 import io.swagger.models.HttpMethod;
 import org.springframework.context.annotation.Configuration;

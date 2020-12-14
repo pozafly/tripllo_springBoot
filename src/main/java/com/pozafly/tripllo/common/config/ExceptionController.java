@@ -1,6 +1,6 @@
-package com.pozafly.tripllo.config.exception;
+package com.pozafly.tripllo.common.config;
 
-import com.pozafly.tripllo.model.network.Message;
+import com.pozafly.tripllo.common.domain.network.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.config;
+package com.pozafly.tripllo.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -51,7 +51,7 @@ public class SwaggerConfig {
                 .groupName(version)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.pozafly.tripllo.controller"))
-                .paths(PathSelectors.ant("/user/**"))
+                .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .apiInfo(apiInfo(title, version))
                 .globalResponseMessage(RequestMethod.GET, responseMessages)
