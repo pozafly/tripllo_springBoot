@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.nio.charset.Charset;
 
@@ -34,28 +35,34 @@ public class LoginServiceImpl implements LoginService {
 
     public ResponseEntity<Message> createToken(LoginApiRequest loginRequest) {
         User user = userDao.readUser(loginRequest.getId());
+        if (!ObjectUtils.isEmpty(user)) {
+            if (checkPassword(user, loginRequest.getPassword())) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
+                log.info("로그인 성공");
+                String token = jwtTokenProvider.createToken(loginRequest.getId()); // id 정보만 가지고 token을 만든다.
+                LoginApiResponse response = new LoginApiResponse(token, loginRequest.getId());
 
-        if (checkPassword(user, loginRequest.getPassword())) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
-            String token = jwtTokenProvider.createToken(loginRequest.getId()); // id 정보만 가지고 token을 만든다.
-            LoginApiResponse response = new LoginApiResponse(token, loginRequest.getId());
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+                message.setStatus(StatusEnum.OK);
+                message.setMessage(ResponseMessage.LOGIN_SUCCESS);
+                message.setData(response);
 
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.LOGIN_SUCCESS);
-            message.setData(response);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                log.info("비번이 틀립니다");
+                message.setStatus(StatusEnum.NOT_FOUND);
+                message.setMessage(ResponseMessage.PASSWORD_WRONG);
+                return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);
+            }
         } else {
-            log.info("비번이 틀립니다.");
+            log.info("해당 id가 없습니다.");
             message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage(ResponseMessage.LOGIN_FAIL);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
             return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);
         }
+
     }
 
     Boolean checkPassword(User user, String pw) {
-        System.out.println("@@@@");
-        System.out.println(user.getPassword().equals(pw));
         return user.getPassword().equals(pw);
     }
 

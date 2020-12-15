@@ -35,7 +35,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "이미 회원 ID가 사용되고 있습니다.")
     })
     @GetMapping("/valid/{id}")
-    public ResponseEntity<Message> rtnIdValid(
+    public ResponseEntity<Message> ValidId(
             @ApiParam(value = "회원가입 가능한 ID", required = true, example = "Guest01")
             @PathVariable String id
     ) {

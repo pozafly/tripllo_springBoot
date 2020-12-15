@@ -93,4 +93,5 @@ dist/
 nbdist/
 .nb-gradle/
 
-# End of https://www.toptal.com/developers/gitignore/api/macos,gradle,java,java-web
+### oauth ###
+application-oauth.properties

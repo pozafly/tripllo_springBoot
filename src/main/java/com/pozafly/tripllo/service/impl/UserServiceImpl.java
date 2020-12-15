@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
         Map<String, Boolean> rtnMap = new HashMap<>();
         Boolean valid = userIdValid(id);
 
-        if (!ObjectUtils.isEmpty(valid)) {
+        if (valid) {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.POSSIBLE_CREATE);
