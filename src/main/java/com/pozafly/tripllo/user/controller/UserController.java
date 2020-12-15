@@ -1,8 +1,8 @@
-package com.pozafly.tripllo.controller;
+package com.pozafly.tripllo.user.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.model.request.UserApiRequest;
-import com.pozafly.tripllo.service.UserService;
+import com.pozafly.tripllo.user.model.request.UserApiRequest;
+import com.pozafly.tripllo.user.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

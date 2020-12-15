@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.model.request;
+package com.pozafly.tripllo.user.model.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,6 +1,6 @@
-package com.pozafly.tripllo.model.response;
+package com.pozafly.tripllo.user.model.response;
 
-import com.pozafly.tripllo.model.User;
+import com.pozafly.tripllo.user.model.User;
 import lombok.*;
 import org.springframework.util.ObjectUtils;
 

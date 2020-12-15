@@ -1,8 +1,7 @@
-package com.pozafly.tripllo.service;
+package com.pozafly.tripllo.user.service;
 
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.model.request.UserApiRequest;
-import com.pozafly.tripllo.model.response.UserApiResponse;
+import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {

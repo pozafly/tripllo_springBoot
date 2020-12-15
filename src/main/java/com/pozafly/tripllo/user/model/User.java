@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.model;
+package com.pozafly.tripllo.user.model;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.model.response;
+package com.pozafly.tripllo.user.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,13 +1,13 @@
-package com.pozafly.tripllo.service.impl;
+package com.pozafly.tripllo.user.service.impl;
 
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
-import com.pozafly.tripllo.dao.UserDao;
-import com.pozafly.tripllo.model.User;
-import com.pozafly.tripllo.model.request.UserApiRequest;
-import com.pozafly.tripllo.model.response.UserApiResponse;
-import com.pozafly.tripllo.service.UserService;
+import com.pozafly.tripllo.user.dao.UserDao;
+import com.pozafly.tripllo.user.model.User;
+import com.pozafly.tripllo.user.model.request.UserApiRequest;
+import com.pozafly.tripllo.user.model.response.UserApiResponse;
+import com.pozafly.tripllo.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

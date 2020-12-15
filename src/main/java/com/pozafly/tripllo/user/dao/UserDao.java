@@ -1,7 +1,7 @@
-package com.pozafly.tripllo.dao;
+package com.pozafly.tripllo.user.dao;
 
-import com.pozafly.tripllo.model.User;
-import com.pozafly.tripllo.model.request.UserApiRequest;
+import com.pozafly.tripllo.user.model.User;
+import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
