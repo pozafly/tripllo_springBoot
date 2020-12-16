@@ -22,5 +22,9 @@ public class UserApiRequest {
     private String email;
     @ApiModelProperty(example = "황선")
     private String name;
+    @ApiModelProperty(example = "aaa.jpg")
+    private String picture;
+    @ApiModelProperty(example = "Y")
+    private String socialYn;
 
 }

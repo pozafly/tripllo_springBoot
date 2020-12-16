@@ -10,6 +10,8 @@
             password,
             email,
             name,
+            picture,
+            social_yn,
             created_at,
             created_by,
             updated_at,
@@ -20,7 +22,7 @@
 
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         insert into user
-        values (#{id}, #{password}, #{email}, #{name}, now(), #{id}, null, null)
+        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{socialYn}, now(), #{id}, null, null)
     </insert>
 
     <update id="updateUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
@@ -28,6 +30,8 @@
             password = #{password},
             email = #{email},
             name = #{name},
+            picture = #{picture},
+            social_yn = #{socialYn}
             updated_at = now(),
             updated_by = #{id}
         where id = #{id}

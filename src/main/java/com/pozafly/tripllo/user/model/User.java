@@ -11,6 +11,8 @@ public class User {
     private String password;
     private String email;
     private String name;
+    private String picture;
+    private String socialYn;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;

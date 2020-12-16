@@ -3,6 +3,7 @@ package com.pozafly.tripllo.user.service.impl;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
+import com.pozafly.tripllo.common.utils.SecurityUtil;
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
 import com.pozafly.tripllo.user.model.request.UserApiRequest;
@@ -75,6 +76,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<Message> createUser(UserApiRequest request) {
         if(userIdValid(request.getId())) {
+            if(!StringUtils.isEmpty(request.getSocialYn())) {
+                SecurityUtil pw = new SecurityUtil();
+                String newPw = pw.encryptSHA256(request.getId());
+                log.info(newPw);
+                request.setPassword(newPw);
+            }
             userDao.createUser(request);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

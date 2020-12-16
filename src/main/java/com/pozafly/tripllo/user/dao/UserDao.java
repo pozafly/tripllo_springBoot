@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UserDao {
     public User readUser(String id);
     public void createUser(UserApiRequest request);
+    public void createSocialUser(UserApiRequest request);
     public void updateUser(UserApiRequest request);
     public void deleteUser(String id);
 }
