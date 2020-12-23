@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Slf4j
-public class SecurityUtil {
+public class PasswordUtil {
 
     public String encryptSHA256(String pw) {
         String sha = "";

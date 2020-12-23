@@ -3,7 +3,7 @@ package com.pozafly.tripllo.user.service.impl;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
-import com.pozafly.tripllo.common.utils.SecurityUtil;
+import com.pozafly.tripllo.common.utils.PasswordUtil;
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
 import com.pozafly.tripllo.user.model.request.UserApiRequest;
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
             // 소셜 로그인 패스워드 만들기
             if(!StringUtils.isEmpty(request.getSocialYn())) {
-                SecurityUtil pw = new SecurityUtil();
+                PasswordUtil pw = new PasswordUtil();
                 String newPw = pw.encryptSHA256(request.getId());
                 request.setPassword(newPw);
             }
