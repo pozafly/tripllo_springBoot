@@ -76,10 +76,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<Message> createUser(UserApiRequest request) {
         if(userIdValid(request.getId())) {
+
+            // 소셜 로그인 패스워드 만들기
             if(!StringUtils.isEmpty(request.getSocialYn())) {
                 SecurityUtil pw = new SecurityUtil();
                 String newPw = pw.encryptSHA256(request.getId());
-                log.info(newPw);
                 request.setPassword(newPw);
             }
             userDao.createUser(request);
