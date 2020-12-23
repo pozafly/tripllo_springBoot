@@ -1,6 +1,6 @@
 package com.pozafly.tripllo.user.service.impl;
 
-import com.pozafly.tripllo.common.config.utils.JwtTokenProvider;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -38,7 +40,11 @@ public class LoginServiceImpl implements LoginService {
         if (!ObjectUtils.isEmpty(user)) {
             if (checkPassword(user, loginRequest.getPassword())) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
                 log.info("로그인 성공");
-                String token = jwtTokenProvider.createToken(loginRequest.getId()); // id 정보만 가지고 token을 만든다.
+
+                List<String> roles = new ArrayList<>();
+                roles.add("USER");
+
+                String token = jwtTokenProvider.createToken(loginRequest.getId(), roles); // id, role 정보만 가지고 token을 만든다.
                 LoginApiResponse response = new LoginApiResponse(token, loginRequest.getId());
 
                 headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

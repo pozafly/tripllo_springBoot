@@ -13,6 +13,7 @@ public class User {
     private String name;
     private String picture;
     private String socialYn;
+    private String role;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
