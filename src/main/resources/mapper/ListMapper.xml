@@ -13,7 +13,7 @@
         set
                title = #{title},
                pos = #{pos},
-               updated_at = now()
+               updated_at = now(),
                updated_by = #{userId}
         where id = #{id}
     </update>

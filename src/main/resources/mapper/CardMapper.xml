@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.card.dao.CardDao">
+
+    <select id="readCard" parameterType="Long" resultType="com.pozafly.tripllo.card.model.Card">
+        select * from card
+        where id = #{cardId}
+    </select>
+
+    <insert id="createCard" parameterType="com.pozafly.tripllo.list.model.Lists">
+        insert into card values (null, #{listId}, #{title}, #{pos}, #{description}, #{labelColor}, #{location}, now(), #{userId}, null, null)
+    </insert>
+
+    <update id="updateCard" parameterType="com.pozafly.tripllo.list.model.Lists">
+        update card
+        set
+            title = #{title},
+            pos = #{pos},
+            description = #{description},
+            label_color = #{labelColor},
+            location = #{location},
+            updated_at = now(),
+            updated_by = #{userId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCard" parameterType="Long">
+        delete
+        from card
+        where id = #{id}
+    </delete>
+
+</mapper>

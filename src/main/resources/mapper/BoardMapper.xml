@@ -58,7 +58,7 @@
             title = #{title},
             bg_color = #{bgColor},
             updated_at = now()
-<!--            updated_by = #{username}-->
+            updated_by = #{userId}
         where id = #{id}
     </update>
 
