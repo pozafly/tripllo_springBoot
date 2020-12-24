@@ -6,35 +6,35 @@
 
     <select id="readUser" parameterType="String" resultType="com.pozafly.tripllo.user.model.User">
         select
-            id,
-            password,
-            email,
-            name,
-            picture,
-            social_yn,
-            role,
-            created_at,
-            created_by,
-            updated_at,
-            updated_by
+        id,
+        password,
+        email,
+        name,
+        picture,
+        social_yn,
+        role,
+        created_at,
+        created_by,
+        updated_at,
+        updated_by
         from user
         where id = #{id}
     </select>
 
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         insert into user
-        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{socialYn}, "USER", now(), #{id}, null, null)
+        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{socialYn}, 'USER', now(), #{id}, null, null)
     </insert>
 
     <update id="updateUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         update user set
-            password = #{password},
-            email = #{email},
-            name = #{name},
-            picture = #{picture},
-            social_yn = #{socialYn}
-            updated_at = now(),
-            updated_by = #{id}
+        password = #{password},
+        email = #{email},
+        name = #{name},
+        picture = #{picture},
+        social_yn = #{socialYn}
+        updated_at = now(),
+        updated_by = #{id}
         where id = #{id}
     </update>
 

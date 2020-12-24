@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.board.dao.BoardDao">
+
+    <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
+        select * from board
+        where user_id = #{userId}
+    </select>
+
+
+    <select id="readBoardDetail" parameterType="Long" resultType="com.pozafly.tripllo.board.model.response.BoardApiDetailResponse">
+        select
+               a.id as board_id,
+               a.title as board_title,
+               a.bg_color as board_bg_color,
+               b.id as list_id,
+               b.board_id as list_board_id,
+               b.title as list_title,
+               b.pos as list_pos,
+               c.id as card_id,
+               c.list_id as card_list_id,
+               c.title as card_title,
+               c.pos as card_pos,
+               c.description as card_description,
+               c.label_color as card_label_color,
+               c.location as card_location
+          from Board a
+        left outer join list b on a.id = b.board_id
+        left outer join card c on b.id = c.list_id
+        where a.id = #{boardId}
+    </select>
+
+</mapper>

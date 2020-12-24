@@ -1,15 +1,14 @@
 package com.pozafly.tripllo.user.model.response;
 
+import com.pozafly.tripllo.common.domain.network.BaseEntity;
 import com.pozafly.tripllo.user.model.User;
 import lombok.*;
 import org.springframework.util.ObjectUtils;
 
-import java.time.LocalDateTime;
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserApiResponse {
+public class UserApiResponse extends BaseEntity {
 
     private String id;
     private String password;
@@ -17,8 +16,6 @@ public class UserApiResponse {
     private String name;
     private String picture;
     private String socialYn;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     public UserApiResponse(User user) {
         if(!ObjectUtils.isEmpty(user)) {
@@ -28,8 +25,6 @@ public class UserApiResponse {
             this.name = user.getName();
             this.picture = user.getPicture();
             this.socialYn = user.getSocialYn();
-            this.createdAt = user.getCreatedAt();
-            this.updatedAt = user.getUpdatedAt();
         }
     }
 }

@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
 @Api(value = "User V1")
+@RestController
 @RequestMapping("/api/user")
 public class UserController {
 
@@ -23,7 +23,7 @@ public class UserController {
     })
     @GetMapping("{id}")
     public ResponseEntity<Message> readUser(
-            @ApiParam(value = "아이디로 유저 정보 조회", required = true, example = "Guest01")
+            @ApiParam(value = "아이디로 유저 정보 조회", required = true, example = "pain103")
             @PathVariable String id
     ) {
         return userService.readUser(id);
@@ -36,7 +36,7 @@ public class UserController {
     })
     @GetMapping("/valid/{id}")
     public ResponseEntity<Message> ValidId(
-            @ApiParam(value = "회원가입 가능한 ID", required = true, example = "Guest01")
+            @ApiParam(value = "회원가입 가능한 ID", required = true, example = "pain103")
             @PathVariable String id
     ) {
         return userService.rtnIdValid(id);

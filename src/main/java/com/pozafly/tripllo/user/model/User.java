@@ -1,11 +1,10 @@
 package com.pozafly.tripllo.user.model;
 
+import com.pozafly.tripllo.common.domain.network.BaseEntity;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
-public class User {
+public class User extends BaseEntity {
 
     private String id;
     private String password;
@@ -14,9 +13,5 @@ public class User {
     private String picture;
     private String socialYn;
     private String role;
-    private LocalDateTime createdAt;
-    private String createdBy;
-    private LocalDateTime updatedAt;
-    private String updatedBy;
 
 }

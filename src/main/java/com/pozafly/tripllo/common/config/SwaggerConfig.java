@@ -49,7 +49,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .groupName(version)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.pozafly.tripllo.user.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.pozafly.tripllo"))
                 .paths(PathSelectors.ant("/api/**"))
                 .build()
                 .apiInfo(apiInfo(title, version))
