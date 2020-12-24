@@ -25,4 +25,16 @@ public class ResponseMessage {
     public static final String UPDATE_BOARD = "보드 정보 수정 성공";
     public static final String DELETE_BOARD = "보드 삭제 성공";
 
+    // 리스트 메세지
+    public static final String CREATED_LIST = "리스트 생성 성공";
+    public static final String UPDATE_LIST = "리스트 정보 수정 성공";
+    public static final String DELETE_LIST = "리스트 삭제 성공";
+    public static final String NOT_FOUND_LIST = "해당 리스트가 없습니다.";
+
+    // 카드 메세지
+    public static final String CREATED_CARD = "카드 생성 성공";
+    public static final String READ_CARD = "카드 조회 성공";
+    public static final String UPDATE_CARD = "카드 정보 수정 성공";
+    public static final String DELETE_CARD = "카드 삭제 성공";
+
 }

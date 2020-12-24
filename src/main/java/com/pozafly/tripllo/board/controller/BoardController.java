@@ -51,7 +51,7 @@ public class BoardController {
     })
     @PostMapping("")
     public ResponseEntity<Message> createBoard(
-            @ApiParam(value = "보드생 폼", required = true)
+            @ApiParam(value = "보드 생성 폼", required = true)
             @RequestBody Board board
     ) {
         return boardService.createBoard(board);
@@ -70,18 +70,17 @@ public class BoardController {
         return boardService.updateBoard(board);
     }
 
-    @ApiOperation(value = "deleteBoard", notes = "보드삭")
+    @ApiOperation(value = "deleteBoard", notes = "보드 삭제")
     @ApiResponses({
             @ApiResponse(code = 200, message = "보드 삭제 성공"),
             @ApiResponse(code = 400, message = "보드를 찾을 수 없습니다.")
     })
     @DeleteMapping("{boardId}")
-    public ResponseEntity<Message> deleteUser(
+    public ResponseEntity<Message> deleteBoard(
             @ApiParam(value = "보드 id", required = true)
             @PathVariable Long boardId
     ) {
         return boardService.deleteBoard(boardId);
     }
-
 
 }

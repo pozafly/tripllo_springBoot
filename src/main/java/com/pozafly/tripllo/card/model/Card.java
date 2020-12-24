@@ -14,4 +14,5 @@ public class Card extends BaseEntity {
     private String description;
     private String labelColor;
     private String location;
+    private String userId;
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.list.dao.ListDao">
+
+    <insert id="createList" parameterType="com.pozafly.tripllo.list.model.Lists">
+        insert into list values (null, #{boardId}, #{title}, #{pos}, now(), #{userId}, null, null)
+    </insert>
+
+    <update id="updateList" parameterType="com.pozafly.tripllo.list.model.Lists">
+        update list
+        set
+               title = #{title},
+               pos = #{pos},
+               updated_at = now()
+               updated_by = #{userId}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteList" parameterType="Long">
+        delete
+        from list
+        where id = #{id}
+    </delete>
+
+</mapper>
