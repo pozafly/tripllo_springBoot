@@ -5,8 +5,24 @@
 <mapper namespace="com.pozafly.tripllo.board.dao.BoardDao">
 
     <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
-        select * from board
+        select
+            id,
+<!--            user_id,-->
+            title,
+            bg_color,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
+        from board
         where user_id = #{userId}
+    </select>
+
+    <select id="boardCount" parameterType="Long" resultType="int">
+        select
+            count(*)
+        from board
+        where id = #{boardId}
     </select>
 
 
@@ -31,5 +47,25 @@
         left outer join card c on b.id = c.list_id
         where a.id = #{boardId}
     </select>
+
+    <insert id="createBoard" parameterType="com.pozafly.tripllo.board.model.Board">
+        insert into board values (null, #{userId}, #{title}, #{bgColor}, now(), #{userId}, null, null)
+    </insert>
+
+    <update id="updateBoard" parameterType="com.pozafly.tripllo.board.model.Board">
+        update board
+        set
+            title = #{title},
+            bg_color = #{bgColor},
+            updated_at = now()
+<!--            updated_by = #{username}-->
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBoard" parameterType="Long">
+        delete
+           from board
+        where id = #{id}
+    </delete>
 
 </mapper>

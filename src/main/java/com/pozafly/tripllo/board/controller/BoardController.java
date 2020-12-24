@@ -1,7 +1,9 @@
 package com.pozafly.tripllo.board.controller;
 
+import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
+import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class BoardController {
 
     @Autowired
-    BoardService boradService;
+    BoardService boardService;
 
     @ApiOperation(value = "readBoardList", notes = "유저 ID로 Board 목록 조회")
     @ApiResponses({
@@ -25,7 +27,7 @@ public class BoardController {
             @ApiParam(value = "유저 id", required = true, example = "pain103")
             @PathVariable String userId
     ) {
-        return boradService.readBoardList(userId);
+        return boardService.readBoardList(userId);
     }
 
     @ApiOperation(value = "readBoardDetail", notes = "보드 id로 상세 정보 조회")
@@ -38,7 +40,48 @@ public class BoardController {
             @ApiParam(value = "보드 id", required = true, example = "1")
             @PathVariable Long boardId
     ) {
-        boradService.readBoardDetail(boardId);
+        boardService.readBoardDetail(boardId);
         return null;
     }
+
+    @ApiOperation(value = "createBoard", notes = "보드생성")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 생성 성공"),
+            @ApiResponse(code = 400, message = "보드 생성 불가능")
+    })
+    @PostMapping("")
+    public ResponseEntity<Message> createBoard(
+            @ApiParam(value = "보드생 폼", required = true)
+            @RequestBody Board board
+    ) {
+        return boardService.createBoard(board);
+    }
+
+    @ApiOperation(value = "updateBoard", notes = "보드 정보 수정")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 정보 수정 성공"),
+            @ApiResponse(code = 400, message = "보드를 찾을 수 없습니다.")
+    })
+    @PutMapping("")
+    public ResponseEntity<Message> updateBoard(
+            @ApiParam(value = "보드 수정 폼", required = true)
+            @RequestBody Board board
+    ) {
+        return boardService.updateBoard(board);
+    }
+
+    @ApiOperation(value = "deleteBoard", notes = "보드삭")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 삭제 성공"),
+            @ApiResponse(code = 400, message = "보드를 찾을 수 없습니다.")
+    })
+    @DeleteMapping("{boardId}")
+    public ResponseEntity<Message> deleteUser(
+            @ApiParam(value = "보드 id", required = true)
+            @PathVariable Long boardId
+    ) {
+        return boardService.deleteBoard(boardId);
+    }
+
+
 }

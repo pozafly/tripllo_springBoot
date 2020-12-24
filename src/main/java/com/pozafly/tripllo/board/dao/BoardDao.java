@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface BoardDao {
     public List<Board> readBoardList(String userId);
+    public int boardCount(Long boardId);
     public List<BoardApiDetailResponse> readBoardDetail(Long boardId);
     public void createBoard(Board board);
     public void updateBoard(Board board);

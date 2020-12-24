@@ -27,14 +27,15 @@
     </insert>
 
     <update id="updateUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
-        update user set
-        password = #{password},
-        email = #{email},
-        name = #{name},
-        picture = #{picture},
-        social_yn = #{socialYn}
-        updated_at = now(),
-        updated_by = #{id}
+        update user
+        set
+            password = #{password},
+            email = #{email},
+            name = #{name},
+            picture = #{picture},
+            social_yn = #{socialYn}
+            updated_at = now(),
+            updated_by = #{id}
         where id = #{id}
     </update>
 

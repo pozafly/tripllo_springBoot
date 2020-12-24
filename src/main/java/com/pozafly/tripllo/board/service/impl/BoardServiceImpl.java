@@ -7,6 +7,9 @@ import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
+import com.pozafly.tripllo.common.utils.PasswordUtil;
+import com.pozafly.tripllo.user.model.User;
+import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -68,16 +71,67 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<Message> createBoard(Board board) {
-        return null;
+        if(!ObjectUtils.isEmpty(board)) {
+            boardDao.createBoard(board);
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.CREATED_BOARD);
+            message.setData(board);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
     @Override
     public ResponseEntity<Message> updateBoard(Board board) {
-        return null;
+        if(isBoard(board.getId())) {
+            boardDao.updateBoard(board);
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.UPDATE_BOARD);
+            message.setData(board);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override
     public ResponseEntity<Message> deleteBoard(Long boardId) {
-        return null;
+        if(isBoard(boardId)) {
+            boardDao.deleteBoard(boardId);
+
+            Map<String, Long> rtnMap = new HashMap<>();
+            rtnMap.put("boardId", boardId);
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.DELETE_BOARD);
+            message.setData(rtnMap);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private Boolean isBoard(Long boardId) {
+        int count = boardDao.boardCount(boardId);
+        return count != 0;
     }
 }
