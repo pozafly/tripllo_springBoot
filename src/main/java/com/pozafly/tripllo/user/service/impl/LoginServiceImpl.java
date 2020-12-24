@@ -57,13 +57,13 @@ public class LoginServiceImpl implements LoginService {
                 log.info("비번이 틀립니다");
                 message.setStatus(StatusEnum.NOT_FOUND);
                 message.setMessage(ResponseMessage.PASSWORD_WRONG);
-                return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);   // 403
             }
         } else {
             log.info("해당 id가 없습니다.");
             message.setStatus(StatusEnum.NOT_FOUND);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);
-            return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);  // 403
         }
 
     }

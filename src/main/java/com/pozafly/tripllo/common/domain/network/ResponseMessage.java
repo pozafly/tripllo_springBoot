@@ -36,5 +36,6 @@ public class ResponseMessage {
     public static final String READ_CARD = "카드 조회 성공";
     public static final String UPDATE_CARD = "카드 정보 수정 성공";
     public static final String DELETE_CARD = "카드 삭제 성공";
+    public static final String NOT_FOUND_CARD = "해당 카드가 없습니다.";
 
 }

@@ -61,7 +61,7 @@ public class CardServiceImpl implements CardService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_CARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
@@ -80,7 +80,7 @@ public class CardServiceImpl implements CardService {
         } else {
 
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_CARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
@@ -101,7 +101,7 @@ public class CardServiceImpl implements CardService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch (Exception e) {
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_LIST);
+            message.setMessage(ResponseMessage.NOT_FOUND_CARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
 

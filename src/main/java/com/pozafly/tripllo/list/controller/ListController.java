@@ -16,7 +16,7 @@ public class ListController {
     @Autowired
     ListService listService;
 
-    @ApiOperation(value = "createList", notes = "리스트생성")
+    @ApiOperation(value = "리스트 생성", notes = "보드와 카드 중간에 위치한 리스트를 생성합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "리스트 생성 성공"),
             @ApiResponse(code = 400, message = "리스 생성 불가능")
@@ -29,10 +29,10 @@ public class ListController {
         return listService.createList(list);
     }
 
-    @ApiOperation(value = "updateList", notes = "리스트 정보 수정")
+    @ApiOperation(value = "리스트 정보 수정", notes = "타이틀과 position을 수정합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "리스트 정보 수정 성공"),
-            @ApiResponse(code = 400, message = "리스트를 찾을 수 없습니다.")
+            @ApiResponse(code = 404, message = "리스트를 찾을 수 없습니다.")
     })
     @PutMapping("")
     public ResponseEntity<Message> updateList(
@@ -42,10 +42,10 @@ public class ListController {
         return listService.updateList(list);
     }
 
-    @ApiOperation(value = "deleteList", notes = "리스트 삭제")
+    @ApiOperation(value = "리스트 삭제", notes = "리스트 id로 리스트를 삭제합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "리스트 삭제 성공"),
-            @ApiResponse(code = 400, message = "리스트를 찾을 수 없습니다.")
+            @ApiResponse(code = 404, message = "리스트를 찾을 수 없습니다.")
     })
     @DeleteMapping("{listId}")
     public ResponseEntity<Message> deleteList(

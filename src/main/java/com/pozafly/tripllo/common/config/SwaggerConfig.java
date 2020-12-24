@@ -38,11 +38,7 @@ public class SwaggerConfig {
                 .build());
         responseMessages.add(new ResponseMessageBuilder()
                 .code(404)
-                .message("Page_Not_Found!")
-                .build());
-        responseMessages.add(new ResponseMessageBuilder()
-                .code(500)
-                .message("Internal_Server_Error!")
+                .message("Not_Found!")
                 .build());
 
         return new Docket(DocumentationType.SWAGGER_2)
@@ -101,10 +97,10 @@ public class SwaggerConfig {
     private ApiInfo apiInfo(String title, String version) {
         return new ApiInfo(
                 title,
-                "Tripllo API Docs",
+                "Tripllo API 문서입니다 😁",
                 version,
                 "www.example.com",
-                new Contact("Contact Me", "www.example.com", "pain103@naver.com"),
+                new Contact("여기로 연락주세요!", "www.example.com", "pain103@naver.com"),
                 "Licenses",
 
                 "www.example.com",

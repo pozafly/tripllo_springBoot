@@ -16,7 +16,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @ApiOperation(value = "readUser", notes = "User Data 조회")
+    @ApiOperation(value = "유저 조회", notes = "유저를 조회하는 API 입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 정보 조회 성공"),
             @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
@@ -29,24 +29,24 @@ public class UserController {
         return userService.readUser(id);
     }
 
-    @ApiOperation(value = "userIdvValid", notes = "회원가입 가능한 ID인지 판별")
+    @ApiOperation(value = "회원가입 가능 판별", notes = "회원가입 가능한 ID인지 판별")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원가입 가능한 ID 입니다."),
             @ApiResponse(code = 401, message = "이미 회원 ID가 사용되고 있습니다.")
     })
     @GetMapping("/valid/{id}")
     public ResponseEntity<Message> ValidId(
-            @ApiParam(value = "회원가입 가능한 ID", required = true, example = "pain103")
+            @ApiParam(value = "회원가입 하고싶 ID", required = true, example = "pain103")
             @PathVariable String id
     ) {
         return userService.rtnIdValid(id);
 
     }
 
-    @ApiOperation(value = "createUser", notes = "회원가입")
+    @ApiOperation(value = "유저 생성", notes = "유저를 생성합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 가입 성공"),
-            @ApiResponse(code = 400, message = "회원가입 불가능")
+            @ApiResponse(code = 400, message = "회원 가입 불가능")
     })
     @PostMapping("")
     public ResponseEntity<Message> createUser(
@@ -56,10 +56,10 @@ public class UserController {
         return userService.createUser(request);
     }
 
-    @ApiOperation(value = "updateUser", notes = "회원 정보 수정")
+    @ApiOperation(value = "회원 정보 수정", notes = "회원 정보를 수정합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 정보 수정 성공"),
-            @ApiResponse(code = 400, message = "회원을 찾을 수 없습니다.")
+            @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
     })
     @PutMapping("")
     public ResponseEntity<Message> updateUser(
@@ -69,10 +69,10 @@ public class UserController {
         return userService.updateUser(request);
     }
 
-    @ApiOperation(value = "deleteUser", notes = "회원탈퇴")
+    @ApiOperation(value = "회원 탈퇴", notes = "회원을 탈퇴 합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
-            @ApiResponse(code = 400, message = "회원을 찾을 수 없습니다.")
+            @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
     })
     @DeleteMapping("{id}")
     public ResponseEntity<Message> deleteUser(

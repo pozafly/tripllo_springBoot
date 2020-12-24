@@ -60,11 +60,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/admin/**").hasRole("ADMIN")
 
+                // post 방식의 user create(회원가입)은 허용한다.
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                // 회원가입 전 사용하고 싶은 회원 id를 validation 해볼 수 있는 api도 open
                 .antMatchers("/api/user/valid/**").permitAll()
+                // 로그인 오픈
+                .antMatchers("/api/login/**").permitAll()
 
                 // 인증된 사용자만 가능하다(즉, 토큰을 준 사람만이 가능한 것임.)
-                .antMatchers("/api/user/**").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
                 .and()
                 .cors()
