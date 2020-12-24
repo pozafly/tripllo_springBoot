@@ -7,9 +7,6 @@ import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
-import com.pozafly.tripllo.common.utils.PasswordUtil;
-import com.pozafly.tripllo.user.model.User;
-import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -85,8 +81,6 @@ public class BoardServiceImpl implements BoardService {
             message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
-
-
     }
 
     @Override

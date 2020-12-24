@@ -2,8 +2,10 @@ package com.pozafly.tripllo.user.model;
 
 import com.pozafly.tripllo.common.domain.network.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class User extends BaseEntity {
 
     private String id;
