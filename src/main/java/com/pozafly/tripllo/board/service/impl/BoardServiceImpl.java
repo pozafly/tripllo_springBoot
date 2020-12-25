@@ -2,7 +2,7 @@ package com.pozafly.tripllo.board.service.impl;
 
 import com.pozafly.tripllo.board.dao.BoardDao;
 import com.pozafly.tripllo.board.model.Board;
-import com.pozafly.tripllo.board.model.response.BoardApiDetailResponse;
+import com.pozafly.tripllo.board.model.responseBoardDetail.ResponseBoardDetail;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
@@ -50,19 +50,23 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<Message> readBoardDetail(Long boardId) {
-//        System.out.println("!!!!!!!!!!!!!!!!!!!!!!");
-//        System.out.println(boardId);
-//        List<BoardApiDetailResponse> response = boardDao.readBoardDetail(boardId);
-//        System.out.println("@@@@@@@@@@");
-//        System.out.println(response);
-//
-//        Map<String, Object> item = new HashMap<>();
-        //List<>
+        System.out.println("boardID : " + boardId);
+        List<ResponseBoardDetail> item = boardDao.readBoardDetail(boardId);
+        System.out.println(item);
 
-//        for(BoardApiDetailResponse item : response) {
-//            System.out.println(item);
-//        }
-        return null;
+        if(!ObjectUtils.isEmpty(item)) {
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(item);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.pozafly.tripllo.board.controller;
 import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +39,7 @@ public class BoardController {
             @ApiParam(value = "보드 id", required = true, example = "1")
             @PathVariable Long boardId
     ) {
-        boardService.readBoardDetail(boardId);
-        return null;
+        return boardService.readBoardDetail(boardId);
     }
 
     @ApiOperation(value = "보드 생성", notes = "새로운 보드를 생성합니다.")

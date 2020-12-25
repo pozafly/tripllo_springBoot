@@ -17,6 +17,5 @@ public class Lists extends BaseEntity {
     private String title;
     @ApiModelProperty(example = "1")
     private Double pos;
-    @ApiModelProperty(example = "pain103")
-    private String userId;
+
 }

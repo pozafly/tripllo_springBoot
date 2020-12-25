@@ -23,6 +23,5 @@ public class Card extends BaseEntity {
     private String labelColor;
     @ApiModelProperty(example = "대한민국")
     private String location;
-    @ApiModelProperty(example = "pain103")
-    private String userId;
+
 }

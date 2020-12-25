@@ -7,7 +7,7 @@
     <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
         select
             id,
-<!--            user_id,-->
+            user_id,
             title,
             bg_color,
             created_at,
@@ -26,27 +26,89 @@
     </select>
 
 
-    <select id="readBoardDetail" parameterType="Long" resultType="com.pozafly.tripllo.board.model.response.BoardApiDetailResponse">
+    <select id="readBoardDetail" parameterType="Long" resultMap="BoardDetailResult">
         select
-               a.id as board_id,
-               a.title as board_title,
-               a.bg_color as board_bg_color,
-               b.id as list_id,
-               b.board_id as list_board_id,
-               b.title as list_title,
-               b.pos as list_pos,
-               c.id as card_id,
-               c.list_id as card_list_id,
-               c.title as card_title,
-               c.pos as card_pos,
-               c.description as card_description,
-               c.label_color as card_label_color,
-               c.location as card_location
-          from Board a
-        left outer join list b on a.id = b.board_id
-        left outer join card c on b.id = c.list_id
+            a.id as board_id,
+            a.title as board_title,
+            a.bg_color as board_bg_color,
+            a.user_id as board_user_id,
+
+            b.id as list_id,
+            b.board_id as list_board_id,
+            b.title as list_title,
+            b.pos as list_pos,
+
+            c.id as card_id,
+            c.list_id as card_list_id,
+            c.title as card_title,
+            c.pos as card_pos,
+            c.description as card_description,
+            c.label_color as card_label_color,
+            c.location as card_location
+        from Board a
+            left outer join list b on a.id = b.board_id
+            left outer join card c on b.id = c.list_id
         where a.id = #{boardId}
     </select>
+
+    <resultMap id="BoardDetailResult" type="com.pozafly.tripllo.board.model.responseBoardDetail.BoardResultMap">
+        <id property="id" column="board_id"/>
+        <result property="title" column="board_title"/>
+        <result property="bgColor" column="board_bg_color"/>
+        <result property="userId" column="board_user_id"/>
+        <collection property="lists" ofType="com.pozafly.tripllo.board.model.responseBoardDetail.ListResultMap"
+                    resultMap="BoardListsResult" foreignColumn="list_board_id" />
+    </resultMap>
+    <resultMap id="BoardListsResult" type="com.pozafly.tripllo.board.model.responseBoardDetail.ListResultMap">
+        <id property="id" column="list_id"/>
+        <result property="boardId" column="list_board_id"/>
+        <result property="title" column="list_title"/>
+        <result property="pos" column="list_pos"/>
+        <collection property="cards" ofType="com.pozafly.tripllo.board.model.responseBoardDetail.CardResultMap"
+                    resultMap="ListsCardsResult" foreignColumn="card_list_id" />
+    </resultMap>
+    <resultMap id="ListsCardsResult" type="com.pozafly.tripllo.board.model.responseBoardDetail.CardResultMap">
+        <id property="id" column="card_id" />
+        <result property="listId" column="card_list_id"/>
+        <result property="title" column="card_title"/>
+        <result property="pos" column="card_pos"/>
+        <result property="description" column="card_description"/>
+        <result property="labelColor" column="card_label_color"/>
+        <result property="location" column="card_location"/>
+    </resultMap>
+
+    <!--
+    1:N 설명 :
+        먼저, board는 다수의 list를 가지고 list는 다수의 card를 가지는 관계이다.
+        이 녀석을 boardId 하나로 조회하기 위해서 select id="readBoardDetail" 태그와 같이 left outer join으로 해당 데이터를 모두 조회해와야 한다.
+        그러면 카드 갯수만큼의 레코드가 생기게 되고 그걸 그냥 반환하면 어느 board의 어느 list, card인지가 판변이 불가능함. 따라서 List, Map으로 점철된 코드를
+        생성해내야 하는데, Mybatis의 resultMap, collection 태그를 사용하여 1:N 관계의 표현을 나타낼 수 있다.
+
+        1. 먼저 조회한 칼럼 갯수만큼 model을 만들어 두고 dao에 return 타입으로 준다.
+        2. 각각의 들어갈 ResultMap Class를 생성하여 @Data를 붙여주고 칼럼명을 적어두자. 기존에 class가 있지만, 따로 생성해두는 이유는
+            private List<ListResultMap> lists;
+        이런 식으로 List<> 형식으로 둔 객체를 생성해야하는데 다른 곳에서 조회 시, lists가 같이 붙어서 나오므로 새로 생성하여 매핑해두었다.
+        3. xml에 resultMap 을 3개 생성한다. type은 빈 객체를 매핑시켜준다.
+        4. ResultMap
+            -ResultMap의 id : 쿼리문이 들어가는 select 태그의 resultMap의 이름이거나, 다른 resultMap에서 부를 이름.
+            -ResultMap의 type : 아까 생성한 ResultMap class 명. 즉, 리턴 타입아다.
+                -id : PK를 적어둔다. (foreign key와는 다르게 해당 테이블의 기본키만 적는다.)
+                -result : 빈 객체 안의 칼럼을 하나씩 적어둔다.
+                    -property : 빈 객체의 선언된 변수 명.
+                    -column : 쿼리 조회 시 리턴 될 칼럼 명.
+                -collection : List나 Map으로 매핑될 녀석을 선언 하는 태그.
+                    -property : 빈 객체에 선언된 List or Map의 변수 명.
+                    -ofType : 리턴 될 타입 명. 즉, collection의 리턴타입이라고 보면 됨.
+                    -resultMap : collection 조회 후 리턴될 resultMap 명.
+                    -foreignColumn : 상위 테이블에서 하위 테이블에 매칭될 외래키를 적는다. 하위 resultMap의 id 태그(PK)와는 상관없다.
+                    -※ columnPrefix : 이 녀석은 하위 테이블이 상위 테이블의 기본키를 외래키로 지정했을 때 테이블을 구분하기 위해서
+                        alias (쿼리문 칼럼 as ...) 를 주었을 경우
+                        <id property="id" column="list_id"/>
+                        <id property="id" column="id"/>
+                        이렇게 column을 list_를 빼고 사용할 수 있게 만들어준다. ex) <collection columnPrefix="list_">
+                        다만 여기서 사용하지 않은 이유는 우리 테이블 구조는 3단계로,
+                        columnPrefix가 상속이 되기 때문에 alias를 길게 붙어줘야 하므로 그냥 칼럼명 전체를 적어주었음.
+    -->
 
     <insert id="createBoard" parameterType="com.pozafly.tripllo.board.model.Board">
         insert into board values (null, #{userId}, #{title}, #{bgColor}, now(), #{userId}, null, null)
