@@ -5,5 +5,6 @@ import com.pozafly.tripllo.user.model.request.LoginApiRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface LoginService {
-    public ResponseEntity<Message> createToken(LoginApiRequest loginRequest);
+    public ResponseEntity<Message> login(LoginApiRequest loginRequest);
+    public ResponseEntity<Message> socialLogin(String userId);
 }

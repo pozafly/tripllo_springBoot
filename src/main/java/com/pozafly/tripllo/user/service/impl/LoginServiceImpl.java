@@ -35,7 +35,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    public ResponseEntity<Message> createToken(LoginApiRequest loginRequest) {
+    public ResponseEntity<Message> login(LoginApiRequest loginRequest) {
         User user = userDao.readUser(loginRequest.getId());
         if (!ObjectUtils.isEmpty(user)) {
             if (checkPassword(user, loginRequest.getPassword())) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
@@ -66,6 +66,31 @@ public class LoginServiceImpl implements LoginService {
             return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);  // 403
         }
 
+    }
+
+    @Override
+    public ResponseEntity<Message> socialLogin(String userId) {
+        User user = userDao.readUser(userId);
+
+        if (!ObjectUtils.isEmpty(user)) {
+            List<String> roles = new ArrayList<>();
+            roles.add("USER");
+
+            String token = jwtTokenProvider.createToken(userId, roles); // id, role 정보만 가지고 token을 만든다.
+            LoginApiResponse response = new LoginApiResponse(token, userId);
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.LOGIN_SUCCESS);
+            message.setData(response);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            log.info("해당 id가 없습니다.");
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);  // 403
+        }
     }
 
     Boolean checkPassword(User user, String pw) {
