@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setMessage(ResponseMessage.READ_BOARD_DETAIL);
             message.setData(item);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);

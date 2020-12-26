@@ -1,8 +1,6 @@
 package com.pozafly.tripllo.common.security;
 
 import com.google.common.collect.ImmutableList;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
-import com.pozafly.tripllo.common.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -37,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    // 여기서 부터 SpringSecurity의 CORS 설정임.
+    // 여기서 부터 SWAGGER 의 CORS 설정임.
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();

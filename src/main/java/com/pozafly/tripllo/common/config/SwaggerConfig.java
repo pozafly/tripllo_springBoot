@@ -59,8 +59,8 @@ public class SwaggerConfig {
     }
 
     private ApiKey apiKey() {
-        // authorizations 에 들어가는 jwt 토근정보임. 2번째 파라미터로 keyname은 TOKEN 이라 적어주면 헤더에 붙어서 들어간다.
-        return new ApiKey("JWT", "TOKEN", "header");
+        // authorizations 에 들어가는 jwt 토근정보임. 2번째 파라미터로 keyname은 Authorization 이라 적어주면 헤더에 붙어서 들어간다.
+        return new ApiKey("JWT", "Authorization", "header");
     }
 
     private springfox.documentation.spi.service.contexts.SecurityContext securityContext() {
