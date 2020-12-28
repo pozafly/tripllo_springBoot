@@ -7,4 +7,5 @@ public class Login {
     private String id;
     private String password;
     private String token;
+    private String picture;
 }

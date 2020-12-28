@@ -9,5 +9,6 @@ public class LoginApiResponse {
 
     private String token;
     private String userName;
+    private String picture;
 
 }
