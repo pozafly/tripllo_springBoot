@@ -8,7 +8,9 @@ import lombok.Data;
 public class LoginApiResponse {
 
     private String token;
-    private String userName;
+    private String id;
+    private String email;
+    private String name;
     private String picture;
 
 }
