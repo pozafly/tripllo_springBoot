@@ -35,25 +35,18 @@ public class BoardServiceImpl implements BoardService {
 
         List<Board> board = boardDao.readBoardList(userId);
 
-        if (!ObjectUtils.isEmpty(board)) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
-            message.setData(board);
+        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+        message.setStatus(StatusEnum.OK);
+        message.setMessage(ResponseMessage.READ_BOARD);
+        message.setData(board);
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<Message> readBoardDetail(Long boardId) {
-        System.out.println("boardID : " + boardId);
         List<ResponseBoardDetail> item = boardDao.readBoardDetail(boardId);
-        System.out.println(item);
 
         if(!ObjectUtils.isEmpty(item)) {
 
@@ -71,7 +64,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<Message> createBoard(Map<String, String> boardInfo) {
+    public ResponseEntity<Message> createBoard(Map<String, Object> boardInfo) {
         if(!StringUtils.isEmpty(boardInfo.get("title"))) {
             boardDao.createBoard(boardInfo);
 

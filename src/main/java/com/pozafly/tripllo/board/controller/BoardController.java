@@ -1,5 +1,6 @@
 package com.pozafly.tripllo.board.controller;
 
+import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import io.swagger.annotations.*;
@@ -53,16 +54,16 @@ public class BoardController {
     })
     @PostMapping("")
     public ResponseEntity<Message> createBoard(
-            @ApiParam(value = "보드 타이틀", required = true)
-            @RequestParam String title,
+            @ApiParam(value = "보드 폼", required = true)
+            @RequestBody Board board,
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = (String)session.getAttribute("userId");
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("title", title);
+        map.put("title", board.getTitle());
 
         return boardService.createBoard(map);
     }

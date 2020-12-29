@@ -10,12 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
 
 @Api(value = "Login V1")
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired
@@ -26,35 +24,44 @@ public class LoginController {
             @ApiResponse(code = 200, message = "로그인 성공"),
             @ApiResponse(code = 403, message = "비밀번호가 틀리거나 해당 id가 없습니다.")
     })
-    @PostMapping("")
+    @PostMapping("/login")
     public ResponseEntity<Message> login(
-            @ApiParam(value = "유저 id", required = true, example = "pain103")
-            @RequestParam String id,
-            @ApiParam(value = "유저 password", required = true, example = "1234")
-            @RequestParam String password,
+            @ApiParam(value = "유저 로그인 폼", required = true)
+            @RequestBody LoginApiRequest request,
             HttpServletRequest req
     ) {
         HttpSession session = req.getSession();
-        session.setAttribute("userId", id);
+        session.setAttribute("userId", request.getId());
 
-        Map<String, String> userInfo = new HashMap<>();
-        userInfo.put("id", id);
-        userInfo.put("password", password);
-
-        return loginService.login(userInfo);
+        return loginService.login(request);
     }
 
     @ApiOperation(value = "소셜 로그인 API", notes = "소셜 로그인하는 API 입니다. 소셜 로그인으로 ID, PW가 검증이 끝났으므로 따로 validation이 필요하지 않다고 판단했습니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "소셜 로그인 성공"),
     })
-    @GetMapping("/social/{userId}")
+    @GetMapping("/login/social/{userId}")
     public ResponseEntity<Message> socialLogin(
             @PathVariable String userId, HttpServletRequest req
     ) {
         HttpSession session = req.getSession();
         session.setAttribute("userId", userId);
+
         return loginService.socialLogin(userId);
+    }
+
+    @ApiOperation(value = "로그아웃 API", notes = "로그아웃. spring session 삭제로직.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "로그아웃 성공"),
+    })
+    @GetMapping("/logout")
+    public void logout(
+            HttpServletRequest req
+    ) {
+        System.out.println("로그아웃 진행한다.");
+        HttpSession session = req.getSession();
+        session.setAttribute("userId", null);
+        session.invalidate();
     }
 
 }

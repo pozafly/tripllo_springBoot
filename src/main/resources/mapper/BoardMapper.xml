@@ -112,6 +112,9 @@
 
     <insert id="createBoard" parameterType="Map">
         insert into board values (null, #{userId}, #{title}, '#026aa7', now(), #{userId}, null, null)
+        <selectKey resultType="int" keyProperty="id" order="AFTER" >
+            select last_insert_id()
+        </selectKey>
     </insert>
 
     <update id="updateBoard" parameterType="Map">

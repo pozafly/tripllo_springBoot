@@ -21,7 +21,6 @@ import org.springframework.util.ObjectUtils;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -36,10 +35,10 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     JwtTokenProvider jwtTokenProvider;
 
-    public ResponseEntity<Message> login(Map<String, String> userInfo) {
-        User user = userDao.readUser(userInfo.get("id"));
+    public ResponseEntity<Message> login(LoginApiRequest request) {
+        User user = userDao.readUser(request.getId());
         if (!ObjectUtils.isEmpty(user)) {
-            if (checkPassword(user, userInfo.get("password"))) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
+            if (checkPassword(user, request.getPassword())) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
                 log.info("로그인 성공");
 
                 List<String> roles = new ArrayList<>();
