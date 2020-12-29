@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -29,14 +30,14 @@ public class ListServiceImpl implements ListService {
 
 
     @Override
-    public ResponseEntity<Message> createList(Lists list) {
-        if(!ObjectUtils.isEmpty(list)) {
-            listDao.createList(list);
+    public ResponseEntity<Message> createList(Map<String, Object> listInfo) {
+        if(!ObjectUtils.isEmpty(listInfo)) {
+            listDao.createList(listInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.CREATED_LIST);
-            message.setData(list);
+            message.setData(listInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
@@ -47,14 +48,15 @@ public class ListServiceImpl implements ListService {
     }
 
     @Override
-    public ResponseEntity<Message> updateList(Lists list) {
-        if(!ObjectUtils.isEmpty(list)) {
-            listDao.updateList(list);
+    public ResponseEntity<Message> updateList(Map<String, Object> listInfo) {
+        if(!StringUtils.isEmpty(listInfo.get("listId"))) {
+
+            listDao.updateList(listInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.UPDATE_LIST);
-            message.setData(list);
+            message.setData(listInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {

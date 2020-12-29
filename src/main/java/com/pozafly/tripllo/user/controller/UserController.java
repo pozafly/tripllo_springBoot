@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
 @Api(value = "User V1")
 @RestController
 @RequestMapping("/api/user")
@@ -35,8 +40,8 @@ public class UserController {
             @ApiResponse(code = 401, message = "이미 회원 ID가 사용되고 있습니다.")
     })
     @GetMapping("/valid/{id}")
-    public ResponseEntity<Message> ValidId(
-            @ApiParam(value = "회원가입 하고싶 ID", required = true, example = "pain103")
+    public ResponseEntity<Message> VlidId(
+            @ApiParam(value = "회원가입 하고싶은 ID", required = true, example = "pain103")
             @PathVariable String id
     ) {
         return userService.rtnIdValid(id);
@@ -63,10 +68,24 @@ public class UserController {
     })
     @PutMapping("")
     public ResponseEntity<Message> updateUser(
-            @ApiParam(value = "회원 수정 폼", required = true)
-            @RequestBody UserApiRequest request
+            @ApiParam(value = "유저 이메일")
+            @RequestParam(required = false) String email,
+            @ApiParam(value = "유저 이름")
+            @RequestParam(required = false) String name,
+            @ApiParam(value = "유저 사진")
+            @RequestParam(required = false) String picture,
+            HttpServletRequest request
     ) {
-        return userService.updateUser(request);
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("email", email);
+        map.put("name", name);
+        map.put("picture", picture);
+
+        return userService.updateUser(map);
     }
 
     @ApiOperation(value = "회원 탈퇴", notes = "회원을 탈퇴 합니다.")
@@ -74,11 +93,19 @@ public class UserController {
             @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
             @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
     })
-    @DeleteMapping("{id}")
+    @DeleteMapping("")
     public ResponseEntity<Message> deleteUser(
-            @ApiParam(value = "회원탈퇴 ID", required = true)
-            @PathVariable String id
+            @ApiParam(value = "회원 비밀번호", required = true)
+            @RequestParam String password,
+            HttpServletRequest request
     ) {
-        return userService.deleteUser(id);
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("password", password);
+
+        return userService.deleteUser(map);
     }
 }

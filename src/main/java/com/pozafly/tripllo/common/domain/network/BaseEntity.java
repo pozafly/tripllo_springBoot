@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class BaseEntity {
+    @ApiModelProperty(example = "유저id")
+    private String userId;
     @ApiModelProperty(example = "now()")
     private LocalDateTime createdAt;
     @ApiModelProperty(example = "생성자id")

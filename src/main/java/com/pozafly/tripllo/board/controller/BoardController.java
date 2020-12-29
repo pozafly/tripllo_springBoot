@@ -1,12 +1,16 @@
 package com.pozafly.tripllo.board.controller;
 
-import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 @Api(value = "Board V1")
 @RestController
@@ -49,10 +53,18 @@ public class BoardController {
     })
     @PostMapping("")
     public ResponseEntity<Message> createBoard(
-            @ApiParam(value = "보드 생성 폼", required = true)
-            @RequestBody Board board
+            @ApiParam(value = "보드 타이틀", required = true)
+            @RequestParam String title,
+            HttpServletRequest request
     ) {
-        return boardService.createBoard(board);
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("title", title);
+
+        return boardService.createBoard(map);
     }
 
     @ApiOperation(value = "보드 정보 수정", notes = "보드 title, backgroundColor를 수정할 수 있습니다.")
@@ -60,12 +72,26 @@ public class BoardController {
             @ApiResponse(code = 200, message = "보드 정보 수정 성공"),
             @ApiResponse(code = 404, message = "보드를 찾을 수 없습니다.")
     })
-    @PutMapping("")
+    @PutMapping("{boardId}")
     public ResponseEntity<Message> updateBoard(
-            @ApiParam(value = "보드 수정 폼", required = true)
-            @RequestBody Board board
+            @ApiParam(value = "보드 id", required = true)
+            @PathVariable Long boardId,
+            @ApiParam(value = "보드 타이틀")
+            @RequestParam(required = false) String title,
+            @ApiParam(value = "보드 백그라운드 컬러")
+            @RequestParam(required = false) String bgColor,
+            HttpServletRequest request
     ) {
-        return boardService.updateBoard(board);
+        HttpSession session = request.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("boardId", boardId);
+        map.put("title", title);
+        map.put("bgColor", bgColor);
+
+        return boardService.updateBoard(map);
     }
 
     @ApiOperation(value = "보드 삭제", notes = "보드id로 보드를 삭제합니다.")

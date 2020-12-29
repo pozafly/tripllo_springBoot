@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if(userIdValid(request.getId())) {
 
             // 소셜 로그인 패스워드 만들기
-            if(!StringUtils.isEmpty(request.getSocialYn())) {
+            if(!StringUtils.isEmpty(request.getSocial())) {
                 PasswordUtil pw = new PasswordUtil();
                 String newPw = pw.encryptSHA256(request.getId());
                 request.setPassword(newPw);
@@ -99,14 +99,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Message> updateUser(UserApiRequest request) {
-        if(!userIdValid(request.getId())) {
-            userDao.updateUser(request);
+    public ResponseEntity<Message> updateUser(Map<String, Object> userInfo) {
+        if(!userIdValid((String)userInfo.get("userId"))) {
+            userDao.updateUser(userInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.UPDATE_USER);
-            message.setData(request);
+            message.setData(userInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
@@ -118,19 +118,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Message> deleteUser(String id) {
-        if(!userIdValid(id)) {
-            userDao.deleteUser(id);
+    public ResponseEntity<Message> deleteUser(Map<String, String> userInfo) {
+        String userId = userInfo.get("userId");
 
-            Map<String, String> rtnMap = new HashMap<>();
-            rtnMap.put("userId", id);
+        if(!userIdValid(userId)) {
+            User user = userDao.readUser(userId);
+            if(userInfo.get("password").equals(user.getPassword())) {
+                userDao.deleteUser(userInfo);
 
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.DELETE_USER);
-            message.setData(rtnMap);
+                headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+                message.setStatus(StatusEnum.OK);
+                message.setMessage(ResponseMessage.DELETE_USER);
+                message.setData(userInfo);
 
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
+                message.setStatus(StatusEnum.BAD_REQUEST);
+                message.setMessage(ResponseMessage.PASSWORD_WRONG);
+                return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            }
+
         } else {
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);

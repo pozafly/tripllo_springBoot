@@ -110,18 +110,22 @@
                         columnPrefix가 상속이 되기 때문에 alias를 길게 붙어줘야 하므로 그냥 칼럼명 전체를 적어주었음.
     -->
 
-    <insert id="createBoard" parameterType="com.pozafly.tripllo.board.model.Board">
-        insert into board values (null, #{userId}, #{title}, #{bgColor}, now(), #{userId}, null, null)
+    <insert id="createBoard" parameterType="Map">
+        insert into board values (null, #{userId}, #{title}, '#026aa7', now(), #{userId}, null, null)
     </insert>
 
-    <update id="updateBoard" parameterType="com.pozafly.tripllo.board.model.Board">
+    <update id="updateBoard" parameterType="Map">
         update board
         set
-            title = #{title},
-            bg_color = #{bgColor},
-            updated_at = now()
+            <if test='title != null and !"".equals(title)'>
+                title = #{title},
+            </if>
+            <if test='bgColor != null and !"".equals(bgColor)'>
+                bg_color = #{bgColor},
+            </if>
+            updated_at = now(),
             updated_by = #{userId}
-        where id = #{id}
+        where id = #{boardId}
     </update>
 
     <delete id="deleteBoard" parameterType="Long">

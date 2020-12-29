@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -31,14 +32,14 @@ public class CardServiceImpl implements CardService {
     CardDao cardDao;
 
     @Override
-    public ResponseEntity<Message> createCard(Card card) {
-        if(!ObjectUtils.isEmpty(card)) {
-            cardDao.createCard(card);
+    public ResponseEntity<Message> createCard(Map<String, Object> cardInfo) {
+        if(!StringUtils.isEmpty(cardInfo.get("listId"))) {
+            cardDao.createCard(cardInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.CREATED_CARD);
-            message.setData(card);
+            message.setData(cardInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
@@ -67,14 +68,14 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<Message> updateCard(Card card) {
-        if(!ObjectUtils.isEmpty(card)) {
-            cardDao.updateCard(card);
+    public ResponseEntity<Message> updateCard(Map<String, Object> cardInfo) {
+        if(!StringUtils.isEmpty(cardInfo.get("cardId"))) {
+            cardDao.updateCard(cardInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.UPDATE_CARD);
-            message.setData(card);
+            message.setData(cardInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {

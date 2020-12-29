@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
 @Api(value = "List V1")
 @RestController
 @RequestMapping("/api/list")
@@ -23,10 +28,24 @@ public class ListController {
     })
     @PostMapping("")
     public ResponseEntity<Message> createList(
-            @ApiParam(value = "리스트 생성 폼", required = true)
-            @RequestBody Lists list
+            @ApiParam(value = "리스트의 보드 id", required = true)
+            @RequestParam Long boardId,
+            @ApiParam(value = "리스트 타이틀")
+            @RequestParam(required = false) String title,
+            @ApiParam(value = "리스트 포지션")
+            @RequestParam(required = false) Double pos,
+            HttpServletRequest request
     ) {
-        return listService.createList(list);
+        HttpSession session = request.getSession();
+        String userId = (String)session.getAttribute("userId");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("boardId", boardId);
+        map.put("title", title);
+        map.put("pos", pos);
+
+        return listService.createList(map);
     }
 
     @ApiOperation(value = "리스트 정보 수정", notes = "타이틀과 position을 수정합니다.")
@@ -34,12 +53,26 @@ public class ListController {
             @ApiResponse(code = 200, message = "리스트 정보 수정 성공"),
             @ApiResponse(code = 404, message = "리스트를 찾을 수 없습니다.")
     })
-    @PutMapping("")
+    @PutMapping("{listId}")
     public ResponseEntity<Message> updateList(
             @ApiParam(value = "리스트 수정 폼", required = true)
-            @RequestBody Lists list
+            @PathVariable Long listId,
+            @ApiParam(value = "리스트 타이틀")
+            @RequestParam(required = false) String title,
+            @ApiParam(value = "리스트 포지션")
+            @RequestParam(required = false) Double pos,
+            HttpServletRequest request
     ) {
-        return listService.updateList(list);
+        HttpSession session = request.getSession();
+        String userId = (String)session.getAttribute("userId");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("listId", listId);
+        map.put("title", title);
+        map.put("pos", pos);
+
+        return listService.updateList(map);
     }
 
     @ApiOperation(value = "리스트 삭제", notes = "리스트 id로 리스트를 삭제합니다.")

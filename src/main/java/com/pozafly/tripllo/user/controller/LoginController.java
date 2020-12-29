@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
 @Api(value = "Login V1")
 @RestController
 @RequestMapping("/api/login")
@@ -23,10 +28,20 @@ public class LoginController {
     })
     @PostMapping("")
     public ResponseEntity<Message> login(
-            @ApiParam(value = "로그인 폼", required = true)
-            @RequestBody LoginApiRequest request
+            @ApiParam(value = "유저 id", required = true, example = "pain103")
+            @RequestParam String id,
+            @ApiParam(value = "유저 password", required = true, example = "1234")
+            @RequestParam String password,
+            HttpServletRequest req
     ) {
-        return loginService.login(request);
+        HttpSession session = req.getSession();
+        session.setAttribute("userId", id);
+
+        Map<String, String> userInfo = new HashMap<>();
+        userInfo.put("id", id);
+        userInfo.put("password", password);
+
+        return loginService.login(userInfo);
     }
 
     @ApiOperation(value = "소셜 로그인 API", notes = "소셜 로그인하는 API 입니다. 소셜 로그인으로 ID, PW가 검증이 끝났으므로 따로 validation이 필요하지 않다고 판단했습니다.")
@@ -35,8 +50,10 @@ public class LoginController {
     })
     @GetMapping("/social/{userId}")
     public ResponseEntity<Message> socialLogin(
-            @PathVariable String userId
+            @PathVariable String userId, HttpServletRequest req
     ) {
+        HttpSession session = req.getSession();
+        session.setAttribute("userId", userId);
         return loginService.socialLogin(userId);
     }
 

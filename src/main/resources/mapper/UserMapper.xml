@@ -11,7 +11,7 @@
         email,
         name,
         picture,
-        social_yn,
+        social,
         role,
         created_at,
         created_by,
@@ -23,25 +23,29 @@
 
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         insert into user
-        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{socialYn}, 'USER', now(), #{id}, null, null)
+        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{social}, 'USER', now(), #{id}, null, null)
     </insert>
 
-    <update id="updateUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
+    <update id="updateUser" parameterType="Map">
         update user
         set
-            password = #{password},
-            email = #{email},
-            name = #{name},
-            picture = #{picture},
-            social_yn = #{socialYn}
+            <if test='email != null and !"".equals(email)'>
+                email = #{email},
+            </if>
+            <if test='name != null and !"".equals(name)'>
+                name = #{name},
+            </if>
+            <if test='picture != null and !"".equals(picture)'>
+                picture = #{picture},
+            </if>
             updated_at = now(),
-            updated_by = #{id}
-        where id = #{id}
+            updated_by = #{userId}
+        where id = #{userId}
     </update>
 
-    <delete id="deleteUser" parameterType="String">
+    <delete id="deleteUser" parameterType="Map">
         delete from user
-        where id = #{id}
+        where id = #{userId}
     </delete>
 
 </mapper>

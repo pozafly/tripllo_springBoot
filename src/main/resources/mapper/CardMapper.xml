@@ -9,27 +9,37 @@
         where id = #{cardId}
     </select>
 
-    <insert id="createCard" parameterType="com.pozafly.tripllo.list.model.Lists">
+    <insert id="createCard" parameterType="Map">
         insert into card values (null, #{listId}, #{title}, #{pos}, #{description}, #{labelColor}, #{location}, now(), #{userId}, null, null)
     </insert>
 
-    <update id="updateCard" parameterType="com.pozafly.tripllo.list.model.Lists">
+    <update id="updateCard" parameterType="Map">
         update card
         set
+        <if test='title != null and !"".equals(title)'>
             title = #{title},
+        </if>
+        <if test='pos != null and !"".equals(pos)'>
             pos = #{pos},
+        </if>
+        <if test='description != null and !"".equals(description)'>
             description = #{description},
+        </if>
+        <if test='label_color != null and !"".equals(label_color)'>
             label_color = #{labelColor},
+        </if>
+        <if test='location != null and !"".equals(location)'>
             location = #{location},
+        </if>
             updated_at = now(),
             updated_by = #{userId}
-        where id = #{id}
+        where id = #{cardId}
     </update>
 
     <delete id="deleteCard" parameterType="Long">
         delete
         from card
-        where id = #{id}
+        where id = #{cardId}
     </delete>
 
 </mapper>

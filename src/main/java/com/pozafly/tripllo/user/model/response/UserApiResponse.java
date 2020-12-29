@@ -15,7 +15,7 @@ public class UserApiResponse extends BaseEntity {
     private String email;
     private String name;
     private String picture;
-    private String socialYn;
+    private String social;
 
     public UserApiResponse(User user) {
         if(!ObjectUtils.isEmpty(user)) {
@@ -24,7 +24,7 @@ public class UserApiResponse extends BaseEntity {
             this.email = user.getEmail();
             this.name = user.getName();
             this.picture = user.getPicture();
-            this.socialYn = user.getSocialYn();
+            this.social = user.getSocial();
         }
     }
 }

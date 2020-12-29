@@ -4,24 +4,28 @@
 
 <mapper namespace="com.pozafly.tripllo.list.dao.ListDao">
 
-    <insert id="createList" parameterType="com.pozafly.tripllo.list.model.Lists">
+    <insert id="createList" parameterType="Map">
         insert into list values (null, #{boardId}, #{title}, #{pos}, now(), #{userId}, null, null)
     </insert>
 
-    <update id="updateList" parameterType="com.pozafly.tripllo.list.model.Lists">
+    <update id="updateList" parameterType="Map">
         update list
         set
-               title = #{title},
-               pos = #{pos},
+            <if test='title != null and !"".equals(title)'>
+                title = #{title},
+            </if>
+            <if test='pos != null and !"".equals(pos)'>
+                pos = #{pos},
+            </if>
                updated_at = now(),
                updated_by = #{userId}
-        where id = #{id}
+        where id = #{listId}
     </update>
 
     <delete id="deleteList" parameterType="Long">
         delete
         from list
-        where id = #{id}
+        where id = #{listId}
     </delete>
 
 </mapper>

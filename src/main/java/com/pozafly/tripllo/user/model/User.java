@@ -1,19 +1,24 @@
 package com.pozafly.tripllo.user.model;
 
-import com.pozafly.tripllo.common.domain.network.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
+
+import java.time.LocalDateTime;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class User extends BaseEntity {
+public class User {
 
     private String id;
     private String password;
     private String email;
     private String name;
     private String picture;
-    private String socialYn;
+    private String social;
     private String role;
+    
+    private LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime updatedAt;
+    private String updatedBy;
 
 }

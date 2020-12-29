@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         // 조회한 정보를 userCustom에 담는다.
         // 만약 파라미터를 추가해야한다면 UserCustom 을 먼저 수정한다.
-        UserDetails userDetails = new UserDetails() {
+        return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 return null;
@@ -60,7 +60,5 @@ public class CustomUserDetailService implements UserDetailsService {
                 return true;
             }
         };
-
-        return userDetails;
     }
 }

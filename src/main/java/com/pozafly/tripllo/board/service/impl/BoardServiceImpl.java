@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -70,14 +71,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<Message> createBoard(Board board) {
-        if(!ObjectUtils.isEmpty(board)) {
-            boardDao.createBoard(board);
+    public ResponseEntity<Message> createBoard(Map<String, String> boardInfo) {
+        if(!StringUtils.isEmpty(boardInfo.get("title"))) {
+            boardDao.createBoard(boardInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.CREATED_BOARD);
-            message.setData(board);
+            message.setData(boardInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
@@ -88,14 +89,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<Message> updateBoard(Board board) {
-        if(isBoard(board.getId())) {
-            boardDao.updateBoard(board);
+    public ResponseEntity<Message> updateBoard(Map<String, Object> boardInfo) {
+        if(isBoard((Long)boardInfo.get("boardId"))) {
+            boardDao.updateBoard(boardInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.UPDATE_BOARD);
-            message.setData(board);
+            message.setData(boardInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
