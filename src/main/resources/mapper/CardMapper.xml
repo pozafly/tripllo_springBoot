@@ -10,7 +10,7 @@
     </select>
 
     <insert id="createCard" parameterType="Map">
-        insert into card values (null, #{listId}, #{title}, #{pos}, #{description}, #{labelColor}, #{location}, now(), #{userId}, null, null)
+        insert into card values (null, #{listId}, #{title}, #{pos}, null, null, null, now(), #{userId}, null, null)
     </insert>
 
     <update id="updateCard" parameterType="Map">

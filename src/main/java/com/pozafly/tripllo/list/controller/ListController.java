@@ -28,16 +28,16 @@ public class ListController {
     })
     @PostMapping("")
     public ResponseEntity<Message> createList(
-            @ApiParam(value = "리스트의 보드 id", required = true)
-            @RequestParam Long boardId,
-            @ApiParam(value = "리스트 타이틀")
-            @RequestParam(required = false) String title,
-            @ApiParam(value = "리스트 포지션")
-            @RequestParam(required = false) Double pos,
+            @ApiParam(value = "리스트 보드 폼", required = true)
+            @RequestBody Lists lists,
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
         String userId = (String)session.getAttribute("userId");
+
+        Long boardId = lists.getBoardId();
+        String title = lists.getTitle();
+        Double pos = lists.getPos();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -55,16 +55,16 @@ public class ListController {
     })
     @PutMapping("{listId}")
     public ResponseEntity<Message> updateList(
-            @ApiParam(value = "리스트 수정 폼", required = true)
+            @ApiParam(value = "리스트 id", required = true)
             @PathVariable Long listId,
-            @ApiParam(value = "리스트 타이틀")
-            @RequestParam(required = false) String title,
-            @ApiParam(value = "리스트 포지션")
-            @RequestParam(required = false) Double pos,
+            @ApiParam(value = "리스트 수정 폼")
+            @RequestBody Lists list,
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
         String userId = (String)session.getAttribute("userId");
+        String title = list.getTitle();
+        Double pos = list.getPos();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);

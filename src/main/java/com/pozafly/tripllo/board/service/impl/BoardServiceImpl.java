@@ -2,6 +2,7 @@ package com.pozafly.tripllo.board.service.impl;
 
 import com.pozafly.tripllo.board.dao.BoardDao;
 import com.pozafly.tripllo.board.model.Board;
+import com.pozafly.tripllo.board.model.responseBoardDetail.BoardResultMap;
 import com.pozafly.tripllo.board.model.responseBoardDetail.ResponseBoardDetail;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
@@ -46,7 +47,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<Message> readBoardDetail(Long boardId) {
-        List<ResponseBoardDetail> item = boardDao.readBoardDetail(boardId);
+        BoardResultMap item = boardDao.readBoardDetail(boardId);
 
         if(!ObjectUtils.isEmpty(item)) {
 
@@ -83,7 +84,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<Message> updateBoard(Map<String, Object> boardInfo) {
-        if(isBoard((Long)boardInfo.get("boardId"))) {
+        try{
             boardDao.updateBoard(boardInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -92,7 +93,7 @@ public class BoardServiceImpl implements BoardService {
             message.setData(boardInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
+        } catch(Exception e) {
 
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
@@ -102,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<Message> deleteBoard(Long boardId) {
-        if(isBoard(boardId)) {
+        try {
             boardDao.deleteBoard(boardId);
 
             Map<String, Long> rtnMap = new HashMap<>();
@@ -114,16 +115,11 @@ public class BoardServiceImpl implements BoardService {
             message.setData(rtnMap);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
+        } catch(Exception e) {
 
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
-    }
-
-    private Boolean isBoard(Long boardId) {
-        int count = boardDao.boardCount(boardId);
-        return count != 0;
     }
 }

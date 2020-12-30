@@ -42,18 +42,8 @@ public class CardController {
     })
     @PostMapping("")
     public ResponseEntity<Message> createCard(
-            @ApiParam(value = "보드 리스트 id", required = true, example = "1")
-            @RequestParam Long listId,
-            @ApiParam(value = "타이틀", example = "가보자")
-            @RequestParam(required = false) String title,
-            @ApiParam(value = "포지션", example = "1")
-            @RequestParam(required = false) String pos,
-            @ApiParam(value = "설명", example = "이러이러한 카드이다.")
-            @RequestParam(required = false) String description,
-            @ApiParam(value = "라벨 컬러", example = "rgba()...")
-            @RequestParam(required = false) String labelColor,
-            @ApiParam(value = "위치", example = "대한민국")
-            @RequestParam(required = false) String location,
+            @ApiParam(value = "카드 생성 폼")
+            @RequestBody Card card,
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
@@ -61,12 +51,9 @@ public class CardController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("listId", listId);
-        map.put("title", title);
-        map.put("pos", pos);
-        map.put("description", description);
-        map.put("labelColor", labelColor);
-        map.put("location", location);
+        map.put("listId", card.getListId());
+        map.put("title", card.getTitle());
+        map.put("pos", card.getPos());
 
         return cardService.createCard(map);
     }

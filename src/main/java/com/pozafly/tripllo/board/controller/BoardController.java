@@ -78,13 +78,13 @@ public class BoardController {
             @ApiParam(value = "보드 id", required = true)
             @PathVariable Long boardId,
             @ApiParam(value = "보드 타이틀")
-            @RequestParam(required = false) String title,
-            @ApiParam(value = "보드 백그라운드 컬러")
-            @RequestParam(required = false) String bgColor,
+            @RequestBody Board board,
             HttpServletRequest request
     ) {
         HttpSession session = request.getSession();
         String userId = (String) session.getAttribute("userId");
+        String title = board.getTitle();
+        String bgColor = board.getBgColor();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);

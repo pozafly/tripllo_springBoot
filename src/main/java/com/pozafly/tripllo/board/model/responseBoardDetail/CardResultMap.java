@@ -1,8 +1,9 @@
 package com.pozafly.tripllo.board.model.responseBoardDetail;
 
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class CardResultMap {
 
     private Long id;
