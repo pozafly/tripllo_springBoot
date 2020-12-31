@@ -16,6 +16,9 @@
     <update id="updateCard" parameterType="Map">
         update card
         set
+        <if test='listId != null and !"".equals(listId)'>
+            list_id = #{listId},
+        </if>
         <if test='title != null and !"".equals(title)'>
             title = #{title},
         </if>
