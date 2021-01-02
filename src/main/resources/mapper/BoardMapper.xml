@@ -49,6 +49,7 @@
             left outer join list b on a.id = b.board_id
             left outer join card c on b.id = c.list_id
         where a.id = #{boardId}
+        order by b.pos, c.pos
     </select>
 
     <resultMap id="BoardDetailResult" type="com.pozafly.tripllo.board.model.responseBoardDetail.BoardResultMap">
@@ -111,7 +112,7 @@
     -->
 
     <insert id="createBoard" parameterType="Map">
-        insert into board values (null, #{userId}, #{title}, '#026aa7', now(), #{userId}, null, null)
+        insert into board values (null, #{userId}, #{title}, '#339af0', now(), #{userId}, null, null)
         <selectKey resultType="int" keyProperty="id" order="AFTER" >
             select last_insert_id()
         </selectKey>
