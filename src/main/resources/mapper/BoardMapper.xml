@@ -32,6 +32,8 @@
             a.title as board_title,
             a.bg_color as board_bg_color,
             a.user_id as board_user_id,
+            a.created_at as board_created_at,
+            a.created_by as board_created_by,
 
             b.id as list_id,
             b.board_id as list_board_id,
@@ -57,6 +59,8 @@
         <result property="title" column="board_title"/>
         <result property="bgColor" column="board_bg_color"/>
         <result property="userId" column="board_user_id"/>
+        <result property="createdAt" column="board_created_at"/>
+        <result property="createdBy" column="board_created_by"/>
         <collection property="lists" ofType="com.pozafly.tripllo.board.model.responseBoardDetail.ListResultMap"
                     resultMap="BoardListsResult" foreignColumn="list_board_id" />
     </resultMap>
