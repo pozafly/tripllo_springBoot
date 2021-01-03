@@ -28,10 +28,10 @@
         <if test='description != null'>
             description = #{description},
         </if>
-        <if test='label_color != null and !"".equals(label_color)'>
+        <if test='labelColor != null'>
             label_color = #{labelColor},
         </if>
-        <if test='location != null and !"".equals(location)'>
+        <if test='location != null'>
             location = #{location},
         </if>
             updated_at = now(),
