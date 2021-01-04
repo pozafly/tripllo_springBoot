@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.checklist.dao.ChecklistDao">
+
+    <select id="readChecklist" parameterType="Long" resultMap="CheckListResponse">
+        select
+            a.id as checklist_id,
+            a.card_id as checklist_card_id,
+            a.title as checklist_title,
+            b.id as item_id,
+            b.checklist_id as item_checklist_id,
+            b.item as item_item,
+            b.is_checked as item_is_checked
+        from checklist a
+            left outer join checklist_item b on a.id = b.checklist_id
+        where a.card_id = #{cardId}
+    </select>
+    
+    <resultMap id="CheckListResponse" type="com.pozafly.tripllo.checklist.model.response.ChecklistResultMap">
+        <id property="id" column="checklist_id"/>
+        <result property="cardId" column="checklist_card_id"/>
+        <result property="title" column="checklist_title"/>
+        <collection property="items" ofType="com.pozafly.tripllo.checklist.model.response.ChecklistItemResultMap"
+                    resultMap="itemListsResult" foreignColumn="checklist_id" />
+    </resultMap>
+    <resultMap id="itemListsResult" type="com.pozafly.tripllo.checklist.model.response.ChecklistItemResultMap">
+        <id property="id" column="item_id"/>
+        <result property="checklistId" column="item_checklist_id"/>
+        <result property="item" column="item_item"/>
+        <result property="isChecked" column="item_is_checked"/>
+    </resultMap>
+
+    <insert id="createChecklist" parameterType="Map">
+        insert into checklist values (null, #{cardId}, #{title}, now(), #{userId}, null, null)
+    </insert>
+
+    <update id="updateChecklist" parameterType="Map">
+        update checklist
+        set
+        <if test='title != null and !"".equals(title)'>
+            title = #{title},
+        </if>
+            updated_at = now(),
+            updated_by = #{userId}
+        where id = #{checklistId}
+    </update>
+
+    <delete id="deleteChecklist" parameterType="Long">
+        delete
+        from checklist
+        where id = #{id}
+    </delete>
+
+</mapper>

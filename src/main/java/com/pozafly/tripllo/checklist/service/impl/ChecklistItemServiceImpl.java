@@ -1,8 +1,7 @@
-package com.pozafly.tripllo.card.service.impl;
+package com.pozafly.tripllo.checklist.service.impl;
 
-import com.pozafly.tripllo.card.dao.CardDao;
-import com.pozafly.tripllo.card.model.Card;
-import com.pozafly.tripllo.card.service.CardService;
+import com.pozafly.tripllo.checklist.dao.ChecklistItemDao;
+import com.pozafly.tripllo.checklist.service.ChecklistItemService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
@@ -20,23 +18,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class CardServiceImpl implements CardService {
+public class ChecklistItemServiceImpl implements ChecklistItemService {
 
     Message message = new Message();
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    CardDao cardDao;
+    private ChecklistItemDao checklistItemDao;
 
     @Override
-    public ResponseEntity<Message> createCard(Map<String, Object> cardInfo) {
-        if(!StringUtils.isEmpty(cardInfo.get("listId"))) {
-            cardDao.createCard(cardInfo);
+    public ResponseEntity<Message> createChecklistItem(Map<String, Object> checklistItemInfo) {
+        if(!StringUtils.isEmpty(checklistItemInfo.get("checklistItemId"))) {
+            checklistItemDao.createChecklistItem(checklistItemInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.CREATED_CARD);
-            message.setData(cardInfo);
+            message.setMessage(ResponseMessage.CREATED_CHECKLIST_ITEM);
+            message.setData(checklistItemInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
@@ -47,61 +45,42 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public ResponseEntity<Message> readCard(Long cardId) {
-        Card card = cardDao.readCard(cardId);
-
-        if (!ObjectUtils.isEmpty(card)) {
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_CARD);
-            message.setData(card);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } else {
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage(ResponseMessage.NOT_FOUND_CARD);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @Override
-    public ResponseEntity<Message> updateCard(Map<String, Object> cardInfo) {
-        if(!StringUtils.isEmpty(cardInfo.get("cardId"))) {
-            cardDao.updateCard(cardInfo);
+    public ResponseEntity<Message> updateChecklistItem(Map<String, Object> checklistItemInfo) {
+        if(!StringUtils.isEmpty(checklistItemInfo.get("checklistItemId"))) {
+            checklistItemDao.updateChecklistItem(checklistItemInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.UPDATE_CARD);
-            message.setData(cardInfo);
+            message.setMessage(ResponseMessage.UPDATE_CHECKLIST_ITEM);
+            message.setData(checklistItemInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
 
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_CARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST_ITEM);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    public ResponseEntity<Message> deleteCard(Long cardId) {
+    public ResponseEntity<Message> deleteChecklistItem(Long id) {
         try{
-            cardDao.deleteCard(cardId);
+            checklistItemDao.deleteChecklistItem(id);
 
             Map<String, Long> rtnMap = new HashMap<>();
-            rtnMap.put("listId", cardId);
+            rtnMap.put("checklistId", id);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.DELETE_CARD);
+            message.setMessage(ResponseMessage.DELETE_CHECKLIST_ITEM);
             message.setData(rtnMap);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch (Exception e) {
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_CARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST_ITEM);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
-
     }
 }

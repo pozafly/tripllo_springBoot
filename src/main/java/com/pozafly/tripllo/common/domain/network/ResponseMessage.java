@@ -38,4 +38,17 @@ public class ResponseMessage {
     public static final String DELETE_CARD = "카드 삭제 성공";
     public static final String NOT_FOUND_CARD = "해당 카드가 없습니다.";
 
+    // 체크리스트 메세지
+    public static final String CREATED_CHECKLIST = "체크리스트 생성 성공";
+    public static final String READ_CHECKLIST = "체크리스트 조회 성공";
+    public static final String UPDATE_CHECKLIST = "체크리스트 정보 수정 성공";
+    public static final String DELETE_CHECKLIST = "체크리스트 삭제 성공";
+    public static final String NOT_FOUND_CHECKLIST = "해당 체크리스트가 없습니다.";
+
+    // 체크리스트 아이템 메세지
+    public static final String CREATED_CHECKLIST_ITEM = "체크리스트 생성 성공";
+    public static final String UPDATE_CHECKLIST_ITEM = "체크리스트 정보 수정 성공";
+    public static final String DELETE_CHECKLIST_ITEM = "체크리스트 삭제 성공";
+    public static final String NOT_FOUND_CHECKLIST_ITEM = "해당 체크리스트가 없습니다.";
+
 }

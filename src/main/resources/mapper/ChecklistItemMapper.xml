@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.checklist.dao.ChecklistItemDao">
+
+    <insert id="createChecklistItem" parameterType="Map">
+        insert into checklist_item values (null, #{checklistId}, #{item}, 'N')
+    </insert>
+
+    <update id="updateChecklistItem" parameterType="Map">
+        update checklist_item
+        <set>
+            <if test='item != null'>
+                item = #{item},
+            </if>
+            <if test='isChecked != null and !"".equals(isChecked)'>
+                is_checked = #{isChecked},
+            </if>
+        </set>
+        where id = #{checklistItemId}
+    </update>
+
+    <delete id="deleteChecklistItem" parameterType="Long">
+        delete
+        from checklist_item
+        where id = #{id}
+    </delete>
+
+</mapper>

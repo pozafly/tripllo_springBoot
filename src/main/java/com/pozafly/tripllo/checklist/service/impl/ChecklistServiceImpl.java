@@ -1,9 +1,9 @@
-package com.pozafly.tripllo.board.service.impl;
+package com.pozafly.tripllo.checklist.service.impl;
 
-import com.pozafly.tripllo.board.dao.BoardDao;
-import com.pozafly.tripllo.board.model.Board;
-import com.pozafly.tripllo.board.model.responseBoardDetail.BoardResultMap;
-import com.pozafly.tripllo.board.service.BoardService;
+import com.pozafly.tripllo.checklist.dao.ChecklistDao;
+import com.pozafly.tripllo.checklist.model.Checklist;
+import com.pozafly.tripllo.checklist.model.response.ChecklistResultMap;
+import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
@@ -22,38 +22,23 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class BoardServiceImpl implements BoardService {
+public class ChecklistServiceImpl implements ChecklistService {
 
     Message message = new Message();
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    BoardDao boardDao;
+    ChecklistDao checklistDao;
 
     @Override
-    public ResponseEntity<Message> readBoardList(String userId) {
-
-        List<Board> board = boardDao.readBoardList(userId);
-
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        message.setStatus(StatusEnum.OK);
-        message.setMessage(ResponseMessage.READ_BOARD);
-        message.setData(board);
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-
-    }
-
-    @Override
-    public ResponseEntity<Message> readBoardDetail(Long boardId) {
-        BoardResultMap item = boardDao.readBoardDetail(boardId);
-
-        if(!ObjectUtils.isEmpty(item)) {
+    public ResponseEntity<Message> createChecklist(Map<String, Object> checklistInfo) {
+        if(!StringUtils.isEmpty(checklistInfo.get("cardId"))) {
+            checklistDao.createChecklist(checklistInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD_DETAIL);
-            message.setData(item);
+            message.setMessage(ResponseMessage.CREATED_CHECKLIST);
+            message.setData(checklistInfo);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
@@ -64,60 +49,59 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<Message> createBoard(Map<String, Object> boardInfo) {
-        if(!StringUtils.isEmpty(boardInfo.get("title"))) {
-            boardDao.createBoard(boardInfo);
+    public ResponseEntity<Message> readChecklist(Long cardId) {
+        List<ChecklistResultMap> checklist = checklistDao.readChecklist(cardId);
 
+        if (!ObjectUtils.isEmpty(checklist)) {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.CREATED_BOARD);
-            message.setData(boardInfo);
+            message.setMessage(ResponseMessage.READ_CHECKLIST);
+            message.setData(checklist);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
-    public ResponseEntity<Message> updateBoard(Map<String, Object> boardInfo) {
+    public ResponseEntity<Message> updateChecklist(Map<String, Object> checklistInfo) {
+        if(!StringUtils.isEmpty(checklistInfo.get("cardId"))) {
+            checklistDao.updateChecklist(checklistInfo);
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.UPDATE_CHECKLIST);
+            message.setData(checklistInfo);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Message> deleteChecklist(Long id) {
         try{
-            boardDao.updateBoard(boardInfo);
-
-            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-            message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.UPDATE_BOARD);
-            message.setData(boardInfo);
-
-            return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } catch(Exception e) {
-
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @Override
-    public ResponseEntity<Message> deleteBoard(Long boardId) {
-        try {
-            boardDao.deleteBoard(boardId);
+            checklistDao.deleteChecklist(id);
 
             Map<String, Long> rtnMap = new HashMap<>();
-            rtnMap.put("boardId", boardId);
+            rtnMap.put("cardId", id);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.DELETE_BOARD);
+            message.setMessage(ResponseMessage.DELETE_CHECKLIST);
             message.setData(rtnMap);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
-        } catch(Exception e) {
-
+        } catch (Exception e) {
             message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
