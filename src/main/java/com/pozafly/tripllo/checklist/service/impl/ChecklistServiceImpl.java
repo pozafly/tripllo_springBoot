@@ -1,7 +1,6 @@
 package com.pozafly.tripllo.checklist.service.impl;
 
 import com.pozafly.tripllo.checklist.dao.ChecklistDao;
-import com.pozafly.tripllo.checklist.model.Checklist;
 import com.pozafly.tripllo.checklist.model.response.ChecklistResultMap;
 import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;
@@ -62,7 +61,7 @@ public class ChecklistServiceImpl implements ChecklistService {
         } else {
             message.setStatus(StatusEnum.NOT_FOUND);
             message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
     }
 
@@ -91,12 +90,10 @@ public class ChecklistServiceImpl implements ChecklistService {
             checklistDao.deleteChecklist(id);
 
             Map<String, Long> rtnMap = new HashMap<>();
-            rtnMap.put("cardId", id);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.DELETE_CHECKLIST);
-            message.setData(rtnMap);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch (Exception e) {

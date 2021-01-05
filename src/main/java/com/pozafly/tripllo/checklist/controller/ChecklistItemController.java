@@ -26,7 +26,7 @@ public class ChecklistItemController {
             @ApiResponse(code = 400, message = "체크리스트 아이템 생성 불가능")
     })
     @PostMapping("")
-    public ResponseEntity<Message> createChecklist(
+    public ResponseEntity<Message> createChecklistItem(
             @ApiParam(value = "체크리스트 아이템 생성 폼")
             @RequestBody ChecklistItem checklistItem,
             @RequestHeader(value = "Authorization") String token
@@ -35,9 +35,8 @@ public class ChecklistItemController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("checklistId", checklistItem.getChecklistId());
+        map.put("checklistItemId", checklistItem.getChecklistId());
         map.put("item", checklistItem.getItem());
-        map.put("isChecked", checklistItem.getIsChecked());
 
         return checklistItemService.createChecklistItem(map);
     }
@@ -48,10 +47,10 @@ public class ChecklistItemController {
             @ApiResponse(code = 404, message = "체크리스트 아이템을 찾을 수 없습니다.")
     })
     @PutMapping("{checklistItemId}")
-    public ResponseEntity<Message> updateChecklist(
+    public ResponseEntity<Message> updateChecklistItem(
             @ApiParam(value = "체크리스트 아이템 id", required = true)
             @PathVariable Long checklistItemId,
-            @ApiParam(value = "타이틀", example = "가보자")
+            @ApiParam(value = "체크리스트 아이템 폼", example = "가보자")
             @RequestBody ChecklistItem checklistItem,
             @RequestHeader(value = "Authorization") String token
     ) {
@@ -59,6 +58,7 @@ public class ChecklistItemController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
+        map.put("checklistItemId", checklistItemId);
         map.put("item", checklistItem.getItem());
         map.put("isChecked", checklistItem.getIsChecked());
 
@@ -71,7 +71,7 @@ public class ChecklistItemController {
             @ApiResponse(code = 404, message = "체크리스트 아이템을 찾을 수 없습니다.")
     })
     @DeleteMapping("{checklistItemId}")
-    public ResponseEntity<Message> deleteChecklist(
+    public ResponseEntity<Message> deleteChecklistItem(
             @ApiParam(value = "체크리스트 아이템 id", required = true, example = "2")
             @PathVariable Long checklistItemId
     ) {

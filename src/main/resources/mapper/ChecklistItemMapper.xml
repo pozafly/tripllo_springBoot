@@ -5,7 +5,7 @@
 <mapper namespace="com.pozafly.tripllo.checklist.dao.ChecklistItemDao">
 
     <insert id="createChecklistItem" parameterType="Map">
-        insert into checklist_item values (null, #{checklistId}, #{item}, 'N')
+        insert into checklist_item values (null, #{checklistItemId}, #{item}, 'N')
     </insert>
 
     <update id="updateChecklistItem" parameterType="Map">

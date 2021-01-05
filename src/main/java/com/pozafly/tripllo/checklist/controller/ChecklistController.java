@@ -85,8 +85,10 @@ public class ChecklistController {
     @DeleteMapping("{checklistId}")
     public ResponseEntity<Message> deleteChecklist(
             @ApiParam(value = "체크리스트 id", required = true, example = "2")
-            @PathVariable Long checklistId
+            @PathVariable Long checklistId,
+            @RequestHeader(value = "Authorization") String token
     ) {
+        String userId = JwtTokenProvider.getUserPk(token);
         return checklistService.deleteChecklist(checklistId);
     }
 }
