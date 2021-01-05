@@ -1,6 +1,7 @@
 package com.pozafly.tripllo.list.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.list.model.Lists;
 import com.pozafly.tripllo.list.service.ListService;
 import io.swagger.annotations.*;
@@ -8,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,10 +29,9 @@ public class ListController {
     public ResponseEntity<Message> createList(
             @ApiParam(value = "리스트 보드 폼", required = true)
             @RequestBody Lists lists,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String)session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Long boardId = lists.getBoardId();
         String title = lists.getTitle();
@@ -59,10 +57,9 @@ public class ListController {
             @PathVariable Long listId,
             @ApiParam(value = "리스트 수정 폼")
             @RequestBody Lists list,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String)session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
         String title = list.getTitle();
         Double pos = list.getPos();
 

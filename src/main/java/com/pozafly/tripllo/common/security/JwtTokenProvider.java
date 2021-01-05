@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    private String secretKey = "triplloApplication";
+    private static String secretKey = "triplloApplication";
 
     // 토큰 유효시간 60분 * 24 = 24시간
     private long tokenValidTime = 60 * 60 * 24 * 1000L;
@@ -55,7 +55,7 @@ public class JwtTokenProvider {
     }
 
     // 토큰에서 회원 정보 추출
-    public String getUserPk(String token) {
+    public static String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 

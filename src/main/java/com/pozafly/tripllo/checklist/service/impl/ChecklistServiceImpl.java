@@ -68,7 +68,7 @@ public class ChecklistServiceImpl implements ChecklistService {
 
     @Override
     public ResponseEntity<Message> updateChecklist(Map<String, Object> checklistInfo) {
-        if(!StringUtils.isEmpty(checklistInfo.get("cardId"))) {
+        if(!StringUtils.isEmpty(checklistInfo.get("checklistId"))) {
             checklistDao.updateChecklist(checklistInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

@@ -1,6 +1,7 @@
 package com.pozafly.tripllo.user.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import com.pozafly.tripllo.user.service.UserService;
 import io.swagger.annotations.*;
@@ -74,10 +75,9 @@ public class UserController {
             @RequestParam(required = false) String name,
             @ApiParam(value = "유저 사진")
             @RequestParam(required = false) String picture,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -97,10 +97,9 @@ public class UserController {
     public ResponseEntity<Message> deleteUser(
             @ApiParam(value = "회원 비밀번호", required = true)
             @RequestParam String password,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);

@@ -3,13 +3,12 @@ package com.pozafly.tripllo.board.controller;
 import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,10 +55,9 @@ public class BoardController {
     public ResponseEntity<Message> createBoard(
             @ApiParam(value = "보드 폼", required = true)
             @RequestBody Board board,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String)session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -79,10 +77,9 @@ public class BoardController {
             @PathVariable Long boardId,
             @ApiParam(value = "보드 타이틀")
             @RequestBody Board board,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
         String title = board.getTitle();
         String bgColor = board.getBgColor();
 

@@ -3,13 +3,12 @@ package com.pozafly.tripllo.checklist.controller;
 import com.pozafly.tripllo.checklist.model.Checklist;
 import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,10 +42,9 @@ public class ChecklistController {
     public ResponseEntity<Message> createChecklist(
             @ApiParam(value = "체크리스트 생성 폼")
             @RequestBody Checklist checklist,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -67,10 +65,9 @@ public class ChecklistController {
             @PathVariable Long checklistId,
             @ApiParam(value = "타이틀", example = "가보자")
             @RequestBody Checklist checklist,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);

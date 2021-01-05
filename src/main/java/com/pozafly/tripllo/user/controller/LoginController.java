@@ -27,12 +27,8 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<Message> login(
             @ApiParam(value = "유저 로그인 폼", required = true)
-            @RequestBody LoginApiRequest request,
-            HttpServletRequest req
+            @RequestBody LoginApiRequest request
     ) {
-        HttpSession session = req.getSession();
-        session.setAttribute("userId", request.getId());
-
         return loginService.login(request);
     }
 
@@ -42,11 +38,8 @@ public class LoginController {
     })
     @GetMapping("/login/social/{userId}")
     public ResponseEntity<Message> socialLogin(
-            @PathVariable String userId, HttpServletRequest req
+            @PathVariable String userId
     ) {
-        HttpSession session = req.getSession();
-        session.setAttribute("userId", userId);
-
         return loginService.socialLogin(userId);
     }
 
@@ -59,9 +52,9 @@ public class LoginController {
             HttpServletRequest req
     ) {
         System.out.println("로그아웃 진행한다.");
-        HttpSession session = req.getSession();
-        session.setAttribute("userId", null);
-        session.invalidate();
+        // HttpSession session = req.getSession();
+        // session.setAttribute("userId", null);
+        // session.invalidate();
     }
 
 }

@@ -3,14 +3,12 @@ package com.pozafly.tripllo.card.controller;
 import com.pozafly.tripllo.card.model.Card;
 import com.pozafly.tripllo.card.service.CardService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.list.model.Lists;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,10 +42,9 @@ public class CardController {
     public ResponseEntity<Message> createCard(
             @ApiParam(value = "카드 생성 폼")
             @RequestBody Card card,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -69,10 +66,9 @@ public class CardController {
             @PathVariable Long cardId,
             @ApiParam(value = "타이틀", example = "가보자")
             @RequestBody Card card,
-            HttpServletRequest request
+            @RequestHeader(value = "Authorization") String token
     ) {
-        HttpSession session = request.getSession();
-        String userId = (String) session.getAttribute("userId");
+        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
