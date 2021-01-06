@@ -9,6 +9,7 @@ import java.util.Map;
 @Mapper
 public interface ChecklistDao {
     public List<ChecklistResultMap> readChecklist(Long cardId);
+    public int countChecklist(Long carId);
     public void createChecklist(Map<String, Object> checklistInfo);
     public void updateChecklist(Map<String, Object> checklistInfo);
     public void deleteChecklist(Long checklistId);

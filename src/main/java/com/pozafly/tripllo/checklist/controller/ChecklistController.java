@@ -82,13 +82,14 @@ public class ChecklistController {
             @ApiResponse(code = 200, message = "체크리스트 삭제 성공"),
             @ApiResponse(code = 404, message = "체크리스트를 찾을 수 없습니다.")
     })
-    @DeleteMapping("{checklistId}")
+    @DeleteMapping("{checklistId}/{cardId}")
     public ResponseEntity<Message> deleteChecklist(
             @ApiParam(value = "체크리스트 id", required = true, example = "2")
             @PathVariable Long checklistId,
+            @PathVariable Long cardId,
             @RequestHeader(value = "Authorization") String token
     ) {
         String userId = JwtTokenProvider.getUserPk(token);
-        return checklistService.deleteChecklist(checklistId);
+        return checklistService.deleteChecklist(checklistId, cardId, userId);
     }
 }

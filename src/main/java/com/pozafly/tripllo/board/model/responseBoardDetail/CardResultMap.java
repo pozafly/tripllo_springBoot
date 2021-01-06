@@ -13,4 +13,5 @@ public class CardResultMap {
     private String description;
     private String labelColor;
     private String location;
+    private String isChecklist;
 }

@@ -17,6 +17,11 @@
             left outer join checklist_item b on a.id = b.checklist_id
         where a.card_id = #{cardId}
     </select>
+
+    <select id="countChecklist" parameterType="Long" resultType="int">
+        select count(*) from checklist
+        where card_id = #{cardId}
+    </select>
     
     <resultMap id="CheckListResponse" type="com.pozafly.tripllo.checklist.model.response.ChecklistResultMap">
         <id property="id" column="checklist_id"/>

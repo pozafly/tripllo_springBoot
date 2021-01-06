@@ -1,6 +1,8 @@
 package com.pozafly.tripllo.checklist.service.impl;
 
+import com.pozafly.tripllo.card.dao.CardDao;
 import com.pozafly.tripllo.checklist.dao.ChecklistDao;
+import com.pozafly.tripllo.checklist.model.Checklist;
 import com.pozafly.tripllo.checklist.model.response.ChecklistResultMap;
 import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;
@@ -27,12 +29,25 @@ public class ChecklistServiceImpl implements ChecklistService {
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    ChecklistDao checklistDao;
+    private ChecklistDao checklistDao;
+    @Autowired
+    private CardDao cardDao;
 
     @Override
     public ResponseEntity<Message> createChecklist(Map<String, Object> checklistInfo) {
         if(!StringUtils.isEmpty(checklistInfo.get("cardId"))) {
             checklistDao.createChecklist(checklistInfo);
+
+            // 맨 처음 만들 때 하나만 있는 것이 카드의 isChecklist 를 Y로 침.
+            if(checklistSize((Long) checklistInfo.get("cardId")) == 1) {
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("하나만 있을 때다.");
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId", checklistInfo.get("userId"));
+                map.put("cardId", checklistInfo.get("cardId"));
+                map.put("isChecklist", "Y");
+                cardDao.updateCard(map);
+            }
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
@@ -85,9 +100,20 @@ public class ChecklistServiceImpl implements ChecklistService {
     }
 
     @Override
-    public ResponseEntity<Message> deleteChecklist(Long id) {
+    public ResponseEntity<Message> deleteChecklist(Long checklistId, Long cardId, String userId) {
         try{
-            checklistDao.deleteChecklist(id);
+            checklistDao.deleteChecklist(checklistId);
+
+            if(checklistSize(cardId) == 0) {
+                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                System.out.println("지울 때 N으로 칠");
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId", userId);
+                map.put("cardId", cardId);
+                map.put("isChecklist", "N");
+
+                cardDao.updateCard(map);
+            }
 
             Map<String, Long> rtnMap = new HashMap<>();
 
@@ -101,5 +127,9 @@ public class ChecklistServiceImpl implements ChecklistService {
             message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
+    }
+
+    private int checklistSize(Long cardId) {
+        return checklistDao.countChecklist(cardId);
     }
 }

@@ -27,6 +27,7 @@ public class ResponseBoardDetail {
     private String cardPos;
     private String cardDescription;
     private String cardLabelColor;
-    private String location;
+    private String cardLocation;
+    private String cardIsChecklist;
 
 }

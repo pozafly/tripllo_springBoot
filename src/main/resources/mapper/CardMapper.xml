@@ -10,7 +10,7 @@
     </select>
 
     <insert id="createCard" parameterType="Map">
-        insert into card values (null, #{listId}, #{title}, #{pos}, null, null, null, now(), #{userId}, null, null)
+        insert into card values (null, #{listId}, #{title}, #{pos}, null, null, null, 'N', now(), #{userId}, null, null)
     </insert>
 
     <update id="updateCard" parameterType="Map">
@@ -33,6 +33,9 @@
         </if>
         <if test='location != null'>
             location = #{location},
+        </if>
+        <if test='isChecklist != null and !"".equals(isChecklist)'>
+            is_checklist = #{isChecklist},
         </if>
             updated_at = now(),
             updated_by = #{userId}

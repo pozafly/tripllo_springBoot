@@ -46,7 +46,8 @@
             c.pos as card_pos,
             c.description as card_description,
             c.label_color as card_label_color,
-            c.location as card_location
+            c.location as card_location,
+            c.is_checklist as card_is_checklist
         from Board a
             left outer join list b on a.id = b.board_id
             left outer join card c on b.id = c.list_id
@@ -80,6 +81,7 @@
         <result property="description" column="card_description"/>
         <result property="labelColor" column="card_label_color"/>
         <result property="location" column="card_location"/>
+        <result property="isChecklist" column="card_is_checklist"/>
     </resultMap>
 
     <!--

@@ -9,5 +9,5 @@ public interface ChecklistService {
     public ResponseEntity<Message> createChecklist(Map<String, Object> checklistInfo);
     public ResponseEntity<Message> readChecklist(Long cardId);
     public ResponseEntity<Message> updateChecklist(Map<String, Object> checklistInfo);
-    public ResponseEntity<Message> deleteChecklist(Long id);
+    public ResponseEntity<Message> deleteChecklist(Long checklistId, Long cardId, String userId);
 }
