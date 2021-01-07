@@ -37,8 +37,11 @@
         <if test='isChecklist != null and !"".equals(isChecklist)'>
             is_checklist = #{isChecklist},
         </if>
-        <if test='dueDate != null'>
-            due_date = #{dueDate},
+        <if test='dueDate != null and !"".equals(dueDate)'>
+            due_date = str_to_date(#{dueDate}, '%Y%m%d%H%i'),
+        </if>
+        <if test='"".equals(dueDate)'>
+            due_date = null,
         </if>
             updated_at = now(),
             updated_by = #{userId}

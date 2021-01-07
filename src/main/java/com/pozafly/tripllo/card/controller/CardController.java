@@ -73,13 +73,6 @@ public class CardController {
     ) {
         String userId = JwtTokenProvider.getUserPk(token);
 
-        ZonedDateTime korZoneTime = null;
-        ZonedDateTime time = card.getDueDate();
-
-        if(time != null) {
-            korZoneTime = time.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
-        }
-
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("cardId", cardId);
@@ -89,9 +82,10 @@ public class CardController {
         map.put("description", card.getDescription());
         map.put("labelColor", card.getLabelColor());
         map.put("location", card.getLocation());
-        map.put("dueDate", korZoneTime);
+        map.put("dueDate", card.getDueDate());
 
         return cardService.updateCard(map);
+
     }
 
     @ApiOperation(value = "카드 삭제", notes = "카드id로 카드를 삭제합니다.")

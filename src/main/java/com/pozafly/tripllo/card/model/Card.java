@@ -27,6 +27,6 @@ public class Card extends BaseEntity {
     @ApiModelProperty(example = "대한민국")
     private String location;
     @ApiModelProperty(example = "날짜 formatting")
-    private ZonedDateTime dueDate;
+    private String dueDate;
 
 }
