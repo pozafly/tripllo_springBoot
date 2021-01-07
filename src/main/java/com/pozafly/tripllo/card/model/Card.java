@@ -5,6 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class Card extends BaseEntity {
@@ -23,5 +26,7 @@ public class Card extends BaseEntity {
     private String labelColor;
     @ApiModelProperty(example = "대한민국")
     private String location;
+    @ApiModelProperty(example = "날짜 formatting")
+    private ZonedDateTime dueDate;
 
 }

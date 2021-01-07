@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -70,6 +73,13 @@ public class CardController {
     ) {
         String userId = JwtTokenProvider.getUserPk(token);
 
+        ZonedDateTime korZoneTime = null;
+        ZonedDateTime time = card.getDueDate();
+
+        if(time != null) {
+            korZoneTime = time.withZoneSameInstant(ZoneId.of("Asia/Seoul"));
+        }
+
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("cardId", cardId);
@@ -79,6 +89,7 @@ public class CardController {
         map.put("description", card.getDescription());
         map.put("labelColor", card.getLabelColor());
         map.put("location", card.getLocation());
+        map.put("dueDate", korZoneTime);
 
         return cardService.updateCard(map);
     }

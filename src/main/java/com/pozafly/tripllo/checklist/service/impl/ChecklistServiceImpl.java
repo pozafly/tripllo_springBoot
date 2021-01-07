@@ -2,7 +2,6 @@ package com.pozafly.tripllo.checklist.service.impl;
 
 import com.pozafly.tripllo.card.dao.CardDao;
 import com.pozafly.tripllo.checklist.dao.ChecklistDao;
-import com.pozafly.tripllo.checklist.model.Checklist;
 import com.pozafly.tripllo.checklist.model.response.ChecklistResultMap;
 import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;

@@ -1,6 +1,5 @@
 package com.pozafly.tripllo.board.model.responseBoardDetail;
 
-import lombok.Data;
 import lombok.Getter;
 
 import java.util.List;

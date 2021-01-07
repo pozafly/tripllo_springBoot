@@ -1,7 +1,8 @@
 package com.pozafly.tripllo.board.model.responseBoardDetail;
 
-import lombok.Data;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
 public class CardResultMap {
@@ -14,4 +15,5 @@ public class CardResultMap {
     private String labelColor;
     private String location;
     private String isChecklist;
+    private LocalDateTime dueDate;
 }
