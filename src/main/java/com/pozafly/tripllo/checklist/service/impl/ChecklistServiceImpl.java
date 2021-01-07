@@ -40,12 +40,11 @@ public class ChecklistServiceImpl implements ChecklistService {
 
             // 맨 처음 만들 때 하나만 있는 것이 카드의 isChecklist 를 Y로 침.
             if(checklistSize((Long) checklistInfo.get("cardId")) == 1) {
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                System.out.println("하나만 있을 때다.");
                 Map<String, Object> map = new HashMap<>();
                 map.put("userId", checklistInfo.get("userId"));
                 map.put("cardId", checklistInfo.get("cardId"));
                 map.put("isChecklist", "Y");
+
                 cardDao.updateCard(map);
             }
 
@@ -104,9 +103,8 @@ public class ChecklistServiceImpl implements ChecklistService {
         try{
             checklistDao.deleteChecklist(checklistId);
 
+            // 지우고 나서 count가 0 이면 N으로.
             if(checklistSize(cardId) == 0) {
-                System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-                System.out.println("지울 때 N으로 칠");
                 Map<String, Object> map = new HashMap<>();
                 map.put("userId", userId);
                 map.put("cardId", cardId);
