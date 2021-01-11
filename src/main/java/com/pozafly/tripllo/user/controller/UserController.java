@@ -74,15 +74,15 @@ public class UserController {
             @RequestHeader(value = "Authorization") String token
     ) {
         String userId = JwtTokenProvider.getUserPk(token);
-System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-        System.out.println(request);
+
         Map<String, Object> map = new HashMap<>();
         map.put("id", userId);
         map.put("email", request.getEmail());
         map.put("name", request.getName());
         map.put("bio", request.getBio());
         map.put("picture", request.getPicture());
-        map.put("token", token);
+        map.put("recent", request.getRecent());
+        map.put("favorite", request.getFavorite());
 
         return userService.updateUser(map);
 

@@ -13,5 +13,7 @@ public class LoginApiResponse {
     private String name;
     private String picture;
     private String bio;
+    private String recent;
+    private String favorite;
 
 }

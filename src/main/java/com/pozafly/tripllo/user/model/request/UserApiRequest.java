@@ -26,6 +26,10 @@ public class UserApiRequest {
     private String picture;
     @ApiModelProperty(example = "my name is...")
     private String bio;
+    @ApiModelProperty(example = "최근 본 boardId")
+    private String recent;
+    @ApiModelProperty(example = "관심 boardId")
+    private String favorite;
     @ApiModelProperty(example = "Google")
     private String social;
 

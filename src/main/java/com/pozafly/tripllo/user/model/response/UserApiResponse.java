@@ -17,6 +17,8 @@ public class UserApiResponse {
     private String picture;
     private String social;
     private String bio;
+    private String recent;
+    private String favorite;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;
@@ -29,6 +31,9 @@ public class UserApiResponse {
             this.name = user.getName();
             this.picture = user.getPicture();
             this.social = user.getSocial();
+            this.bio = user.getBio();
+            this.recent = user.getRecent();
+            this.favorite = user.getFavorite();
             this.createdAt = user.getCreatedAt();
             this.createdBy = user.getCreatedBy();
             this.updatedAt = user.getUpdatedAt();

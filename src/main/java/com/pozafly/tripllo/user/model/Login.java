@@ -9,4 +9,6 @@ public class Login {
     private String token;
     private String picture;
     private String bio;
+    private String recent;
+    private String favorite;
 }
