@@ -14,6 +14,7 @@ public class User {
     private String name;
     private String picture;
     private String social;
+    private String bio;
     private String role;
     
     private LocalDateTime createdAt;

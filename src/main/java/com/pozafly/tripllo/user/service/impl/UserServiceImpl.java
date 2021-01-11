@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<Message> updateUser(Map<String, Object> userInfo) {
-        if(!userIdValid((String)userInfo.get("userId"))) {
+        if(!userIdValid((String)userInfo.get("id"))) {
             userDao.updateUser(userInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

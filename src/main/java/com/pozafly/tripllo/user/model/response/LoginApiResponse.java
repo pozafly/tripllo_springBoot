@@ -12,5 +12,6 @@ public class LoginApiResponse {
     private String email;
     private String name;
     private String picture;
+    private String bio;
 
 }

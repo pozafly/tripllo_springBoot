@@ -12,6 +12,7 @@
         name,
         picture,
         social,
+        bio,
         role,
         created_at,
         created_by,
@@ -23,7 +24,7 @@
 
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         insert into user
-        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{social}, 'USER', now(), #{id}, null, null)
+        values (#{id}, #{password}, #{email}, #{name}, #{picture}, null, #{social}, 'USER', now(), #{id}, null, null)
     </insert>
 
     <update id="updateUser" parameterType="Map">
@@ -35,12 +36,15 @@
             <if test='name != null and !"".equals(name)'>
                 name = #{name},
             </if>
+            <if test='bio != null and !"".equals(bio)'>
+                bio = #{bio},
+            </if>
             <if test='picture != null and !"".equals(picture)'>
                 picture = #{picture},
             </if>
             updated_at = now(),
-            updated_by = #{userId}
-        where id = #{userId}
+            updated_by = #{id}
+        where id = #{id}
     </update>
 
     <delete id="deleteUser" parameterType="Map">

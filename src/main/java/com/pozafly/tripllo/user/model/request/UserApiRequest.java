@@ -24,6 +24,8 @@ public class UserApiRequest {
     private String name;
     @ApiModelProperty(example = "aaa.jpg")
     private String picture;
+    @ApiModelProperty(example = "my name is...")
+    private String bio;
     @ApiModelProperty(example = "Google")
     private String social;
 

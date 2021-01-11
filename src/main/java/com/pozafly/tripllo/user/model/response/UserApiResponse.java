@@ -16,6 +16,7 @@ public class UserApiResponse {
     private String name;
     private String picture;
     private String social;
+    private String bio;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;

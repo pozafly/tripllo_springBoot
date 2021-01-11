@@ -69,23 +69,23 @@ public class UserController {
     })
     @PutMapping("")
     public ResponseEntity<Message> updateUser(
-            @ApiParam(value = "유저 이메일")
-            @RequestParam(required = false) String email,
-            @ApiParam(value = "유저 이름")
-            @RequestParam(required = false) String name,
-            @ApiParam(value = "유저 사진")
-            @RequestParam(required = false) String picture,
+            @ApiParam(value = "유저 폼")
+            @RequestBody(required = false) UserApiRequest request,
             @RequestHeader(value = "Authorization") String token
     ) {
         String userId = JwtTokenProvider.getUserPk(token);
-
+System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+        System.out.println(request);
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("email", email);
-        map.put("name", name);
-        map.put("picture", picture);
+        map.put("id", userId);
+        map.put("email", request.getEmail());
+        map.put("name", request.getName());
+        map.put("bio", request.getBio());
+        map.put("picture", request.getPicture());
+        map.put("token", token);
 
         return userService.updateUser(map);
+
     }
 
     @ApiOperation(value = "회원 탈퇴", notes = "회원을 탈퇴 합니다.")
