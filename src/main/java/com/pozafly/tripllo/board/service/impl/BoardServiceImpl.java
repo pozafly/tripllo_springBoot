@@ -31,17 +31,24 @@ public class BoardServiceImpl implements BoardService {
     BoardDao boardDao;
 
     @Override
-    public ResponseEntity<Message> readBoardList(String userId) {
+    public ResponseEntity<Message> readBoardList(String userId, List<String> recentList) {
+
+        Map<String, List<Board>> rtnMap = new HashMap<>();
 
         List<Board> board = boardDao.readBoardList(userId);
+        rtnMap.put("boardList", board);
+
+        if(!ObjectUtils.isEmpty(recentList)) {
+            List<Board> recentBoard = boardDao.readBoards(recentList);
+            rtnMap.put("recentBoard", recentBoard);
+        }
 
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         message.setStatus(StatusEnum.OK);
         message.setMessage(ResponseMessage.READ_BOARD);
-        message.setData(board);
+        message.setData(rtnMap);
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
-
     }
 
     @Override

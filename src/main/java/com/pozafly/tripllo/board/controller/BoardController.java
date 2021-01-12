@@ -7,10 +7,10 @@ import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Api(value = "Board V1")
 @RestController
@@ -25,12 +25,19 @@ public class BoardController {
             @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
             @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
     })
-    @GetMapping("{userId}")
+    @GetMapping("{userId}/{lists}")
     public ResponseEntity<Message> readBoardList(
             @ApiParam(value = "유저 id", required = true, example = "pain103")
-            @PathVariable String userId
+            @PathVariable String userId,
+            @PathVariable String lists
     ) {
-        return boardService.readBoardList(userId);
+        List<String> recentList = null;
+        if(!"null".equals(lists)) {
+            String[] el = lists.split(",");
+            recentList = new ArrayList<>(Arrays.asList(el));
+        }
+        
+        return boardService.readBoardList(userId, recentList);
     }
 
     @ApiOperation(value = "보드 상세 조회", notes = "페이지에서 보드를 눌러 상세 페이지로 들어갔을 때 보드 id로 연관된 list와 card를 조회합니다.")

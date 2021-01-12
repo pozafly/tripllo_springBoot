@@ -12,6 +12,7 @@ import java.util.Map;
 public interface BoardDao {
     public List<Board> readBoardList(String userId);
     public int boardCount(Long boardId);
+    public List<Board> readBoards(List<String> boardIdList);
     public BoardResultMap readBoardDetail(Long boardId);
     public int createBoard(Map<String, Object> boardInfo);
     public void updateBoard(Map<String, Object> boardInfo);
