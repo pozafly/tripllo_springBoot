@@ -36,7 +36,7 @@ public class BoardController {
             String[] el = lists.split(",");
             recentList = new ArrayList<>(Arrays.asList(el));
         }
-        
+
         return boardService.readBoardList(userId, recentList);
     }
 

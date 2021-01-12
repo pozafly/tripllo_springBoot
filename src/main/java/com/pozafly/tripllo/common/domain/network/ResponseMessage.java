@@ -51,4 +51,11 @@ public class ResponseMessage {
     public static final String DELETE_CHECKLIST_ITEM = "체크리스트 삭제 성공";
     public static final String NOT_FOUND_CHECKLIST_ITEM = "해당 체크리스트가 없습니다.";
 
+    // 코멘트 메세지
+    public static final String CREATED_COMMENT = "코멘트 생성 성공";
+    public static final String READ_COMMENT = "코멘트 조회 성공";
+    public static final String UPDATE_COMMENT = "코멘트 정보 수정 성공";
+    public static final String DELETE_COMMENT = "코멘트 삭제 성공";
+    public static final String NOT_FOUND_COMMENT = "해당 코멘트가 없습니다.";
+
 }

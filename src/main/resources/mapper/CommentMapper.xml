@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.comment.dao.CommentDao">
+
+    <select id="readComment" parameterType="Long" resultType="com.pozafly.tripllo.comment.model.Comment">
+        select * from comment
+        where card_id = #{cardId}
+    </select>
+
+    <insert id="createComment" parameterType="Map">
+        insert into comment values (null, #{cardId}, #{userId}, #{comment}, now(), #{userId}, null, null)
+    </insert>
+
+    <update id="updateComment" parameterType="Map">
+        update comment
+        set
+        <if test='comment != null'>
+            comment = #{comment},
+        </if>
+        updated_at = now(),
+        updated_by = #{userId}
+        where id = #{commentId}
+    </update>
+
+    <delete id="deleteComment" parameterType="Long">
+        delete
+        from comment
+        where id = #{commentId}
+    </delete>
+
+</mapper>
