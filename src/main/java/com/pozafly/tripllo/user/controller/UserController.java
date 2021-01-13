@@ -93,10 +93,10 @@ public class UserController {
             @ApiResponse(code = 200, message = "회원 탈퇴 성공"),
             @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
     })
-    @DeleteMapping("")
+    @DeleteMapping("{password}")
     public ResponseEntity<Message> deleteUser(
             @ApiParam(value = "회원 비밀번호", required = true)
-            @RequestParam String password,
+            @PathVariable String password,
             @RequestHeader(value = "Authorization") String token
     ) {
         String userId = JwtTokenProvider.getUserPk(token);
