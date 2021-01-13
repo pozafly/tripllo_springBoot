@@ -26,7 +26,7 @@
 
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         insert into user
-        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{social}, null, null, null, 'USER', now(), #{id}, null, null)
+        values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{social}, null, null, null, 'ROLE_USER', now(), #{id}, null, null)
     </insert>
 
     <update id="updateUser" parameterType="Map">

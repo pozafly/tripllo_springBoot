@@ -68,7 +68,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/logout").permitAll()
 
                 // 인증된 사용자만 가능하다(즉, 토큰을 준 사람만이 가능한 것임.)
-                .antMatchers("/api/**").authenticated()
+//                .antMatchers("/api/**").authenticated()
+                // role이 ROLE_USER 인 역할만 통과
+                .antMatchers("/api/**").hasRole("USER")
                 .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
                 .and()
                 .cors()
