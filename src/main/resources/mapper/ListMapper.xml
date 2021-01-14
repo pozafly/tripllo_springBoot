@@ -4,6 +4,12 @@
 
 <mapper namespace="com.pozafly.tripllo.list.dao.ListDao">
 
+    <select id="readList" parameterType="Long" resultType="com.pozafly.tripllo.list.model.Lists">
+        select *
+        from list
+        where id = #{listId}
+    </select>
+
     <insert id="createList" parameterType="Map">
         insert into list values (null, #{boardId}, #{title}, #{pos}, now(), #{userId}, null, null)
     </insert>

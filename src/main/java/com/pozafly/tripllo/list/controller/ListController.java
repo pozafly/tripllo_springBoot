@@ -1,7 +1,6 @@
 package com.pozafly.tripllo.list.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import com.pozafly.tripllo.list.model.Lists;
 import com.pozafly.tripllo.list.service.ListService;

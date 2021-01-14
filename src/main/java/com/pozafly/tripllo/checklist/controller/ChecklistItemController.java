@@ -3,7 +3,6 @@ package com.pozafly.tripllo.checklist.controller;
 import com.pozafly.tripllo.checklist.model.ChecklistItem;
 import com.pozafly.tripllo.checklist.service.ChecklistItemService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class ChecklistItemController {
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        map.put("checklistItemId", checklistItem.getChecklistId());
+        map.put("checklistId", checklistItem.getChecklistId());
         map.put("item", checklistItem.getItem());
 
         return checklistItemService.createChecklistItem(map);

@@ -9,6 +9,10 @@
             a.id as checklist_id,
             a.card_id as checklist_card_id,
             a.title as checklist_title,
+            a.created_by as checklist_created_by,
+            a.created_at as checklist_created_at,
+            a.updated_by as checklist_updated_by,
+            a.updated_at as checklist_updated_at,
             b.id as item_id,
             b.checklist_id as item_checklist_id,
             b.item as item_item,
@@ -17,16 +21,15 @@
             left outer join checklist_item b on a.id = b.checklist_id
         where a.card_id = #{cardId}
     </select>
-
-    <select id="countChecklist" parameterType="Long" resultType="int">
-        select count(*) from checklist
-        where card_id = #{cardId}
-    </select>
     
     <resultMap id="CheckListResponse" type="com.pozafly.tripllo.checklist.model.response.ChecklistResultMap">
         <id property="id" column="checklist_id"/>
         <result property="cardId" column="checklist_card_id"/>
         <result property="title" column="checklist_title"/>
+        <result property="createdBy" column="checklist_created_by" />
+        <result property="createdAt" column="checklist_created_at" />
+        <result property="updatedBy" column="checklist_updated_by" />
+        <result property="updatedAt" column="checklist_updated_at" />
         <collection property="items" ofType="com.pozafly.tripllo.checklist.model.response.ChecklistItemResultMap"
                     resultMap="itemListsResult" foreignColumn="checklist_id" />
     </resultMap>
@@ -36,6 +39,11 @@
         <result property="item" column="item_item"/>
         <result property="isChecked" column="item_is_checked"/>
     </resultMap>
+
+    <select id="countChecklist" parameterType="Long" resultType="int">
+        select count(*) from checklist
+        where card_id = #{cardId}
+    </select>
 
     <insert id="createChecklist" parameterType="Map">
         insert into checklist values (null, #{cardId}, #{title}, now(), #{userId}, null, null)

@@ -4,27 +4,34 @@
 
 <mapper namespace="com.pozafly.tripllo.checklist.dao.ChecklistItemDao">
 
+    <select id="readChecklistItem" parameterType="Long" resultType="com.pozafly.tripllo.checklist.model.ChecklistItem">
+        select *
+        from checklist_item
+        where id = #{checklistItemId}
+    </select>
+
     <insert id="createChecklistItem" parameterType="Map">
-        insert into checklist_item values (null, #{checklistItemId}, #{item}, 'N')
+        insert into checklist_item values (null, #{checklistId}, #{item}, 'N', now(), #{userId}, null, null)
     </insert>
 
     <update id="updateChecklistItem" parameterType="Map">
         update checklist_item
-        <set>
+        set
             <if test='item != null'>
                 item = #{item},
             </if>
             <if test='isChecked != null and !"".equals(isChecked)'>
                 is_checked = #{isChecked},
             </if>
-        </set>
+        updated_at = now(),
+        updated_by = #{userId}
         where id = #{checklistItemId}
     </update>
 
     <delete id="deleteChecklistItem" parameterType="Long">
         delete
         from checklist_item
-        where id = #{id}
+        where id = #{checklistItemId}
     </delete>
 
 </mapper>

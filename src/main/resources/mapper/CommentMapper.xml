@@ -9,6 +9,11 @@
         where card_id = #{cardId}
     </select>
 
+    <select id="readCommentByCommentId" parameterType="Long" resultType="com.pozafly.tripllo.comment.model.Comment">
+        select * from comment
+        where id = #{commentId}
+    </select>
+
     <insert id="createComment" parameterType="Map">
         insert into comment values (null, #{cardId}, #{userId}, #{comment}, now(), #{userId}, null, null)
     </insert>

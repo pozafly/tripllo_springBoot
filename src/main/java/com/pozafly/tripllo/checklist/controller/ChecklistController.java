@@ -3,7 +3,6 @@ package com.pozafly.tripllo.checklist.controller;
 import com.pozafly.tripllo.checklist.model.Checklist;
 import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +87,7 @@ public class ChecklistController {
     public ResponseEntity<Message> deleteChecklist(
             @ApiParam(value = "체크리스트 id", required = true, example = "2")
             @PathVariable Long checklistId,
+            @ApiParam(value = "카드 id", required = true, example = "2")
             @PathVariable Long cardId,
             @AuthenticationPrincipal SecurityUser securityUser
     ) {

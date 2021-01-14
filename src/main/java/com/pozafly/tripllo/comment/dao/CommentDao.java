@@ -8,6 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface CommentDao {
+    public Comment readCommentByCommentId(Long commentId);
     public List<Comment> readComment(Long cardId);
     public void createComment(Map<String, Object> commentInfo);
     public void updateComment(Map<String, Object> commentInfo);

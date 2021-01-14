@@ -3,7 +3,6 @@ package com.pozafly.tripllo.comment.controller;
 import com.pozafly.tripllo.comment.model.Comment;
 import com.pozafly.tripllo.comment.service.CommentService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class CommentController {
     })
     @GetMapping("{cardId}")
     public ResponseEntity<Message> readComment(
-            @ApiParam(value = "카드 id", required = true, example = "1")
+            @ApiParam(value = "코멘 id", required = true, example = "1")
             @PathVariable Long cardId
     ) {
         return commentService.readComment(cardId);

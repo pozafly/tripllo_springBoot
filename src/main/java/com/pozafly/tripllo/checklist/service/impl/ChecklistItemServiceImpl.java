@@ -28,7 +28,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
 
     @Override
     public ResponseEntity<Message> createChecklistItem(Map<String, Object> checklistItemInfo) {
-        if(!StringUtils.isEmpty(checklistItemInfo.get("checklistItemId"))) {
+        if(!StringUtils.isEmpty(checklistItemInfo.get("checklistId"))) {
             checklistItemDao.createChecklistItem(checklistItemInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -69,7 +69,7 @@ public class ChecklistItemServiceImpl implements ChecklistItemService {
             checklistItemDao.deleteChecklistItem(id);
 
             Map<String, Long> rtnMap = new HashMap<>();
-            rtnMap.put("checklistId", id);
+            rtnMap.put("checklistItemId", id);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);

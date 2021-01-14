@@ -17,7 +17,7 @@ public class UserAuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("---------------interceptor---------------");
+        log.info("---------------User Interceptor---------------");
         String httpMethod = request.getMethod();
 
         // 유저를 수정할 때 만든이가 맞는지 판단하는 인터셉터.

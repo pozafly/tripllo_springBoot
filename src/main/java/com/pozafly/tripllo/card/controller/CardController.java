@@ -3,7 +3,6 @@ package com.pozafly.tripllo.card.controller;
 import com.pozafly.tripllo.card.model.Card;
 import com.pozafly.tripllo.card.service.CardService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

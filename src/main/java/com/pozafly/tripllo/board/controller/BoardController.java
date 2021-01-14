@@ -3,7 +3,6 @@ package com.pozafly.tripllo.board.controller;
 import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.service.BoardService;
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;

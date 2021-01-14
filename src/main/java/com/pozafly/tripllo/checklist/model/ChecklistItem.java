@@ -1,10 +1,11 @@
 package com.pozafly.tripllo.checklist.model;
 
+import com.pozafly.tripllo.common.domain.network.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class ChecklistItem {
+public class ChecklistItem extends BaseEntity {
     @ApiModelProperty(example = "1")
     private Long id;
     @ApiModelProperty(example = "1")

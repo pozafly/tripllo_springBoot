@@ -4,6 +4,12 @@
 
 <mapper namespace="com.pozafly.tripllo.board.dao.BoardDao">
 
+    <select id="readBoardOne" parameterType="Long" resultType="com.pozafly.tripllo.board.model.Board">
+        select *
+        from board
+        where id = #{boardId}
+    </select>
+
     <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
         select
             id,
