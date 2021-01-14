@@ -46,7 +46,8 @@ public class LoginServiceImpl implements LoginService {
 
                 String token = jwtTokenProvider.createToken(user.getId(), roles); // id, role 정보만 가지고 token을 만든다.
                 LoginApiResponse response = new LoginApiResponse(
-                        token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getBio(), user.getRecent(), user.getFavorite()
+                        token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getBio(), user.getRecent(), user.getFavorite(),
+                        user.getCreatedAt(), user.getCreatedBy(), user.getUpdatedAt(), user.getUpdatedBy()
                 );
 
                 headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -80,7 +81,8 @@ public class LoginServiceImpl implements LoginService {
 
             String token = jwtTokenProvider.createToken(user.getId(), roles); // id, role 정보만 가지고 token을 만든다.
             LoginApiResponse response = new LoginApiResponse(
-                    token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getBio(), user.getRecent(), user.getFavorite()
+                    token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getBio(), user.getRecent(), user.getFavorite(),
+                    user.getCreatedAt(), user.getCreatedBy(), user.getUpdatedAt(), user.getUpdatedBy()
             );
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

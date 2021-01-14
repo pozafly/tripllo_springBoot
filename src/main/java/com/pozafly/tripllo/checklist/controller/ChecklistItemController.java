@@ -4,9 +4,11 @@ import com.pozafly.tripllo.checklist.model.ChecklistItem;
 import com.pozafly.tripllo.checklist.service.ChecklistItemService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.security.JwtTokenProvider;
+import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,9 +31,9 @@ public class ChecklistItemController {
     public ResponseEntity<Message> createChecklistItem(
             @ApiParam(value = "체크리스트 아이템 생성 폼")
             @RequestBody ChecklistItem checklistItem,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -52,9 +54,9 @@ public class ChecklistItemController {
             @PathVariable Long checklistItemId,
             @ApiParam(value = "체크리스트 아이템 폼", example = "가보자")
             @RequestBody ChecklistItem checklistItem,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);

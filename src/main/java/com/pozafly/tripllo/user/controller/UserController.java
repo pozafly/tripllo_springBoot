@@ -1,16 +1,15 @@
 package com.pozafly.tripllo.user.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
+import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import com.pozafly.tripllo.user.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +30,7 @@ public class UserController {
     public ResponseEntity<Message> readUser(
             @ApiParam(value = "아이디로 유저 정보 조회", required = true, example = "pain103")
             @PathVariable String id
-    ) {
+            ) {
         return userService.readUser(id);
     }
 
@@ -68,15 +67,14 @@ public class UserController {
             @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
     })
     @PutMapping("")
+//    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Message> updateUser(
             @ApiParam(value = "유저 폼")
-            @RequestBody(required = false) UserApiRequest request,
-            @RequestHeader(value = "Authorization") String token
+            @RequestBody(required = false) UserApiRequest request
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
 
         Map<String, Object> map = new HashMap<>();
-        map.put("id", userId);
+        map.put("id", request.getId());
         map.put("email", request.getEmail());
         map.put("name", request.getName());
         map.put("bio", request.getBio());
@@ -97,9 +95,9 @@ public class UserController {
     public ResponseEntity<Message> deleteUser(
             @ApiParam(value = "회원 비밀번호", required = true)
             @PathVariable String password,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
 
         Map<String, String> map = new HashMap<>();
         map.put("userId", userId);

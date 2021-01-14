@@ -3,6 +3,7 @@ package com.pozafly.tripllo.common.config;
 import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.RequestMethod;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -52,9 +53,14 @@ public class SwaggerConfig {
                 .securityContexts(Lists.newArrayList(securityContext()))
                 .securitySchemes(Lists.newArrayList(apiKey()))
                 .globalResponseMessage(RequestMethod.GET, responseMessages)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .globalResponseMessage(RequestMethod.POST, responseMessages)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .globalResponseMessage(RequestMethod.DELETE, responseMessages)
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 .globalResponseMessage(RequestMethod.PUT, responseMessages)
+                // controller에 @AuthenticationPrincipal SecurityUser securityUser 이렇게 유저 정보 조회 건 swagger에서 파라미터 표시안함
+                .ignoredParameterTypes(AuthenticationPrincipal.class)
                 ;
     }
 

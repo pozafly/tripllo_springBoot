@@ -1,8 +1,8 @@
-package com.pozafly.tripllo.common.security;
+package com.pozafly.tripllo.common.security.securityUser;
 
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,15 +15,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@RequiredArgsConstructor
+@Log4j2
 @Service
-public class CustomUserDetailService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UserDao userDao;
 
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // 로그인 시도하려는 유저정보 조회
+        log.info("security loadUserByUsername에서 유저 조회");
         User user = userDao.readUser(username);
 
         // 조회가 되지않는 고객은 에러발생.
@@ -33,7 +35,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         // 조회한 정보를 userCustom에 담는다.
         // 만약 파라미터를 추가해야한다면 UserCustom 을 먼저 수정한다.
-        return new UserDetails() {
+        return new SecurityUser() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

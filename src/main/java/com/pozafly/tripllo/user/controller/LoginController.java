@@ -7,6 +7,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,10 +33,7 @@ public class LoginController {
         return loginService.login(request);
     }
 
-    @ApiOperation(value = "소셜 로그인 API", notes = "소셜 로그인하는 API 입니다. 소셜 로그인으로 ID, PW가 검증이 끝났으므로 따로 validation이 필요하지 않다고 판단했습니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "소셜 로그인 성공"),
-    })
+    @ApiIgnore
     @GetMapping("/login/social/{userId}")
     public ResponseEntity<Message> socialLogin(
             @PathVariable String userId

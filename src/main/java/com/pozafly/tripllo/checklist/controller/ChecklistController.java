@@ -4,9 +4,11 @@ import com.pozafly.tripllo.checklist.model.Checklist;
 import com.pozafly.tripllo.checklist.service.ChecklistService;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.security.JwtTokenProvider;
+import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -42,9 +44,9 @@ public class ChecklistController {
     public ResponseEntity<Message> createChecklist(
             @ApiParam(value = "체크리스트 생성 폼")
             @RequestBody Checklist checklist,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -65,9 +67,9 @@ public class ChecklistController {
             @PathVariable Long checklistId,
             @ApiParam(value = "타이틀", example = "가보자")
             @RequestBody Checklist checklist,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -87,9 +89,9 @@ public class ChecklistController {
             @ApiParam(value = "체크리스트 id", required = true, example = "2")
             @PathVariable Long checklistId,
             @PathVariable Long cardId,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
         return checklistService.deleteChecklist(checklistId, cardId, userId);
     }
 }

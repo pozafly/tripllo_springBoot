@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.common.security;
+package com.pozafly.tripllo.common.security.securityUser;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

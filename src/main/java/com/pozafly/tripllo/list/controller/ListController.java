@@ -2,11 +2,13 @@ package com.pozafly.tripllo.list.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.security.JwtTokenProvider;
+import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
 import com.pozafly.tripllo.list.model.Lists;
 import com.pozafly.tripllo.list.service.ListService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,9 +31,9 @@ public class ListController {
     public ResponseEntity<Message> createList(
             @ApiParam(value = "리스트 보드 폼", required = true)
             @RequestBody Lists lists,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
 
         Long boardId = lists.getBoardId();
         String title = lists.getTitle();
@@ -57,9 +59,10 @@ public class ListController {
             @PathVariable Long listId,
             @ApiParam(value = "리스트 수정 폼")
             @RequestBody Lists list,
-            @RequestHeader(value = "Authorization") String token
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        String userId = JwtTokenProvider.getUserPk(token);
+        String userId = securityUser.getUsername();
+
         String title = list.getTitle();
         Double pos = list.getPos();
 

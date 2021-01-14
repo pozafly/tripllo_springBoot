@@ -25,7 +25,7 @@ public class ExceptionController {
 
     // 401
     @ExceptionHandler({ AccessDeniedException.class })
-    public ResponseEntity handleAccessDeniedException(final AccessDeniedException ex) {
+    public ResponseEntity<Object> handleAccessDeniedException(final AccessDeniedException ex) {
         log.warn("error", ex);
         message.setMessage(ex.getMessage());
         return new ResponseEntity<>(message, null, HttpStatus.UNAUTHORIZED);
