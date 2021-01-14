@@ -44,14 +44,20 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
                 if(boardList.size() == 0) return true;
 
                 if(!userId.equals(boardList.get(0).getCreatedBy())) throw new AuthorizationException();
+            } else if(methodName.equals("readBoardDetail")) {
+                Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
+                boardDao.readBoardDetail(boardId);
+
+                Board board = boardDao.readBoardOne(boardId);
+                if(ObjectUtils.isEmpty(board)) return true;
+                if(!userId.equals(board.getCreatedBy())) throw new AuthorizationException();
             }
-        } else if (methodName.equals("readBoardDetail") || httpMethod.equals("PUT") || httpMethod.equals("DELETE")) {
+        } else if (httpMethod.equals("PUT") || httpMethod.equals("DELETE")) {
             Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
             boardDao.readBoardDetail(boardId);
 
             Board board = boardDao.readBoardOne(boardId);
             if(ObjectUtils.isEmpty(board)) return true;
-
             if(!userId.equals(board.getCreatedBy())) throw new AuthorizationException();
         }
         return true;

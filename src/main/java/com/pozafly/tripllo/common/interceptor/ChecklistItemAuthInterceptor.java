@@ -48,11 +48,9 @@ public class ChecklistItemAuthInterceptor implements HandlerInterceptor {
 
         } else if (httpMethod.equals("PUT") || httpMethod.equals("DELETE")) {
             Long checklistItemId = Long.parseLong((String) pathVariables.get("checklistItemId"));
-            System.out.println("~~~~~~~~~~~~~~~~~~");
-            System.out.println(checklistItemId);
             ChecklistItem checklist = checklistItemDao.readChecklistItem(checklistItemId);
 
-            if(ObjectUtils.isEmpty(checklist)) return true;
+            if(ObjectUtils.isEmpty(checklist)) return false;
             if(!checklist.getCreatedBy().equals(userId)) throw new AuthorizationException();
         }
         return true;
