@@ -18,22 +18,35 @@ import java.util.*;
 public class BoardController {
 
     @Autowired
-    BoardService boardService;
+    private BoardService boardService;
+
+    @ApiOperation(value = "보드 조회", notes = "유저 ID로 Board 조회 합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 정보 조회 성공"),
+            @ApiResponse(code = 404, message = "보드 조회할 수 없습니다.")
+    })
+    @GetMapping("{boardId}")
+    public ResponseEntity<Message> readBoardOne(
+            @ApiParam(value = "보드 id", required = true, example = "pain103")
+            @PathVariable Long boardId
+    ) {
+        return boardService.readBoardOne(boardId);
+    }
 
     @ApiOperation(value = "보드 목록 조회", notes = "유저 ID로 Board 목록을 조회 합니다. 메인 페이지에서 보드를 선택할 때 사용합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
             @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
     })
-    @GetMapping("{userId}/{lists}")
+    @GetMapping("{userId}/{recentLists}")
     public ResponseEntity<Message> readBoardList(
             @ApiParam(value = "유저 id", required = true, example = "pain103")
             @PathVariable String userId,
-            @PathVariable String lists
+            @PathVariable String recentLists
     ) {
         List<String> recentList = null;
-        if(!"null".equals(lists)) {
-            String[] el = lists.split(",");
+        if(!"null".equals(recentLists)) {
+            String[] el = recentLists.split(",");
             recentList = new ArrayList<>(Arrays.asList(el));
         }
 
@@ -87,14 +100,13 @@ public class BoardController {
             @AuthenticationPrincipal SecurityUser securityUser
     ) {
         String userId = securityUser.getUsername();
-        String title = board.getTitle();
-        String bgColor = board.getBgColor();
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("boardId", boardId);
-        map.put("title", title);
-        map.put("bgColor", bgColor);
+        map.put("title", board.getTitle());
+        map.put("bgColor", board.getBgColor());
+        map.put("invitedUser", board.getInvitedUser());
 
         return boardService.updateBoard(map);
     }

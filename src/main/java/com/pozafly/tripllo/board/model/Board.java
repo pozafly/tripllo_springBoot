@@ -17,5 +17,7 @@ public class Board extends BaseEntity {
     private String title;
     @ApiModelProperty(example = "rgb(0, 121, 191)")
     private String bgColor;
+    @ApiModelProperty(example = "초대된 유저들...")
+    private String invitedUser;
 
 }

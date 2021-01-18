@@ -2,6 +2,8 @@ package com.pozafly.tripllo.common.interceptor;
 
 import com.pozafly.tripllo.board.dao.BoardDao;
 import com.pozafly.tripllo.board.model.Board;
+import com.pozafly.tripllo.pushMessage.dao.PushMessageDao;
+import com.pozafly.tripllo.pushMessage.model.PushMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,10 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
 
     @Autowired
     private BoardDao boardDao;
+    @Autowired
+    private PushMessageDao pushMessageDao;
+
+    private boolean result;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -37,27 +43,43 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
         String userId = auth.getName();
 
         if(httpMethod.equals("GET")) {
-            if(methodName.equals("readBoardList")) {
+            if (methodName.equals("readBoardList")) {
                 // pathVariable로 들어온 userId
                 String id = (String) pathVariables.get("userId");
                 List<Board> boardList = boardDao.readBoardList(id);
-                if(boardList.size() == 0) return true;
+                if (boardList.size() == 0) return true;
 
-                if(!userId.equals(boardList.get(0).getCreatedBy())) throw new AuthorizationException();
-            } else if(methodName.equals("readBoardDetail")) {
+                if (!userId.equals(boardList.get(0).getCreatedBy())) throw new AuthorizationException();
+            } else if (methodName.equals("readBoardDetail")) {
                 Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
                 boardDao.readBoardDetail(boardId);
 
                 Board board = boardDao.readBoardOne(boardId);
-                if(ObjectUtils.isEmpty(board)) return true;
-                if(!userId.equals(board.getCreatedBy())) throw new AuthorizationException();
+                if (ObjectUtils.isEmpty(board)) return true;
+                if (!userId.equals(board.getCreatedBy())) throw new AuthorizationException();
             }
-        } else if (httpMethod.equals("PUT") || httpMethod.equals("DELETE")) {
+        } else if(httpMethod.equals("PUT")) {
+            // 초대 기능 넣었을 경우.
+            Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
+
+            List<PushMessage> pushMessageList = pushMessageDao.readPushMessage(userId);
+            for(PushMessage el : pushMessageList) {
+                if(el.getBoardId().equals(boardId)) {
+                    Long targetBardId = el.getBoardId();
+                    Board targetBoard = boardDao.readBoardOne(targetBardId);
+                    if(targetBoard.getCreatedBy().equals(el.getSenderId())) {
+                        this.result = true;
+                    }
+                }
+            }
+            return result;
+
+        } else if (httpMethod.equals("DELETE")) {
             Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
             boardDao.readBoardDetail(boardId);
 
             Board board = boardDao.readBoardOne(boardId);
-            if(ObjectUtils.isEmpty(board)) return true;
+            if(ObjectUtils.isEmpty(board)) return false;
             if(!userId.equals(board.getCreatedBy())) throw new AuthorizationException();
         }
         return true;

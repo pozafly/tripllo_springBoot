@@ -28,7 +28,26 @@ public class BoardServiceImpl implements BoardService {
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    BoardDao boardDao;
+    private BoardDao boardDao;
+
+    @Override
+    public ResponseEntity<Message> readBoardOne(Long boardId) {
+        Board item = boardDao.readBoardOne(boardId);
+
+        if(!ObjectUtils.isEmpty(item)) {
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(item);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
 
     @Override
     public ResponseEntity<Message> readBoardList(String userId, List<String> recentList) {

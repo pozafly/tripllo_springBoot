@@ -12,6 +12,7 @@ public class BoardResultMap {
     private String userId;
     private String title;
     private String bgColor;
+    private String invitedUser;
     private LocalDateTime createdAt;
     private String createdBy;
 

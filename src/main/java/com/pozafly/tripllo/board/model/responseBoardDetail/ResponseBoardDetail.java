@@ -13,6 +13,7 @@ public class ResponseBoardDetail {
     private Long boardId;
     private String boardTitle;
     private String boardBgColor;
+    private String invitedUser;
     private List<Lists> lists;
 
     private Long listId;

@@ -16,6 +16,7 @@
             user_id,
             title,
             bg_color,
+            invited_user,
             created_at,
             created_by,
             updated_at,
@@ -50,6 +51,7 @@
             a.title as board_title,
             a.bg_color as board_bg_color,
             a.user_id as board_user_id,
+            a.invited_user as board_invited_user,
             a.created_at as board_created_at,
             a.created_by as board_created_by,
 
@@ -79,6 +81,7 @@
         <result property="title" column="board_title"/>
         <result property="bgColor" column="board_bg_color"/>
         <result property="userId" column="board_user_id"/>
+        <result property="invited_user" column="board_invited_user"/>
         <result property="createdAt" column="board_created_at"/>
         <result property="createdBy" column="board_created_by"/>
         <collection property="lists" ofType="com.pozafly.tripllo.board.model.responseBoardDetail.ListResultMap"
@@ -138,7 +141,7 @@
     -->
 
     <insert id="createBoard" parameterType="Map">
-        insert into board values (null, #{userId}, #{title}, '#339af0', now(), #{userId}, null, null)
+        insert into board values (null, #{userId}, #{title}, '#339af0', null, now(), #{userId}, null, null)
         <selectKey resultType="int" keyProperty="id" order="AFTER" >
             select last_insert_id()
         </selectKey>
@@ -152,6 +155,9 @@
             </if>
             <if test='bgColor != null and !"".equals(bgColor)'>
                 bg_color = #{bgColor},
+            </if>
+            <if test='invitedUser != null'>
+                invited_user = #{invitedUser},
             </if>
             updated_at = now(),
             updated_by = #{userId}

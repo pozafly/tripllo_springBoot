@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface PushMessageDao {
-    public List<PushMessage> readPushMessage(String to);
+    public List<PushMessage> readPushMessage(String targetId);
     public void createPushMessage(Map<String, Object> pushMessageInfo);
     public void updatePushMessage(Map<String, Object> pushMessageInfo);
     public void deletePushMessage(Long id);
