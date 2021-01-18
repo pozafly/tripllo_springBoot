@@ -13,7 +13,7 @@ import com.google.gson.JsonParser;
 import java.util.*;
 
 @Component
-public class EchoHandler extends TextWebSocketHandler {
+public class WebSocketHandler extends TextWebSocketHandler {
 
     //로그인 한 전체
     List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();

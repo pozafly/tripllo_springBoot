@@ -34,6 +34,19 @@ public class UserController {
         return userService.readUser(id);
     }
 
+    @ApiOperation(value = "유저 초대 조회", notes = "초대 가능한 유저를 조회하는 API 입니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 정보 조회 성공"),
+            @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
+    })
+    @GetMapping("/invite/{id}")
+    public ResponseEntity<Message> readInviteUser(
+            @ApiParam(value = "아이디로 초대 가능 유저 정보 조회", required = true, example = "pain103")
+            @PathVariable String id
+    ) {
+        return userService.readInviteUser(id);
+    }
+
     @ApiOperation(value = "회원가입 가능 판별", notes = "회원가입 가능한 ID인지 판별")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원가입 가능한 ID 입니다."),

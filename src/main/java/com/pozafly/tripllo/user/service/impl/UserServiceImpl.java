@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -44,6 +45,24 @@ public class UserServiceImpl implements UserService {
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.READ_USER);
             message.setData(userInfo);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Message> readInviteUser(String id) {
+        List<UserApiResponse> userList = userDao.readInviteUser(id);
+
+        if (!ObjectUtils.isEmpty(userList.get(0))) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_USER);
+            message.setData(userList);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {

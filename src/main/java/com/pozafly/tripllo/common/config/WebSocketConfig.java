@@ -1,12 +1,10 @@
 package com.pozafly.tripllo.common.config;
 
-import com.pozafly.tripllo.webSocket.EchoHandler;
+import com.pozafly.tripllo.webSocket.WebSocketHandler;
 import com.pozafly.tripllo.webSocket.HttpHandshakeInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.*;
-import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 //@Configuration
 //@EnableWebSocketMessageBroker
@@ -31,11 +29,11 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketConfigurer {
 
-    private final EchoHandler webSocketHandler;
+    private final WebSocketHandler webSocketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/")
+        registry.addHandler(webSocketHandler, "/websocket")
                 .setAllowedOrigins("http://localhost:8080")
                 .addInterceptors(new HttpHandshakeInterceptor())
                 .withSockJS(); // sockjs 지원

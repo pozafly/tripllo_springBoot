@@ -24,6 +24,16 @@
         where id = #{id}
     </select>
 
+    <select id="readInviteUser" parameterType="String" resultType="com.pozafly.tripllo.user.model.response.UserApiResponse">
+        select
+            id,
+            email,
+            name,
+            picture
+        from user
+        where id like CONCAT('%', #{id}, '%')
+    </select>
+
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         insert into user
         values (#{id}, #{password}, #{email}, #{name}, #{picture}, #{social}, null, null, null, 'ROLE_USER', now(), #{id}, null, null)
