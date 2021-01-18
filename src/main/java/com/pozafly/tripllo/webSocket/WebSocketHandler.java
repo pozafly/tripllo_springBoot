@@ -1,6 +1,8 @@
 package com.pozafly.tripllo.webSocket;
 
 import com.google.gson.JsonElement;
+import com.pozafly.tripllo.pushMessage.dao.PushMessageDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
@@ -14,6 +16,9 @@ import java.util.*;
 
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
+
+    @Autowired
+    private PushMessageDao pushMessageDao;
 
     //로그인 한 전체
     List<WebSocketSession> sessions = new ArrayList<WebSocketSession>();
@@ -36,8 +41,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
     // endpoint
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        System.out.println("들어오긴함?");
-
         String senderId = getMemberId(session);
 
         // 특정 유저에게 보내기
@@ -46,19 +49,23 @@ public class WebSocketHandler extends TextWebSocketHandler {
         JsonParser parser = new JsonParser();
         JsonElement el = parser.parse(msg);
         String target = el.getAsJsonObject().get("target").getAsString();
-        System.out.println(target);
-
         String content = el.getAsJsonObject().get("content").getAsString();
-        System.out.println(content);
-
+        String boardId = el.getAsJsonObject().get("boardId").getAsString();
 
         if(!StringUtils.isEmpty(target)) {
             WebSocketSession targetSession = userSessionsMap.get(target);  // 메시지를 받을 세션 조회
 
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", senderId);
+            map.put("targetId", target);
+            map.put("boardId", boardId);
+            map.put("content", content);
+
+            pushMessageDao.createPushMessage(map);
+
             // 실시간 접속시
             if(targetSession != null) {
-                TextMessage tmpMsg = new TextMessage(senderId + "님이"
-                        + target + "님에게 초대 메세지를 보내셨습니다. " + content);
+                TextMessage tmpMsg = new TextMessage(msg);
                 targetSession.sendMessage(tmpMsg);
             } else {
                 // 접속중이 아닐때.

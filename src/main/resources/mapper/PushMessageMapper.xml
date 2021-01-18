@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.pushMessage.dao.PushMessageDao">
+
+    <select id="readPushMessage" parameterType="String" resultType="com.pozafly.tripllo.pushMessage.model.PushMessage">
+        select *
+        from push_message
+        where target_id = #{targetId}
+    </select>
+
+    <insert id="createPushMessage" parameterType="Map">
+        insert into push_message values (null, #{userId}, #{targetId}, #{content}, #{boardId}, 'N', now(), #{userId}, null, null)
+    </insert>
+
+    <update id="updatePushMessage" parameterType="Map">
+        update push_message
+        set
+        <if test='isRead != null and !"".equals(isRead)'>
+            is_read = #{isRead},
+        </if>
+        updated_at = now(),
+        updated_by = #{userId}
+        where id = #{id}
+    </update>
+
+    <delete id="deletePushMessage" parameterType="Long">
+        delete
+        from push_message
+        where id = #{id}
+    </delete>
+
+</mapper>

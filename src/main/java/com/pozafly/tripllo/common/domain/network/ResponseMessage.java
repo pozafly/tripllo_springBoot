@@ -58,4 +58,12 @@ public class ResponseMessage {
     public static final String DELETE_COMMENT = "코멘트 삭제 성공";
     public static final String NOT_FOUND_COMMENT = "해당 코멘트가 없습니다.";
 
+    // 푸시 메세지
+    public static final String CREATED_PUSH_MESSAGE = "푸시메세지 생성 성공";
+    public static final String READ_PUSH_MESSAGE = "푸시메세지 조회 성공";
+    public static final String UPDATE_PUSH_MESSAGE = "푸시메세지 정보 수정 성공";
+    public static final String DELETE_PUSH_MESSAGE = "푸시메세지 삭제 성공";
+    public static final String NOT_FOUND_PUSH_MESSAGE = "해당 푸시메세지 없습니다.";
+
+
 }
