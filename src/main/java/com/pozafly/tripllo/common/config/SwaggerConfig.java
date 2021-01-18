@@ -47,7 +47,7 @@ public class SwaggerConfig {
                 .groupName(version)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.pozafly.tripllo"))
-                .paths(PathSelectors.ant("/api/**"))
+                .paths(PathSelectors.ant("/**"))
                 .build()
                 .apiInfo(apiInfo(title, version))
                 .securityContexts(Lists.newArrayList(securityContext()))

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-@WebFilter(urlPatterns = "/api/user/**")
+@WebFilter(urlPatterns = "/api/**")
 public class GlobalRequestWrappingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
