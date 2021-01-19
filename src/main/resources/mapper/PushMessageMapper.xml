@@ -8,6 +8,7 @@
         select *
         from push_message
         where target_id = #{targetId}
+        order by id
     </select>
 
     <insert id="createPushMessage" parameterType="Map">

@@ -13,7 +13,8 @@ public interface BoardDao {
     public Board readBoardOne(Long boardId);
     public List<Board> readBoardList(String userId);
     public int boardCount(Long boardId);
-    public List<Board> readBoards(List<String> boardIdList);
+    public List<Board> readRecentBoards(List<String> boardIdList);
+    public List<Board> readInvitedBoards(String userId);
     public BoardResultMap readBoardDetail(Long boardId);
     public int createBoard(Map<String, Object> boardInfo);
     public void updateBoard(Map<String, Object> boardInfo);

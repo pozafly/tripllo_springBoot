@@ -1,10 +1,10 @@
 package com.pozafly.tripllo.board.model.responseBoardDetail;
 
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 public class CardResultMap {
 
     private Long id;

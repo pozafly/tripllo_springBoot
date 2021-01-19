@@ -1,11 +1,11 @@
 package com.pozafly.tripllo.board.model.responseBoardDetail;
 
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
+@Data
 public class BoardResultMap {
 
     private Long id;

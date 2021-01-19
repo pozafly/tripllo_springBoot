@@ -32,7 +32,7 @@
         where id = #{boardId}
     </select>
 
-    <select id="readBoards" parameterType="List" resultType="com.pozafly.tripllo.board.model.Board">
+    <select id="readRecentBoards" parameterType="List" resultType="com.pozafly.tripllo.board.model.Board">
         select *
                 from board
         where id in
@@ -43,6 +43,12 @@
         <foreach collection="list" item="item" open="" separator="," close=")">
             #{item}
         </foreach>
+    </select>
+
+    <select id="readInvitedBoards" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
+        select *
+        from board
+        where invited_user like CONCAT('%', #{userId}, '%');
     </select>
 
     <select id="readBoardDetail" parameterType="Long" resultMap="BoardDetailResult">
@@ -81,7 +87,7 @@
         <result property="title" column="board_title"/>
         <result property="bgColor" column="board_bg_color"/>
         <result property="userId" column="board_user_id"/>
-        <result property="invited_user" column="board_invited_user"/>
+        <result property="invitedUser" column="board_invited_user"/>
         <result property="createdAt" column="board_created_at"/>
         <result property="createdBy" column="board_created_by"/>
         <collection property="lists" ofType="com.pozafly.tripllo.board.model.responseBoardDetail.ListResultMap"

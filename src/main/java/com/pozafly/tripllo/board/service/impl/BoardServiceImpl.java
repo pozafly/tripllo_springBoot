@@ -58,9 +58,12 @@ public class BoardServiceImpl implements BoardService {
         rtnMap.put("boardList", board);
 
         if(!ObjectUtils.isEmpty(recentList)) {
-            List<Board> recentBoard = boardDao.readBoards(recentList);
+            List<Board> recentBoard = boardDao.readRecentBoards(recentList);
             rtnMap.put("recentBoard", recentBoard);
         }
+
+        List<Board> invitedBoard = boardDao.readInvitedBoards(userId);
+        rtnMap.put("invitedBoard", invitedBoard);
 
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         message.setStatus(StatusEnum.OK);
