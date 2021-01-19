@@ -1,7 +1,6 @@
 package com.pozafly.tripllo.list.service;
 
 import com.pozafly.tripllo.common.domain.network.Message;
-import com.pozafly.tripllo.list.model.Lists;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;

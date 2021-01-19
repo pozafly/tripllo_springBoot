@@ -1,9 +1,9 @@
 package com.pozafly.tripllo.user.service.impl;
 
-import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
+import com.pozafly.tripllo.common.security.JwtTokenProvider;
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
 import com.pozafly.tripllo.user.model.request.LoginApiRequest;

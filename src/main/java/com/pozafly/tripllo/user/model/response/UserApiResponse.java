@@ -1,7 +1,9 @@
 package com.pozafly.tripllo.user.model.response;
 
 import com.pozafly.tripllo.user.model.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDateTime;

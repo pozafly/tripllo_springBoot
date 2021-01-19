@@ -1,6 +1,7 @@
 package com.pozafly.tripllo.webSocket;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.pozafly.tripllo.pushMessage.dao.PushMessageDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,8 +10,6 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import com.google.gson.JsonParser;
-
 
 import java.util.*;
 

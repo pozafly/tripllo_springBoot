@@ -4,7 +4,6 @@ import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
 import com.pozafly.tripllo.list.dao.ListDao;
-import com.pozafly.tripllo.list.model.Lists;
 import com.pozafly.tripllo.list.service.ListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

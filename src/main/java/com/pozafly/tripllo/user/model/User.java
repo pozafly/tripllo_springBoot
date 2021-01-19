@@ -1,6 +1,5 @@
 package com.pozafly.tripllo.user.model;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.time.LocalDateTime;

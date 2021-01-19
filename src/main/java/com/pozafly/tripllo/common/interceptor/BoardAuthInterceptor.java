@@ -57,9 +57,7 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
                 if (!userId.equals(board.getCreatedBy())) {
                     String inviteUser = board.getInvitedUser();
                     if(StringUtils.isEmpty(inviteUser)) throw new AuthorizationException();
-                    System.out.println("@@@@@@@@@@@@@@");
-                    System.out.println(inviteUser);
-                    System.out.println(!inviteUser.contains(userId));
+
                     if(!inviteUser.contains(userId)) throw new AuthorizationException();
                 }
             }
@@ -74,7 +72,6 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
                 System.out.println(inviteUser.contains(userId));
                 if(inviteUser.contains(userId)) return true;
             }
-            System.out.println("여기 통과?");
 
             // 첫번째 inviteUser를 board에 등록할 때 푸시메세지로 함. 그 후 푸시메세지 삭제.
             List<PushMessage> pushMessageList = pushMessageDao.readPushMessage(userId);

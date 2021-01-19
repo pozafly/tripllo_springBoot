@@ -2,7 +2,6 @@ package com.pozafly.tripllo.board.dao;
 
 import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.model.responseBoardDetail.BoardResultMap;
-import com.pozafly.tripllo.board.model.responseBoardDetail.ResponseBoardDetail;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

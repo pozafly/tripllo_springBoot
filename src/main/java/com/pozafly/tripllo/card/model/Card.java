@@ -5,9 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-
 @Data
 @EqualsAndHashCode(callSuper=false)
 public class Card extends BaseEntity {
