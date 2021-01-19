@@ -3,7 +3,7 @@ package com.pozafly.tripllo.user.service.impl;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
-import com.pozafly.tripllo.common.utils.PasswordUtil;
+import com.pozafly.tripllo.common.security.PasswordUtil;
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
 import com.pozafly.tripllo.user.model.request.UserApiRequest;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -32,7 +33,9 @@ public class UserServiceImpl implements UserService {
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<Message> readUser(String id) {
@@ -102,6 +105,10 @@ public class UserServiceImpl implements UserService {
                 String newPw = pw.encryptSHA256(request.getId());
                 request.setPassword(newPw);
             }
+
+            String encodePassword = passwordEncoder.encode(request.getPassword());
+            request.setPassword(encodePassword);
+
             userDao.createUser(request);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

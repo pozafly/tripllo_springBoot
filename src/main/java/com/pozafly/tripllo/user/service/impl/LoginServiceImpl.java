@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,19 +31,22 @@ public class LoginServiceImpl implements LoginService {
     HttpHeaders headers = new HttpHeaders();
 
     @Autowired
-    UserDao userDao;
-
+    private UserDao userDao;
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public ResponseEntity<Message> login(LoginApiRequest request) {
         User user = userDao.readUser(request.getId());
         if (!ObjectUtils.isEmpty(user)) {
-            if (checkPassword(user, request.getPassword())) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
+
+            boolean check = passwordEncoder.matches(request.getPassword(), user.getPassword());
+            if (check) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
                 log.info("로그인 성공");
 
                 List<String> roles = new ArrayList<>();
-                roles.add("USER");
+                roles.add("ROLE_USER");
 
                 String token = jwtTokenProvider.createToken(user.getId(), roles); // id, role 정보만 가지고 token을 만든다.
                 LoginApiResponse response = new LoginApiResponse(
@@ -77,7 +81,7 @@ public class LoginServiceImpl implements LoginService {
 
         if (!ObjectUtils.isEmpty(user)) {
             List<String> roles = new ArrayList<>();
-            roles.add("USER");
+            roles.add("ROLE_USER");
 
             String token = jwtTokenProvider.createToken(user.getId(), roles); // id, role 정보만 가지고 token을 만든다.
             LoginApiResponse response = new LoginApiResponse(
@@ -97,10 +101,6 @@ public class LoginServiceImpl implements LoginService {
             message.setMessage(ResponseMessage.NOT_FOUND_USER);
             return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);  // 403
         }
-    }
-
-    Boolean checkPassword(User user, String pw) {
-        return user.getPassword().equals(pw);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.pozafly.tripllo.common.utils;
+package com.pozafly.tripllo.common.security;
 
 import lombok.extern.slf4j.Slf4j;
 

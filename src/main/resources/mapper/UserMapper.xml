@@ -6,20 +6,20 @@
 
     <select id="readUser" parameterType="String" resultType="com.pozafly.tripllo.user.model.User">
         select
-        id,
-        password,
-        email,
-        name,
-        picture,
-        social,
-        bio,
-        recent,
-        favorite,
-        role,
-        created_at,
-        created_by,
-        updated_at,
-        updated_by
+            id,
+            password,
+            email,
+            name,
+            picture,
+            social,
+            bio,
+            recent,
+            favorite,
+            role,
+            created_at,
+            created_by,
+            updated_at,
+            updated_by
         from user
         where id = #{id}
     </select>

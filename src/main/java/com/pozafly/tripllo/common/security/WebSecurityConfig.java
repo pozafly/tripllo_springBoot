@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -27,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     // 암호화에 필요한 PasswordEncoder 를 Bean 등록합니다.
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     // authenticationManager를 Bean 등록합니다.
@@ -56,6 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable() // rest api 만을 고려하여 기본 설정은 해제.
                 .csrf().disable() // csrf 보안 토큰 disable처리.
+                .formLogin().disable() //기본 로그인 페이지 없애기
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 역시 사용하지 않음.
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
