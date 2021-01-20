@@ -94,4 +94,4 @@ nbdist/
 .nb-gradle/
 
 ### oauth ###
-application.properties
+application-secret.properties
