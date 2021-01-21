@@ -37,7 +37,7 @@ deploy:
     key: tripllo.zip
     bundle_type: zip
     application: tripllo
-    deploy_group: tripllo-group
+    deployment_group: tripllo-group
     region: ap-northeast-2
     wait-until-deployed: true
 
