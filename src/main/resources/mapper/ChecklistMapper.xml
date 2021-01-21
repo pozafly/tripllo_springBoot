@@ -20,6 +20,7 @@
         from checklist a
             left outer join checklist_item b on a.id = b.checklist_id
         where a.card_id = #{cardId}
+        order by b.id
     </select>
     
     <resultMap id="CheckListResponse" type="com.pozafly.tripllo.checklist.model.response.ChecklistResultMap">

@@ -75,7 +75,7 @@
             c.location as card_location,
             c.is_checklist as card_is_checklist,
             c.due_date as card_due_date
-        from Board a
+        from board a
             left outer join list b on a.id = b.board_id
             left outer join card c on b.id = c.list_id
         where a.id = #{boardId}
