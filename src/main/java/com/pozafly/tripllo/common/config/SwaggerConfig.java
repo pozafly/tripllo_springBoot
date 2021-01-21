@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket apiV1() {
-        version = "V1";
+        version = "V1.1";
         title = "Tripllo API " + version;
 
         List<ResponseMessage> responseMessages = new ArrayList<>();
