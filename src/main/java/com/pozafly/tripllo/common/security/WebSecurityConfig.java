@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("profile").permitAll()
 
                 // post 방식의 user create(회원가입)은 허용한다.
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()

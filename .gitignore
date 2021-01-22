@@ -94,5 +94,4 @@ nbdist/
 .nb-gradle/
 
 ### oauth ###
-application-real.properties
-application-real-db.properties
+application-db.properties
