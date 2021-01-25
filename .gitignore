@@ -95,3 +95,6 @@ nbdist/
 
 ### oauth ###
 application-db.properties
+
+### aws ###
+aws.yml

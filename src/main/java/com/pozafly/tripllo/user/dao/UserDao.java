@@ -11,8 +11,9 @@ import java.util.Map;
 @Mapper
 public interface UserDao {
     public User readUser(String id);
-    public List<UserApiResponse> readInviteUser(String id);
+    public List<UserApiResponse> readIsInviteUser(String id);
+    public List<User> readInvitedUser(List<String> users);
     public void createUser(UserApiRequest request);
-    public void updateUser(Map<String, Object> userInfo);
+    public int updateUser(Map<String, Object> userInfo);
     public void deleteUser(Map<String, String> userInfo);
 }

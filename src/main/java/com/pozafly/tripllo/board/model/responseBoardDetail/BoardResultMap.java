@@ -15,6 +15,7 @@ public class BoardResultMap {
     private String invitedUser;
     private LocalDateTime createdAt;
     private String createdBy;
+    private String createdByPicture;
 
     private List<ListResultMap> lists;
 }

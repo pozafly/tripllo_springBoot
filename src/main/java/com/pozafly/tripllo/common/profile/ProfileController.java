@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@ApiIgnore
 public class ProfileController {
     private final Environment env;
 

@@ -14,6 +14,7 @@ public class ResponseBoardDetail {
     private String boardTitle;
     private String boardBgColor;
     private String invitedUser;
+    private String createdByPicture;
     private List<Lists> lists;
 
     private Long listId;

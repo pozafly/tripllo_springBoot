@@ -21,9 +21,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -58,14 +56,36 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Message> readInviteUser(String id) {
-        List<UserApiResponse> userList = userDao.readInviteUser(id);
+    public ResponseEntity<Message> readIsInviteUser(String id) {
+        List<UserApiResponse> userList = userDao.readIsInviteUser(id);
 
         if (!ObjectUtils.isEmpty(userList.get(0))) {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.READ_USER);
             message.setData(userList);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Message> readInvitedUser(String userList) {
+        String[] user = userList.split(",");
+
+        List<String> users = new ArrayList<>();
+        Collections.addAll(users, user);
+        List<User> newUserList = userDao.readInvitedUser(users);
+
+        if (!ObjectUtils.isEmpty(newUserList.get(0))) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_USER);
+            message.setData(newUserList);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {

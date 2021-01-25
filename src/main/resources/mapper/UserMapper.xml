@@ -24,7 +24,7 @@
         where id = #{id}
     </select>
 
-    <select id="readInviteUser" parameterType="String" resultType="com.pozafly.tripllo.user.model.response.UserApiResponse">
+    <select id="readIsInviteUser" parameterType="String" resultType="com.pozafly.tripllo.user.model.response.UserApiResponse">
         select
             id,
             email,
@@ -32,6 +32,17 @@
             picture
         from user
         where id like CONCAT('%', #{id}, '%')
+    </select>
+
+    <select id="readInvitedUser" parameterType="List" resultType="com.pozafly.tripllo.user.model.User">
+        select
+            id,
+            picture
+        from user
+        where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <insert id="createUser" parameterType="com.pozafly.tripllo.user.model.response.UserApiResponse">

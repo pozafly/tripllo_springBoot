@@ -8,7 +8,8 @@ import java.util.Map;
 
 public interface UserService {
     public ResponseEntity<Message> readUser(String id);
-    public ResponseEntity<Message> readInviteUser(String id);
+    public ResponseEntity<Message> readIsInviteUser(String id);
+    public ResponseEntity<Message> readInvitedUser(String userList);
     public ResponseEntity<Message> rtnIdValid(String id);
     public ResponseEntity<Message> createUser(UserApiRequest request);
     public ResponseEntity<Message> updateUser(Map<String, Object> userInfo);

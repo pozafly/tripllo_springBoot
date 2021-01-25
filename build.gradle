@@ -40,12 +40,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'com.google.code.gson:gson:2.8.6'
 	compile('com.h2database:h2')
-//	compile('org.springframework.cloud:spring-cloud-starter-aws')
+	compile('org.springframework.cloud:spring-cloud-starter-aws')
 }
 
 dependencyManagement {
 	imports {
-//		mavenBom 'org.springframework.cloud:spring-cloud-aws:2.0.0.RC2'
+		mavenBom 'org.springframework.cloud:spring-cloud-aws:2.0.0.RC2'
 	}
 }
 

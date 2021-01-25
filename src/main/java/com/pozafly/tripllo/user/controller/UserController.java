@@ -34,17 +34,30 @@ public class UserController {
         return userService.readUser(id);
     }
 
-    @ApiOperation(value = "유저 초대 조회", notes = "초대 가능한 유저를 조회하는 API 입니다.")
+    @ApiOperation(value = "유저 초대 조회", notes = "초대 가능한 유저를 조회하는 API 입니다. like 구문으로 조회할 수 있습니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "회원 정보 조회 성공"),
             @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
     })
-    @GetMapping("/invite/{id}")
-    public ResponseEntity<Message> readInviteUser(
+    @GetMapping("/isInvite/{id}")
+    public ResponseEntity<Message> readIsInviteUser(
             @ApiParam(value = "아이디로 초대 가능 유저 정보 조회", required = true, example = "pain103")
             @PathVariable String id
     ) {
-        return userService.readInviteUser(id);
+        return userService.readIsInviteUser(id);
+    }
+
+    @ApiOperation(value = "초대된 유저 조회", notes = "초대된 유저를 조회해 사진을 표시하는 API 입니다. in 구문으로 조회 합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "회원 정보 조회 성공"),
+            @ApiResponse(code = 404, message = "회원을 찾을 수 없습니다.")
+    })
+    @GetMapping("/invited/{userList}")
+    public ResponseEntity<Message> readInvitedUser(
+            @ApiParam(value = "아이디로 초대 가능 유저 정보 조회", required = true, example = "pain103")
+            @PathVariable String userList
+    ) {
+        return userService.readInvitedUser(userList);
     }
 
     @ApiOperation(value = "회원가입 가능 판별", notes = "회원가입 가능한 ID인지 판별")
@@ -53,7 +66,7 @@ public class UserController {
             @ApiResponse(code = 401, message = "이미 회원 ID가 사용되고 있습니다.")
     })
     @GetMapping("/valid/{id}")
-    public ResponseEntity<Message> VlidId(
+    public ResponseEntity<Message> rtnIdValid(
             @ApiParam(value = "회원가입 하고싶은 ID", required = true, example = "pain103")
             @PathVariable String id
     ) {

@@ -60,6 +60,7 @@
             a.invited_user as board_invited_user,
             a.created_at as board_created_at,
             a.created_by as board_created_by,
+            d.picture as board_created_by_picture,
 
             b.id as list_id,
             b.board_id as list_board_id,
@@ -78,6 +79,7 @@
         from board a
             left outer join list b on a.id = b.board_id
             left outer join card c on b.id = c.list_id
+            left outer join user d on a.created_by = d.id
         where a.id = #{boardId}
         order by b.pos, c.pos
     </select>
@@ -90,6 +92,7 @@
         <result property="invitedUser" column="board_invited_user"/>
         <result property="createdAt" column="board_created_at"/>
         <result property="createdBy" column="board_created_by"/>
+        <result property="createdByPicture" column="board_created_by_picture"/>
         <collection property="lists" ofType="com.pozafly.tripllo.board.model.responseBoardDetail.ListResultMap"
                     resultMap="BoardListsResult" foreignColumn="list_board_id" />
     </resultMap>
