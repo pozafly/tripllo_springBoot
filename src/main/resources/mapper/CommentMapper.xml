@@ -5,8 +5,19 @@
 <mapper namespace="com.pozafly.tripllo.comment.dao.CommentDao">
 
     <select id="readComment" parameterType="Long" resultType="com.pozafly.tripllo.comment.model.Comment">
-        select * from comment
-        where card_id = #{cardId}
+        select
+            a.id,
+            a.card_id,
+            a.user_id,
+            a.comment,
+            a.created_at,
+            a.created_by,
+            a.updated_at,
+            a.updated_by,
+            b.picture
+        from comment a
+        left outer join user b on a.created_by = b.id
+        where a.card_id = #{cardId}
     </select>
 
     <select id="readCommentByCommentId" parameterType="Long" resultType="com.pozafly.tripllo.comment.model.Comment">

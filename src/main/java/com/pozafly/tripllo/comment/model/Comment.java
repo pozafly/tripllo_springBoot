@@ -16,4 +16,6 @@ public class Comment extends BaseEntity {
     private String userId;
     @ApiModelProperty(example = "코멘트....")
     private String comment;
+    @ApiModelProperty(example = "유저 프로필 이미지")
+    private String picture;
 }

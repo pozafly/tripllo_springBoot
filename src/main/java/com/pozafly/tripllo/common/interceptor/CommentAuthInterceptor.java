@@ -35,7 +35,8 @@ public class CommentAuthInterceptor implements HandlerInterceptor {
 
         if(httpMethod.equals("PUT")) {
             LinkedHashMap<String, Object> requestBody = (LinkedHashMap<String, Object>) request.getAttribute("requestBody");
-            Long commentId = Long.parseLong(String.valueOf(requestBody.get("id")));
+            Double doubleValue = (Double)(requestBody.get("id"));
+            Long commentId = doubleValue.longValue();
             Comment comment = commentDao.readCommentByCommentId(commentId);
 
             if(ObjectUtils.isEmpty(comment)) return true;
