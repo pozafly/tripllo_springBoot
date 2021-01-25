@@ -65,5 +65,9 @@ public class ResponseMessage {
     public static final String DELETE_PUSH_MESSAGE = "푸시메세지 삭제 성공";
     public static final String NOT_FOUND_PUSH_MESSAGE = "해당 푸시메세지 없습니다.";
 
-
+    // 파일 메세지
+    public static final String CREATED_FILE = "파일 생성 성공";
+    public static final String READ_FILE = "파일 조회 성공";
+    public static final String DELETE_FILE = "파일 삭제 성공";
+    public static final String NOT_FOUND_FILE = "해당 파일이 없습니다.";
 }

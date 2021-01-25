@@ -1,19 +1,31 @@
 package com.pozafly.tripllo.fileUpload.service.impl;
 
+import com.pozafly.tripllo.common.domain.network.Message;
+import com.pozafly.tripllo.common.domain.network.ResponseMessage;
+import com.pozafly.tripllo.common.domain.network.StatusEnum;
 import com.pozafly.tripllo.fileUpload.ImageResize;
 import com.pozafly.tripllo.fileUpload.S3Uploader;
+import com.pozafly.tripllo.fileUpload.dao.FilesDao;
+import com.pozafly.tripllo.fileUpload.model.Files;
 import com.pozafly.tripllo.fileUpload.service.FileUploadService;
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,12 +35,64 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     private final S3Uploader s3Uploader;
     private final UserDao userDao;
+    private final FilesDao filesDao;
+
+    Message message = new Message();
+    HttpHeaders headers = new HttpHeaders();
 
     @Override
-    public String upload(MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<Message> readFile(Long cardId) {
+        List<Files> file = filesDao.readFile(cardId);
+        if(!ObjectUtils.isEmpty(file.get(0))) {
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_FILE);
+            message.setData(file);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_FILE);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Message> upload(MultipartFile multipartFile, Long cardId, String userId) throws IOException {
         File convertedFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-        return s3Uploader.upload(convertedFile, "static");
+
+        // 여기서 실질적으로 file -> s3 등록
+        String link = s3Uploader.upload(convertedFile, "static_" + userId);
+
+        String fileName = multipartFile.getOriginalFilename();
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        Map<String, Object> fileInfo = new HashMap<>();
+        fileInfo.put("userId", userId);
+        fileInfo.put("link", link);
+        fileInfo.put("extension", extension);
+        fileInfo.put("cardId", cardId);
+        fileInfo.put("fileName", fileName);
+
+        int result = filesDao.createFile(fileInfo);
+        if(result == 1) {
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.CREATED_FILE);
+            message.setData(fileInfo);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(message, headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @Override
@@ -68,6 +132,30 @@ public class FileUploadServiceImpl implements FileUploadService {
             return uploadImageUrl;
         } else {
             return "FAIL";
+        }
+    }
+
+    @Override
+    public ResponseEntity<Message> deleteFile(Long fileId, String userId) {
+        try{
+            Files file = filesDao.readFileOne(fileId);
+
+            s3Uploader.deleteFile(file.getFileName(), "static_" + userId);
+            filesDao.deleteFile(fileId);
+
+            Map<String, Long> rtnMap = new HashMap<>();
+            rtnMap.put("id", fileId);
+
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.DELETE_FILE);
+            message.setData(rtnMap);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_FILE);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
 

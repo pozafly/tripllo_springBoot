@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.fileUpload.dao.FilesDao">
+
+    <select id="readFile" parameterType="Long" resultType="com.pozafly.tripllo.fileUpload.model.Files">
+        select * from files
+        where card_id = #{cardId}
+    </select>
+
+    <select id="readFileOne" parameterType="Long" resultType="com.pozafly.tripllo.fileUpload.model.Files">
+        select * from files
+        where id = #{fileId}
+    </select>
+
+    <insert id="createFile" parameterType="Map">
+        insert into files values (null, #{cardId}, #{fileName}, #{extension}, #{link}, now(), #{userId})
+    </insert>
+
+    <delete id="deleteFile" parameterType="Long">
+        delete from files
+        where id = #{id}
+    </delete>
+
+</mapper>
