@@ -2,6 +2,7 @@ package com.pozafly.tripllo.user.controller;
 
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.security.securityUser.SecurityUser;
+import com.pozafly.tripllo.user.model.request.ChangePwApiRequest;
 import com.pozafly.tripllo.user.model.request.UserApiRequest;
 import com.pozafly.tripllo.user.service.UserService;
 import io.swagger.annotations.*;
@@ -103,6 +104,7 @@ public class UserController {
         map.put("id", request.getId());
         map.put("email", request.getEmail());
         map.put("name", request.getName());
+        map.put("password", request.getPassword());
         map.put("bio", request.getBio());
         map.put("picture", request.getPicture());
         map.put("recent", request.getRecent());
@@ -130,5 +132,20 @@ public class UserController {
         map.put("password", password);
 
         return userService.deleteUser(map);
+    }
+
+    @PostMapping("/changePw")
+    public ResponseEntity<Message> changePw(
+            @RequestBody ChangePwApiRequest request,
+            @AuthenticationPrincipal SecurityUser securityUser
+    ) {
+        String userId = securityUser.getUsername();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("currentPw", request.getCurrentPw());
+        map.put("newPw", request.getNewPw());
+
+        return userService.changePw(map);
     }
 }

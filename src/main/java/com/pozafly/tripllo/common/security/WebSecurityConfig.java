@@ -71,6 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인 오픈
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers("/api/logout").permitAll()
+                .antMatchers("/api/email/*").permitAll()
 
                 // 인증된 사용자만 가능하다(즉, 토큰을 준 사람만이 가능한 것임.)
                 .antMatchers("/api/**").authenticated()

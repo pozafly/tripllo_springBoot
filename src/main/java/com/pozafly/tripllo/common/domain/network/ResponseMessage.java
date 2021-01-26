@@ -70,4 +70,8 @@ public class ResponseMessage {
     public static final String READ_FILE = "파일 조회 성공";
     public static final String DELETE_FILE = "파일 삭제 성공";
     public static final String NOT_FOUND_FILE = "해당 파일이 없습니다.";
+
+    // 이메일
+    public static final String SEND_EMAIL_SUCCESS = "이메일 전송 성공";
+    public static final String ID_EMAIL_WRONG = "가입한 ID와 EMAIL이 동일하지 않습니다.";
 }

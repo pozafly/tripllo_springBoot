@@ -59,6 +59,9 @@
             <if test='name != null and !"".equals(name)'>
                 name = #{name},
             </if>
+            <if test='password != null and !"".equals(password)'>
+                password = #{password},
+            </if>
             <if test='picture != null and !"".equals(picture)'>
                 picture = #{picture},
             </if>

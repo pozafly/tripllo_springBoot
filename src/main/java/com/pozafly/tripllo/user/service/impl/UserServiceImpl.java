@@ -169,7 +169,8 @@ public class UserServiceImpl implements UserService {
 
         if(!userIdValid(userId)) {
             User user = userDao.readUser(userId);
-            if(userInfo.get("password").equals(user.getPassword())) {
+
+            if(!StringUtils.isEmpty(user.getSocial())) {
                 userDao.deleteUser(userInfo);
 
                 headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -179,11 +180,52 @@ public class UserServiceImpl implements UserService {
 
                 return new ResponseEntity<>(message, headers, HttpStatus.OK);
             } else {
+                boolean check = passwordEncoder.matches(userInfo.get("password"), user.getPassword());
+                if(check) {
+                    userDao.deleteUser(userInfo);
+
+                    headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+                    message.setStatus(StatusEnum.OK);
+                    message.setMessage(ResponseMessage.DELETE_USER);
+                    message.setData(userInfo);
+
+                    return new ResponseEntity<>(message, headers, HttpStatus.OK);
+                } else {
+                    message.setStatus(StatusEnum.BAD_REQUEST);
+                    message.setMessage(ResponseMessage.PASSWORD_WRONG);
+                    return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+                }
+            }
+        } else {
+            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Message> changePw(Map<String, String> pwInfo) {
+        User user = userDao.readUser(pwInfo.get("userId"));
+        if (!ObjectUtils.isEmpty(user)) {
+
+            boolean check = passwordEncoder.matches(pwInfo.get("currentPw"), user.getPassword());
+            if (check) {  // 유저가 보유한 패스워드와 입력받은 패스워드가 일치하는 지 확인한다.
+                String encodePassword = passwordEncoder.encode(pwInfo.get("newPw"));
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", pwInfo.get("userId"));
+                map.put("password", encodePassword);
+
+                userDao.updateUser(map);
+
+                message.setStatus(StatusEnum.OK);
+                message.setMessage(ResponseMessage.UPDATE_USER);
+                return new ResponseEntity<>(message, headers, HttpStatus.OK);
+            } else {
                 message.setStatus(StatusEnum.BAD_REQUEST);
                 message.setMessage(ResponseMessage.PASSWORD_WRONG);
                 return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
             }
-
         } else {
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);

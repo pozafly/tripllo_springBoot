@@ -14,4 +14,5 @@ public interface UserService {
     public ResponseEntity<Message> createUser(UserApiRequest request);
     public ResponseEntity<Message> updateUser(Map<String, Object> userInfo);
     public ResponseEntity<Message> deleteUser(Map<String, String> userInfo);
+    public ResponseEntity<Message> changePw(Map<String, String> pwInfo);
 }
