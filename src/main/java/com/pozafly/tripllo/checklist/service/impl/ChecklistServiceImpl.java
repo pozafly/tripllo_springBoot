@@ -72,6 +72,7 @@ public class ChecklistServiceImpl implements ChecklistService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
+            message.setData(null);
             message.setStatus(StatusEnum.NOT_FOUND);
             message.setMessage(ResponseMessage.NOT_FOUND_CHECKLIST);
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -111,8 +112,6 @@ public class ChecklistServiceImpl implements ChecklistService {
 
                 cardDao.updateCard(map);
             }
-
-            Map<String, Long> rtnMap = new HashMap<>();
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);

@@ -15,5 +15,6 @@ public class CardResultMap {
     private String labelColor;
     private String location;
     private String isChecklist;
+    private String isAttachment;
     private LocalDateTime dueDate;
 }

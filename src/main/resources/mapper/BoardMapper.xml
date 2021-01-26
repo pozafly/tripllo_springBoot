@@ -75,6 +75,7 @@
             c.label_color as card_label_color,
             c.location as card_location,
             c.is_checklist as card_is_checklist,
+            c.is_attachment as card_is_attachment,
             c.due_date as card_due_date
         from board a
             left outer join list b on a.id = b.board_id
@@ -113,6 +114,7 @@
         <result property="labelColor" column="card_label_color"/>
         <result property="location" column="card_location"/>
         <result property="isChecklist" column="card_is_checklist"/>
+        <result property="isAttachment" column="card_is_attachment"/>
         <result property="dueDate" column="card_due_date"/>
     </resultMap>
 

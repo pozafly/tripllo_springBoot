@@ -31,6 +31,7 @@ public class ResponseBoardDetail {
     private String cardLabelColor;
     private String cardLocation;
     private String cardIsChecklist;
+    private String cardIsAttachment;
     private LocalDateTime cardDueDate;
 
 }

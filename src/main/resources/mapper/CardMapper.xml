@@ -10,7 +10,7 @@
     </select>
 
     <insert id="createCard" parameterType="Map">
-        insert into card values (null, #{listId}, #{title}, #{pos}, null, null, null, 'N', null, now(), #{userId}, null, null)
+        insert into card values (null, #{listId}, #{title}, #{pos}, null, null, null, 'N', 'N', null, now(), #{userId}, null, null)
     </insert>
 
     <update id="updateCard" parameterType="Map">
@@ -36,6 +36,9 @@
         </if>
         <if test='isChecklist != null and !"".equals(isChecklist)'>
             is_checklist = #{isChecklist},
+        </if>
+        <if test='isAttachment != null and !"".equals(isAttachment)'>
+            is_attachment = #{isAttachment},
         </if>
         <if test='dueDate != null and !"".equals(dueDate)'>
             due_date = str_to_date(#{dueDate}, '%Y%m%d%H%i'),

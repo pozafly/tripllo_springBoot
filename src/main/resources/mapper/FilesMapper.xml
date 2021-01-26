@@ -14,6 +14,11 @@
         where id = #{fileId}
     </select>
 
+    <select id="countFiles" parameterType="Long" resultType="int">
+        select count(*) from files
+        where card_id = #{cardId}
+    </select>
+
     <insert id="createFile" parameterType="Map">
         insert into files values (null, #{cardId}, #{fileName}, #{extension}, #{link}, now(), #{userId})
     </insert>

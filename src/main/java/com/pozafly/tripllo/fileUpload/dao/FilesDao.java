@@ -12,4 +12,5 @@ public interface FilesDao {
     public Files readFileOne(Long fileId);
     public int createFile(Map<String, Object> fileInfo);
     public void deleteFile(Long id);
+    public int countFiles(Long carId);
 }

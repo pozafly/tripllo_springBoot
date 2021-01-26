@@ -59,9 +59,10 @@ public class CommentServiceImpl implements CommentService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
+            message.setData(null);
             message.setStatus(StatusEnum.NOT_FOUND);
             message.setMessage(ResponseMessage.NOT_FOUND_COMMENT);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
     }
 

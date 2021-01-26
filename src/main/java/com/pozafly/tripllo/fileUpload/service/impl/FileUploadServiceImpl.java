@@ -1,5 +1,6 @@
 package com.pozafly.tripllo.fileUpload.service.impl;
 
+import com.pozafly.tripllo.card.dao.CardDao;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
@@ -36,6 +37,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     private final S3Uploader s3Uploader;
     private final UserDao userDao;
     private final FilesDao filesDao;
+    private final CardDao cardDao;
 
     Message message = new Message();
     HttpHeaders headers = new HttpHeaders();
@@ -43,7 +45,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     @Override
     public ResponseEntity<Message> readFile(Long cardId) {
         List<Files> file = filesDao.readFile(cardId);
-        if(!ObjectUtils.isEmpty(file.get(0))) {
+        if(!ObjectUtils.isEmpty(file)) {
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
@@ -55,7 +57,8 @@ public class FileUploadServiceImpl implements FileUploadService {
         } else {
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_FILE);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            message.setData(null);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
     }
 
@@ -78,6 +81,17 @@ public class FileUploadServiceImpl implements FileUploadService {
         fileInfo.put("fileName", fileName);
 
         int result = filesDao.createFile(fileInfo);
+
+        if(filesDao.countFiles(cardId) == 1) {
+            Map<String, Object> cardInfo = new HashMap<>();
+            cardInfo.put("userId", userId);
+            cardInfo.put("cardId", cardId);
+            cardInfo.put("isAttachment", "Y");
+
+            cardDao.updateCard(cardInfo);
+        }
+
+
         if(result == 1) {
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -142,6 +156,16 @@ public class FileUploadServiceImpl implements FileUploadService {
 
             s3Uploader.deleteFile(file.getFileName(), "static_" + userId);
             filesDao.deleteFile(fileId);
+
+            // 지우고 나서 count가 0 이면 N으로.
+            if(filesDao.countFiles(file.getCardId()) == 0) {
+                Map<String, Object> cardInfo = new HashMap<>();
+                cardInfo.put("userId", userId);
+                cardInfo.put("cardId", file.getCardId());
+                cardInfo.put("isAttachment", "N");
+
+                cardDao.updateCard(cardInfo);
+            }
 
             Map<String, Long> rtnMap = new HashMap<>();
             rtnMap.put("id", fileId);
