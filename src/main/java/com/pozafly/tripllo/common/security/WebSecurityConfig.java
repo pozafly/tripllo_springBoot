@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://github.com/**"));
+        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://github.com/**", "http://tripllo-vue-build.s3-website.ap-northeast-2.amazonaws.com/"));
         configuration.setAllowedMethods(ImmutableList.of("HEAD","GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowCredentials(true);
         // 토큰을 Authorization 이라는 이름으로 받겠다.
