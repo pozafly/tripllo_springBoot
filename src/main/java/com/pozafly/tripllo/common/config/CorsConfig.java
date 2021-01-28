@@ -12,8 +12,6 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8080")
-                .allowedOrigins("http://tripllo-vue-build.s3-website.ap-northeast-2.amazonaws.com")
-                .allowedOrigins("http://ec2-15-165-51-111.ap-northeast-2.compute.amazonaws.com:8080")
                 .allowedOrigins("*")
                 .allowedMethods(
                         HttpMethod.GET.name(),

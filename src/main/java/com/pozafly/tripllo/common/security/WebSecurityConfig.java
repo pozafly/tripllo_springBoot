@@ -43,8 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://github.com/**"
-                , "http://tripllo-vue-build.s3-website.ap-northeast-2.amazonaws.com"
-                , "http://ec2-15-165-51-111.ap-northeast-2.compute.amazonaws.com:8080"));
+                , "http://tripllo.tech.s3-website.ap-northeast-2.amazonaws.com", "http://tripllo.tech"));
         configuration.setAllowedMethods(ImmutableList.of("HEAD","GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
