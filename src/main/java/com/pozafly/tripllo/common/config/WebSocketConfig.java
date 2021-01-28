@@ -34,8 +34,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketHandler, "/websocket")
-                .setAllowedOrigins("http://localhost:8080")
-                .setAllowedOrigins("http://ec2-15-165-51-111.ap-northeast-2.compute.amazonaws.com:8080")
+                .setAllowedOrigins("*")
                 .addInterceptors(new HttpHandshakeInterceptor())
                 .withSockJS(); // sockjs 지원
     }

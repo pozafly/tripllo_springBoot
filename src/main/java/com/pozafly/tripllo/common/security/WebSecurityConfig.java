@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("profile").permitAll()
-
+                .antMatchers("/websocket").permitAll()
                 // post 방식의 user create(회원가입)은 허용한다.
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 // 회원가입 전 사용하고 싶은 회원 id를 validation 해볼 수 있는 api도 open
