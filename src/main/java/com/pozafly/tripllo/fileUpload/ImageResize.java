@@ -1,5 +1,7 @@
 package com.pozafly.tripllo.fileUpload;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,6 +16,9 @@ public class ImageResize {
     private static final double STANDARD_WIDTH = 640;
     static int newWidth;
     static int newHeight;
+
+    @Value("${custom.path.file}")
+    private static String PATH;
 
     public static File resize(File convertedFile, String userId, String extension) throws IOException {
 
@@ -37,7 +42,7 @@ public class ImageResize {
         Graphics g = newImage.getGraphics();
         g.drawImage(resizeImage, 0, 0, null);
         g.dispose();
-        File newFile = new File(createFileName(userId, extension));
+        File newFile = new File(PATH + createFileName(userId, extension));
         ImageIO.write(newImage, extension, newFile);
         convertedFile.delete();
 
