@@ -42,6 +42,8 @@ public class FileUploadServiceImpl implements FileUploadService {
     Message message = new Message();
     HttpHeaders headers = new HttpHeaders();
 
+    private static final String PATH = "./uploads";
+
     @Override
     public ResponseEntity<Message> readFile(Long cardId) {
         List<Files> file = filesDao.readFile(cardId);
@@ -185,7 +187,7 @@ public class FileUploadServiceImpl implements FileUploadService {
 
     // s3에는 MultipartFile이 전송이 안되므로 File로 전환함.
     private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(file.getOriginalFilename());
+        File convertFile = new File(PATH + file.getOriginalFilename());
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
@@ -196,7 +198,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     }
 
     private Optional<File> convert(MultipartFile file, String newFileName) throws IOException {
-        File convertFile = new File(newFileName);
+        File convertFile = new File(PATH + newFileName);
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
