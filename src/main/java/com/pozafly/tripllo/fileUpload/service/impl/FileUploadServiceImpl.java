@@ -12,6 +12,7 @@ import com.pozafly.tripllo.fileUpload.service.FileUploadService;
 import com.pozafly.tripllo.user.dao.UserDao;
 import com.pozafly.tripllo.user.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,7 +43,8 @@ public class FileUploadServiceImpl implements FileUploadService {
     Message message = new Message();
     HttpHeaders headers = new HttpHeaders();
 
-    private static final String PATH = "./uploads";
+    @Value("${custom.path.file}")
+    private String PATH;
 
     @Override
     public ResponseEntity<Message> readFile(Long cardId) {
