@@ -1,7 +1,5 @@
 package com.pozafly.tripllo.fileUpload;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,10 +15,7 @@ public class ImageResize {
     static int newWidth;
     static int newHeight;
 
-    @Value("${custom.path.file}")
-    private static String PATH;
-
-    public static File resize(File convertedFile, String userId, String extension) throws IOException {
+    public static File resize(File convertedFile, String extension) throws IOException {
 
         Image image = ImageIO.read(convertedFile);
 
@@ -42,14 +37,15 @@ public class ImageResize {
         Graphics g = newImage.getGraphics();
         g.drawImage(resizeImage, 0, 0, null);
         g.dispose();
-        File newFile = new File(PATH + createFileName(userId, extension));
-        ImageIO.write(newImage, extension, newFile);
-        convertedFile.delete();
 
-        return newFile;
+        ImageIO.write(newImage, extension, convertedFile);
+        //convertedFile.delete();
+
+        return convertedFile;
     }
 
     public static String createFileName(String userId, String extension) {
+        System.out.println("몇번 들어오는지 보자!");
         UUID uuid = UUID.randomUUID();
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");

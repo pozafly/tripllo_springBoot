@@ -135,7 +135,7 @@ public class FileUploadServiceImpl implements FileUploadService {
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
         if(!extension.toLowerCase().equals("svg")) {
-            uploadImage = ImageResize.resize(convertedFile, userId, extension);
+            uploadImage = ImageResize.resize(convertedFile, extension);
         } else {
             uploadImage = convertedFile;
         }
