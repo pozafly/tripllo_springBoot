@@ -86,12 +86,24 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<Message> deleteComment(Long commentId) {
+    public ResponseEntity<Message> deleteComment(Long commentId, String userId) {
         try{
-            commentDao.deleteComment(commentId);
+            int commentGroupCount = commentDao.countCommentGroupByCommentId(commentId);
+            // 코멘트 그룹이 2개 이상이면, '삭제된 메세지 입니다' 처리
+            if (commentGroupCount > 1) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("userId", userId);
+                map.put("commentId", commentId);
+                map.put("comment", "삭제된 메세지 입니다.");
+                map.put("deleteYn", "Y");
+
+                commentDao.updateComment(map);
+            } else {
+                commentDao.deleteComment(commentId);
+            }
 
             Map<String, Long> rtnMap = new HashMap<>();
-            rtnMap.put("listId", commentId);
+            rtnMap.put("commentId", commentId);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);

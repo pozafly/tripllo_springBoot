@@ -9,5 +9,5 @@ public interface CommentService {
     public ResponseEntity<Message> createComment(Map<String, Object> commentInfo);
     public ResponseEntity<Message> readComment(Long cardId);
     public ResponseEntity<Message> updateComment(Map<String, Object> commentInfo);
-    public ResponseEntity<Message> deleteComment(Long commentId);
+    public ResponseEntity<Message> deleteComment(Long commentId, String userId);
 }

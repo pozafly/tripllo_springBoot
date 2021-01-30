@@ -10,6 +10,7 @@ import java.util.Map;
 public interface CommentDao {
     public Comment readCommentByCommentId(Long commentId);
     public List<Comment> readComment(Long cardId);
+    public int countCommentGroupByCommentId(Long commentId);
     public void createComment(Map<String, Object> commentInfo);
     public void updateComment(Map<String, Object> commentInfo);
     public void deleteComment(Long commentId);

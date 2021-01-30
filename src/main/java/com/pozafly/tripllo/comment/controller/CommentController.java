@@ -51,6 +51,8 @@ public class CommentController {
         map.put("cardId", comment.getCardId());
         map.put("userId", userId);
         map.put("comment", comment.getComment());
+        map.put("dept", comment.getDept());
+        map.put("groupNum", comment.getGroupNum());
 
         return commentService.createComment(map);
     }
@@ -85,8 +87,9 @@ public class CommentController {
     @DeleteMapping("{id}")
     public ResponseEntity<Message> deleteComment(
             @ApiParam(value = "코멘트 id", required = true, example = "2")
-            @PathVariable Long id
+            @PathVariable Long id,
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
-        return commentService.deleteComment(id);
+        return commentService.deleteComment(id, securityUser.getUsername());
     }
 }

@@ -10,6 +10,8 @@
             a.card_id,
             a.user_id,
             a.comment,
+            a.dept,
+            a.delete_yn,
             a.created_at,
             a.created_by,
             a.updated_at,
@@ -18,6 +20,7 @@
         from comment a
         left outer join user b on a.created_by = b.id
         where a.card_id = #{cardId}
+        order by a.group_num, a.dept, a.created_at
     </select>
 
     <select id="readCommentByCommentId" parameterType="Long" resultType="com.pozafly.tripllo.comment.model.Comment">
@@ -25,8 +28,30 @@
         where id = #{commentId}
     </select>
 
+    <select id="countCommentGroupByCommentId" parameterType="Long" resultType="int">
+        select count(*) from comment
+        where group_num = #{commentId}
+    </select>
+
     <insert id="createComment" parameterType="Map">
-        insert into comment values (null, #{cardId}, #{userId}, #{comment}, now(), #{userId}, null, null)
+<!--        https://yookeun.github.io/java/2014/07/11/mybatis-selectkey/ -->
+<!--        https://backstreet-programmer.tistory.com/100 -->
+<!--        여기는 group_num을 auto_increment로 들어간 id 값을 같은 값으로 insert하기 위해 사용한 만들어진 auto_increment다. -->
+<!--        그러면 이제 comment 테이블은 auto_increment를 사용할 수 없다.-->
+        <selectKey keyProperty="id" resultType="Long" order="BEFORE">
+            select ifnull(max(id), 0) + 1 from comment
+        </selectKey>
+
+        insert into comment values (#{id}, #{cardId}, #{userId}, #{comment}, #{dept},
+        <choose>
+            <when test='groupNum != null and !"".equals(groupNum)'>
+                #{groupNum},
+            </when>
+            <otherwise>
+                #{id},
+            </otherwise>
+        </choose>
+        'N', now(), #{userId}, null, null)
     </insert>
 
     <update id="updateComment" parameterType="Map">
@@ -34,6 +59,9 @@
         set
         <if test='comment != null'>
             comment = #{comment},
+        </if>
+        <if test='deleteYn != null and !"".equals(deleteYn)'>
+            delete_yn = #{deleteYn},
         </if>
         updated_at = now(),
         updated_by = #{userId}
