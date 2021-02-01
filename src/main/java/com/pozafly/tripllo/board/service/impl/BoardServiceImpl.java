@@ -1,25 +1,28 @@
 package com.pozafly.tripllo.board.service.impl;
 
+import com.google.gson.Gson;
 import com.pozafly.tripllo.board.dao.BoardDao;
 import com.pozafly.tripllo.board.model.Board;
 import com.pozafly.tripllo.board.model.responseBoardDetail.BoardResultMap;
 import com.pozafly.tripllo.board.service.BoardService;
+import com.pozafly.tripllo.boardHasHashtag.dao.BoardHasHashtagDao;
 import com.pozafly.tripllo.common.domain.network.Message;
 import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
+import com.pozafly.tripllo.hashtag.dao.HashtagDao;
+import com.pozafly.tripllo.hashtag.model.Hashtag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -29,6 +32,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Autowired
     private BoardDao boardDao;
+    @Autowired
+    private HashtagDao hashtagDao;
+    @Autowired
+    private BoardHasHashtagDao boardHasHashtagDao;
 
     @Override
     public ResponseEntity<Message> readBoardOne(Long boardId) {
@@ -43,6 +50,7 @@ public class BoardServiceImpl implements BoardService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
+            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
@@ -51,7 +59,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public ResponseEntity<Message> readBoardList(String userId, List<String> recentList) {
-
         Map<String, List<Board>> rtnMap = new HashMap<>();
 
         List<Board> board = boardDao.readBoardList(userId);
@@ -86,6 +93,7 @@ public class BoardServiceImpl implements BoardService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
+            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
@@ -93,9 +101,42 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Message> createBoard(Map<String, Object> boardInfo) {
         if(!StringUtils.isEmpty(boardInfo.get("title"))) {
             boardDao.createBoard(boardInfo);
+
+            String hash = (String)boardInfo.get("hashtag");
+            Gson gson = new Gson();
+            String[] array = gson.fromJson(hash, String[].class);
+            if(!StringUtils.isEmpty(array)) {
+                List<String> hashtagList = Arrays.asList(array);
+
+                for(String hashtag : hashtagList) {
+                    Long hashtagId = null;
+
+                    // 해시태그가 없다면 새로 만들어준다.
+                    Hashtag tag = hashtagDao.readHashTag(hashtag);
+
+                    if(ObjectUtils.isEmpty(tag)) {
+                        Map<String, Object> hashtagInfo = new HashMap<>();
+                        hashtagInfo.put("name", hashtag);
+                        hashtagInfo.put("id", null);
+
+                        hashtagDao.createHashtag(hashtagInfo);
+
+                        hashtagId = (Long)hashtagInfo.get("id");
+                    } else {
+                        hashtagId = tag.getId();
+                    }
+
+                    // 무조건 board_has_hashtag에 insert 함.
+                    Map<String, Long> info = new HashMap<>();
+                    info.put("boardId", (Long)boardInfo.get("id"));
+                    info.put("hashtagId", hashtagId);
+                    boardHasHashtagDao.createBoardHasHashtag(info);
+                }
+            }
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
@@ -104,6 +145,7 @@ public class BoardServiceImpl implements BoardService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
+            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
@@ -111,8 +153,64 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Message> updateBoard(Map<String, Object> boardInfo) {
         try{
+            String hash = (String)boardInfo.get("hashtag");
+
+            Gson gson = new Gson();
+            String[] newArray = gson.fromJson(hash, String[].class);
+
+            if(!StringUtils.isEmpty(newArray)) {
+                Board board = boardDao.readBoardOne((Long)boardInfo.get("boardId"));
+
+                String[] preArray = gson.fromJson(board.getHashtag(), String[].class);
+                List<String> preHashList = new ArrayList<>(Arrays.asList(preArray));
+                List<String> newHashList = new ArrayList<>(Arrays.asList(newArray));
+
+                // 1. 해시태그가 기존에 있던 것에서 삭제 되었다.
+                if(preHashList.size() > newHashList.size()) {
+                    // https://www.daleseo.com/how-to-remove-from-list-in-java/
+                    newHashList.forEach(el -> {
+                        boolean a = preHashList.removeIf(pre -> pre.equals(el));
+                    });
+
+                    Hashtag hashtag = hashtagDao.readHashTag(preHashList.get(0));
+
+                    Map<String, Long> map = new HashMap<>();
+                    map.put("boardId", (Long)boardInfo.get("boardId"));
+                    map.put("hashtagId", hashtag.getId());
+
+                    boardHasHashtagDao.deleteBoardHasHashtag(map);
+                }
+                // 2. 해시태그가 기존에 있던 것에서 추가 되었다.
+                else if (preHashList.size() < newHashList.size()) {
+                    preHashList.forEach(el -> {
+                        newHashList.removeIf(list -> list.equals(el));
+                    });
+                    Long hashtagId = null;
+
+                    Hashtag hashtag = hashtagDao.readHashTag(newHashList.get(0));
+                    // 해시태그가 없다면 새로 만들어준다.
+                    if(ObjectUtils.isEmpty(hashtag)) {
+                        Map<String, Object> hashtagInfo = new HashMap<>();
+                        hashtagInfo.put("name", newHashList.get(0));
+                        hashtagInfo.put("id", null);
+
+                        hashtagDao.createHashtag(hashtagInfo);
+
+                        hashtagId = (Long)hashtagInfo.get("id");
+                    } else {
+                        hashtagId = hashtag.getId();
+                    }
+                    // 무조건 board_has_hashtag에 insert 함.
+                    Map<String, Long> info = new HashMap<>();
+                    info.put("boardId", board.getId());
+                    info.put("hashtagId", hashtagId);
+                    boardHasHashtagDao.createBoardHasHashtag(info);
+                }
+            }
+
             boardDao.updateBoard(boardInfo);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -122,7 +220,7 @@ public class BoardServiceImpl implements BoardService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch(Exception e) {
-
+            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
@@ -130,6 +228,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<Message> deleteBoard(Long boardId) {
         try {
             boardDao.deleteBoard(boardId);
@@ -144,7 +243,7 @@ public class BoardServiceImpl implements BoardService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch(Exception e) {
-
+            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);

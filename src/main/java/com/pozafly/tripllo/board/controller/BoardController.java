@@ -82,6 +82,9 @@ public class BoardController {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("title", board.getTitle());
+        map.put("bgColor", board.getBgColor());
+        map.put("publicYn", board.getPublicYn());
+        map.put("hashtag", board.getHashtag());
 
         return boardService.createBoard(map);
     }
@@ -107,6 +110,8 @@ public class BoardController {
         map.put("title", board.getTitle());
         map.put("bgColor", board.getBgColor());
         map.put("invitedUser", board.getInvitedUser());
+        map.put("publicYn", board.getPublicYn());
+        map.put("hashtag", board.getHashtag());
 
         return boardService.updateBoard(map);
     }

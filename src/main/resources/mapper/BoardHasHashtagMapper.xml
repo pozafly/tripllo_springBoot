@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.boardHasHashtag.dao.BoardHasHashtagDao">
+
+    <insert id="createBoardHasHashtag" parameterType="Map">
+        insert into board_has_hashtag values (#{boardId}, #{hashtagId})
+    </insert>
+
+    <delete id="deleteBoardHasHashtag" parameterType="Map">
+        delete from
+            board_has_hashtag
+        where board_id = #{boardId}
+          and hashtag_id = #{hashtagId}
+    </delete>
+
+</mapper>

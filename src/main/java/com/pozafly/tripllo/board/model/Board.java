@@ -19,5 +19,9 @@ public class Board extends BaseEntity {
     private String bgColor;
     @ApiModelProperty(example = "초대된 유저들...")
     private String invitedUser;
+    @ApiModelProperty(example = "공개여부")
+    private String publicYn;
+    @ApiModelProperty(example = "해쉬태그")
+    private String hashtag;
 
 }

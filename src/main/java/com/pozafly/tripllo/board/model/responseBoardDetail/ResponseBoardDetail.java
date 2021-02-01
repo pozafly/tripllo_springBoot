@@ -13,8 +13,10 @@ public class ResponseBoardDetail {
     private Long boardId;
     private String boardTitle;
     private String boardBgColor;
-    private String invitedUser;
-    private String createdByPicture;
+    private String boardInvitedUser;
+    private String boardPublicYn;
+    private String boardHashtag;
+    private String boardCreatedByPicture;
     private List<Lists> lists;
 
     private Long listId;

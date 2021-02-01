@@ -12,15 +12,7 @@
 
     <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
         select
-            id,
-            user_id,
-            title,
-            bg_color,
-            invited_user,
-            created_at,
-            created_by,
-            updated_at,
-            updated_by
+            *
         from board
         where user_id = #{userId}
     </select>
@@ -58,6 +50,8 @@
             a.bg_color as board_bg_color,
             a.user_id as board_user_id,
             a.invited_user as board_invited_user,
+            a.public_yn as board_public_yn,
+            a.hashtag as board_hashtag,
             a.created_at as board_created_at,
             a.created_by as board_created_by,
             d.picture as board_created_by_picture,
@@ -91,6 +85,8 @@
         <result property="bgColor" column="board_bg_color"/>
         <result property="userId" column="board_user_id"/>
         <result property="invitedUser" column="board_invited_user"/>
+        <result property="publicYn" column="board_public_yn" />
+        <result property="hashtag" column="board_hashtag"/>
         <result property="createdAt" column="board_created_at"/>
         <result property="createdBy" column="board_created_by"/>
         <result property="createdByPicture" column="board_created_by_picture"/>
@@ -152,10 +148,11 @@
     -->
 
     <insert id="createBoard" parameterType="Map">
-        insert into board values (null, #{userId}, #{title}, '#339af0', null, now(), #{userId}, null, null)
-        <selectKey resultType="int" keyProperty="id" order="AFTER" >
-            select last_insert_id()
+        insert into board values (null, #{userId}, #{title}, #{bgColor}, null, #{publicYn}, #{hashtag}, now(), #{userId}, null, null)
+        <selectKey resultType="Long" keyProperty="id" order="AFTER" >
+            select last_insert_id() as id
         </selectKey>
+<!--        keyProperty 는 컬럼명이다. 즉 board에 id 칼럼의 setter, getter가 존재해야함.-->
     </insert>
 
     <update id="updateBoard" parameterType="Map">
@@ -169,6 +166,12 @@
             </if>
             <if test='invitedUser != null'>
                 invited_user = #{invitedUser},
+            </if>
+            <if test='publicYn != null and !"".equals(publicYn)'>
+                public_yn = #{publicYn},
+            </if>
+            <if test='hashtag != null'>
+                hashtag = #{hashtag},
             </if>
             updated_at = now(),
             updated_by = #{userId}

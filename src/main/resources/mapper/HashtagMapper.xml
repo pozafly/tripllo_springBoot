@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pozafly.tripllo.hashtag.dao.HashtagDao">
+
+    <select id="readHashTag" parameterType="String" resultType="com.pozafly.tripllo.hashtag.model.Hashtag">
+        select * from hashtag
+        where name = #{name}
+    </select>
+
+    <select id="readBoardByHashtag" parameterType="String" resultMap="HashtagResult">
+        select
+            a.name as hashtag_name,
+            c.id as board_id,
+            c.user_id as board_user_id,
+            c.title as board_title,
+            c.bg_color as board_bg_color,
+            c.public_yn as board_public_yn,
+            c.hashtag as board_hashtag
+        from hashtag a
+        left outer join board_has_hashtag b on a.id = b.hashtag_id
+        left outer join board c on b.board_id = c.id
+        where a.name = #{name}
+    </select>
+    <resultMap id="HashtagResult" type="com.pozafly.tripllo.hashtag.model.response.HashtagResult">
+        <result property="title" column="board_title"/>
+        <collection property="boards" ofType="com.pozafly.tripllo.hashtag.model.response.BoardListResult"
+                    resultMap="BoardListsResult" foreignColumn="list_board_id" />
+    </resultMap>
+    <resultMap id="BoardListsResult" type="com.pozafly.tripllo.hashtag.model.response.BoardListResult">
+        <result property="id" column="board_id"/>
+        <result property="userId" column="board_user_id"/>
+        <result property="title" column="board_title"/>
+        <result property="bgColor" column="board_bg_color"/>
+        <result property="publicYn" column="board_public_yn"/>
+        <result property="hashtag" column="board_hashtag"/>
+    </resultMap>
+
+    <insert id="createHashtag" parameterType="Map">
+        insert into hashtag values (null, #{name})
+        <selectKey resultType="Long" keyProperty="id" order="AFTER">
+            select last_insert_id() as id
+        </selectKey>
+    </insert>
+
+    <delete id="deleteHashtag" parameterType="Long">
+        delete
+        from hashtag
+        where id = #{id}
+    </delete>
+
+</mapper>

@@ -13,6 +13,8 @@ public class BoardResultMap {
     private String title;
     private String bgColor;
     private String invitedUser;
+    private String publicYn;
+    private String hashtag;
     private LocalDateTime createdAt;
     private String createdBy;
     private String createdByPicture;
