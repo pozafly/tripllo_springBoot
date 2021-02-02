@@ -107,8 +107,9 @@ public class UserController {
         map.put("password", request.getPassword());
         map.put("bio", request.getBio());
         map.put("picture", request.getPicture());
-        map.put("recent", request.getRecent());
-        map.put("favorite", request.getFavorite());
+        map.put("recentBoard", request.getRecentBoard());
+        map.put("invitedBoard", request.getInvitedBoard());
+        System.out.println("@@@@@@@@@@@@@@");
 
         return userService.updateUser(map);
 

@@ -6,7 +6,7 @@
 
     <select id="readPushMessage" parameterType="String" resultType="com.pozafly.tripllo.pushMessage.model.PushMessage">
         select *
-        from push_message
+          from push_message
         where target_id = #{targetId}
         order by id
     </select>

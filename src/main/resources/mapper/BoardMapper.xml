@@ -37,10 +37,17 @@
         </foreach>
     </select>
 
-    <select id="readInvitedBoards" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
+    <select id="readInvitedBoards" parameterType="List" resultType="com.pozafly.tripllo.board.model.Board">
         select *
-        from board
-        where invited_user like CONCAT('%', #{userId}, '%');
+            from board
+        where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        order by Field (id,
+        <foreach collection="list" item="item" open="" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id="readBoardDetail" parameterType="Long" resultMap="BoardDetailResult">

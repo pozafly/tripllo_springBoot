@@ -27,9 +27,9 @@ public class UserApiRequest {
     @ApiModelProperty(example = "my name is...")
     private String bio;
     @ApiModelProperty(example = "최근 본 boardId")
-    private String recent;
+    private String recentBoard;
     @ApiModelProperty(example = "관심 boardId")
-    private String favorite;
+    private String invitedBoard;
     @ApiModelProperty(example = "Google")
     private String social;
 

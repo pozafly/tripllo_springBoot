@@ -15,8 +15,8 @@ public class LoginApiResponse {
     private String name;
     private String picture;
     private String bio;
-    private String recent;
-    private String favorite;
+    private String recentBoard;
+    private String invitedBoard;
     private LocalDateTime createdAt;
     private String createdBy;
     private LocalDateTime updatedAt;

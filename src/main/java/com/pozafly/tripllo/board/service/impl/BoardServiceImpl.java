@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<Message> readBoardList(String userId, List<String> recentList) {
+    public ResponseEntity<Message> readBoardList(String userId, List<String> recentList, List<String> invitedList) {
         Map<String, List<Board>> rtnMap = new HashMap<>();
 
         List<Board> board = boardDao.readBoardList(userId);
@@ -69,8 +69,10 @@ public class BoardServiceImpl implements BoardService {
             rtnMap.put("recentBoard", recentBoard);
         }
 
-        List<Board> invitedBoard = boardDao.readInvitedBoards(userId);
-        rtnMap.put("invitedBoard", invitedBoard);
+        if(!ObjectUtils.isEmpty(invitedList)) {
+            List<Board> invitedBoard = boardDao.readInvitedBoards(invitedList);
+            rtnMap.put("invitedBoard", invitedBoard);
+        }
 
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
         message.setStatus(StatusEnum.OK);

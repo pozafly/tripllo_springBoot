@@ -6,20 +6,7 @@
 
     <select id="readUser" parameterType="String" resultType="com.pozafly.tripllo.user.model.User">
         select
-            id,
-            password,
-            email,
-            name,
-            picture,
-            social,
-            bio,
-            recent,
-            favorite,
-            role,
-            created_at,
-            created_by,
-            updated_at,
-            updated_by
+            *
         from user
         where id = #{id}
     </select>
@@ -68,11 +55,11 @@
             <if test='bio != null and !"".equals(bio)'>
                 bio = #{bio},
             </if>
-            <if test='recent != null and !"".equals(recent)'>
-                recent = #{recent},
+            <if test='recentBoard != null and !"".equals(recentBoard)'>
+                recent_board = #{recentBoard},
             </if>
-            <if test='favorite != null and !"".equals(favorite)'>
-                favorite = #{favorite},
+            <if test='invitedBoard != null and !"".equals(invitedBoard)'>
+                invited_board = #{invitedBoard},
             </if>
             updated_at = now(),
             updated_by = #{id}

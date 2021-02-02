@@ -1,11 +1,14 @@
 package com.pozafly.tripllo.user.model;
 
+import com.pozafly.tripllo.common.domain.network.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 
 @Data
-public class User {
+@EqualsAndHashCode(callSuper = false)
+public class User extends BaseEntity {
 
     private String id;
     private String password;
@@ -14,13 +17,8 @@ public class User {
     private String picture;
     private String social;
     private String bio;
-    private String recent;
-    private String favorite;
+    private String recentBoard;
+    private String invitedBoard;
     private String role;
-    
-    private LocalDateTime createdAt;
-    private String createdBy;
-    private LocalDateTime updatedAt;
-    private String updatedBy;
 
 }
