@@ -16,6 +16,7 @@ public class ResponseBoardDetail {
     private String boardInvitedUser;
     private String boardPublicYn;
     private String boardHashtag;
+    private int boardLikeCount;
     private String boardCreatedByPicture;
     private List<Lists> lists;
 

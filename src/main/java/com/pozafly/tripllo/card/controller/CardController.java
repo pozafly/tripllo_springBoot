@@ -19,7 +19,7 @@ import java.util.Map;
 public class CardController {
 
     @Autowired
-    CardService cardService;
+    private CardService cardService;
 
     @ApiOperation(value = "카드 조회", notes = "카드id로 카드를 조회합니다.")
     @ApiResponses({

@@ -12,8 +12,8 @@ public interface BoardDao {
     public Board readBoardOne(Long boardId);
     public List<Board> readBoardList(String userId);
     public int boardCount(Long boardId);
-    public List<Board> readRecentBoards(List<String> boardIdList);
-    public List<Board> readInvitedBoards(List<String> invitedList);
+    public List<Board> readRecentBoards(Map<String, Object> map);
+    public List<Board> readInvitedBoards(Map<String, Object> map);
     public BoardResultMap readBoardDetail(Long boardId);
     public Long createBoard(Map<String, Object> boardInfo);
     public void updateBoard(Map<String, Object> boardInfo);

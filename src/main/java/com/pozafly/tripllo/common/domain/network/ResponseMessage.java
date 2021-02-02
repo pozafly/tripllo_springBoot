@@ -74,4 +74,10 @@ public class ResponseMessage {
     // 이메일
     public static final String SEND_EMAIL_SUCCESS = "이메일 전송 성공";
     public static final String ID_EMAIL_WRONG = "가입한 ID와 EMAIL이 동일하지 않습니다.";
+
+    // like
+    public static final String CREATED_LIKE = "LIKE 등록 성공";
+    public static final String DELETE_LIKE = "LIKE 삭제 성공";
+    public static final String NOT_FOUNT_LIKE = "LIKE를 찾을 수 없습니다.";
+
 }

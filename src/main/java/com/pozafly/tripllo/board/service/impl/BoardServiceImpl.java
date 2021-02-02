@@ -65,12 +65,20 @@ public class BoardServiceImpl implements BoardService {
         rtnMap.put("boardList", board);
 
         if(!ObjectUtils.isEmpty(recentList)) {
-            List<Board> recentBoard = boardDao.readRecentBoards(recentList);
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", userId);
+            map.put("recentList", recentList);
+
+            List<Board> recentBoard = boardDao.readRecentBoards(map);
             rtnMap.put("recentBoard", recentBoard);
         }
 
         if(!ObjectUtils.isEmpty(invitedList)) {
-            List<Board> invitedBoard = boardDao.readInvitedBoards(invitedList);
+            Map<String, Object> map = new HashMap<>();
+            map.put("userId", userId);
+            map.put("invitedList", invitedList);
+
+            List<Board> invitedBoard = boardDao.readInvitedBoards(map);
             rtnMap.put("invitedBoard", invitedBoard);
         }
 
@@ -165,52 +173,82 @@ public class BoardServiceImpl implements BoardService {
 
             if(!StringUtils.isEmpty(newArray)) {
                 Board board = boardDao.readBoardOne((Long)boardInfo.get("boardId"));
-
                 String[] preArray = gson.fromJson(board.getHashtag(), String[].class);
-                List<String> preHashList = new ArrayList<>(Arrays.asList(preArray));
-                List<String> newHashList = new ArrayList<>(Arrays.asList(newArray));
 
-                // 1. 해시태그가 기존에 있던 것에서 삭제 되었다.
-                if(preHashList.size() > newHashList.size()) {
-                    // https://www.daleseo.com/how-to-remove-from-list-in-java/
-                    newHashList.forEach(el -> {
-                        boolean a = preHashList.removeIf(pre -> pre.equals(el));
-                    });
+                // 기존의 hashtag array가 존재해야 진행 가능.
+                if(!ObjectUtils.isEmpty(preArray)) {
+                    List<String> preHashList = new ArrayList<>(Arrays.asList(preArray));
+                    List<String> newHashList = new ArrayList<>(Arrays.asList(newArray));
 
-                    Hashtag hashtag = hashtagDao.readHashTag(preHashList.get(0));
+                    // 1. 해시태그가 기존에 있던 것에서 삭제 되었다.
+                    if(preHashList.size() > newHashList.size()) {
+                        // https://www.daleseo.com/how-to-remove-from-list-in-java/
+                        newHashList.forEach(el -> {
+                            boolean a = preHashList.removeIf(pre -> pre.equals(el));
+                        });
 
-                    Map<String, Long> map = new HashMap<>();
-                    map.put("boardId", (Long)boardInfo.get("boardId"));
-                    map.put("hashtagId", hashtag.getId());
+                        Hashtag hashtag = hashtagDao.readHashTag(preHashList.get(0));
 
-                    boardHasHashtagDao.deleteBoardHasHashtag(map);
-                }
-                // 2. 해시태그가 기존에 있던 것에서 추가 되었다.
-                else if (preHashList.size() < newHashList.size()) {
-                    preHashList.forEach(el -> {
-                        newHashList.removeIf(list -> list.equals(el));
-                    });
-                    Long hashtagId = null;
+                        Map<String, Long> map = new HashMap<>();
+                        map.put("boardId", (Long)boardInfo.get("boardId"));
+                        map.put("hashtagId", hashtag.getId());
 
-                    Hashtag hashtag = hashtagDao.readHashTag(newHashList.get(0));
-                    // 해시태그가 없다면 새로 만들어준다.
-                    if(ObjectUtils.isEmpty(hashtag)) {
-                        Map<String, Object> hashtagInfo = new HashMap<>();
-                        hashtagInfo.put("name", newHashList.get(0));
-                        hashtagInfo.put("id", null);
-
-                        hashtagDao.createHashtag(hashtagInfo);
-
-                        hashtagId = (Long)hashtagInfo.get("id");
-                    } else {
-                        hashtagId = hashtag.getId();
+                        boardHasHashtagDao.deleteBoardHasHashtag(map);
                     }
-                    // 무조건 board_has_hashtag에 insert 함.
-                    Map<String, Long> info = new HashMap<>();
-                    info.put("boardId", board.getId());
-                    info.put("hashtagId", hashtagId);
-                    boardHasHashtagDao.createBoardHasHashtag(info);
+                    // 2. 해시태그가 기존에 있던 것에서 추가 되었다.
+                    else if (preHashList.size() < newHashList.size()) {
+                        preHashList.forEach(el -> {
+                            newHashList.removeIf(list -> list.equals(el));
+                        });
+                        Long hashtagId = null;
+
+                        Hashtag hashtag = hashtagDao.readHashTag(newHashList.get(0));
+                        // 해시태그가 없다면 새로 만들어준다.
+                        if(ObjectUtils.isEmpty(hashtag)) {
+                            Map<String, Object> hashtagInfo = new HashMap<>();
+                            hashtagInfo.put("name", newHashList.get(0));
+                            hashtagInfo.put("id", null);
+
+                            hashtagDao.createHashtag(hashtagInfo);
+
+                            hashtagId = (Long)hashtagInfo.get("id");
+                        } else {
+                            hashtagId = hashtag.getId();
+                        }
+                        // 무조건 board_has_hashtag에 insert 함.
+                        Map<String, Long> info = new HashMap<>();
+                        info.put("boardId", board.getId());
+                        info.put("hashtagId", hashtagId);
+                        boardHasHashtagDao.createBoardHasHashtag(info);
+                    }
+                } else {
+                    // 기존의 hashtag array가 존재하지 않으니 새로 만들어준다.
+                    for(String hashtag : newArray) {
+                        Long hashtagId = null;
+
+                        // 해시태그가 없다면 새로 만들어준다.
+                        Hashtag tag = hashtagDao.readHashTag(hashtag);
+
+                        if(ObjectUtils.isEmpty(tag)) {
+                            Map<String, Object> hashtagInfo = new HashMap<>();
+                            hashtagInfo.put("name", hashtag);
+                            hashtagInfo.put("id", null);
+
+                            hashtagDao.createHashtag(hashtagInfo);
+
+                            hashtagId = (Long)hashtagInfo.get("id");
+                        } else {
+                            hashtagId = tag.getId();
+                        }
+
+                        // 무조건 board_has_hashtag에 insert 함.
+                        Map<String, Long> info = new HashMap<>();
+                        info.put("boardId", board.getId());
+                        info.put("hashtagId", hashtagId);
+                        boardHasHashtagDao.createBoardHasHashtag(info);
+                    }
                 }
+
             }
 
             boardDao.updateBoard(boardInfo);

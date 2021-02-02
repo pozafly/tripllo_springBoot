@@ -109,7 +109,6 @@ public class UserController {
         map.put("picture", request.getPicture());
         map.put("recentBoard", request.getRecentBoard());
         map.put("invitedBoard", request.getInvitedBoard());
-        System.out.println("@@@@@@@@@@@@@@");
 
         return userService.updateUser(map);
 

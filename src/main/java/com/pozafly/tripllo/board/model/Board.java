@@ -11,8 +11,6 @@ public class Board extends BaseEntity {
 
     @ApiModelProperty(example = "1")
     private Long id;
-    @ApiModelProperty(example = "pain103")
-    private String userId;
     @ApiModelProperty(example = "new Board")
     private String title;
     @ApiModelProperty(example = "rgb(0, 121, 191)")
@@ -23,5 +21,9 @@ public class Board extends BaseEntity {
     private String publicYn;
     @ApiModelProperty(example = "해쉬태그")
     private String hashtag;
+    @ApiModelProperty(example = "210")
+    private int likeCount;
+    @ApiModelProperty(example = "0: 좋아요 누르지 않음, 1: 좋아요 누름")
+    private int ownLike;
 
 }

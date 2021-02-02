@@ -12,9 +12,23 @@
 
     <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
         select
-            *
-        from board
-        where user_id = #{userId}
+            a.id,
+            a.title,
+            a.bg_color,
+            a.public_yn,
+            a.hashtag,
+            a.like_count,
+            a.created_at,
+            a.created_by,
+            EXISTS
+            (
+                select *
+                from board_has_like
+                where board_id = a.id and user_id = #{userId}
+            ) as own_like
+        from board a
+        where a.created_by = #{userId}
+        order by created_at desc
     </select>
 
     <select id="boardCount" parameterType="Long" resultType="int">
@@ -24,28 +38,56 @@
         where id = #{boardId}
     </select>
 
-    <select id="readRecentBoards" parameterType="List" resultType="com.pozafly.tripllo.board.model.Board">
-        select *
-                from board
-        where id in
-        <foreach collection="list" item="item" open="(" separator="," close=")">
+    <select id="readRecentBoards" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">
+        select
+            a.id,
+            a.title,
+            a.bg_color,
+            a.public_yn,
+            a.hashtag,
+            a.like_count,
+            a.created_at,
+            a.created_by,
+            EXISTS
+            (
+                select *
+                from board_has_like
+                where board_id = a.id and user_id = #{userId}
+            ) as own_like
+        from board a
+        where a.id in
+        <foreach collection="recentList" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
         order by Field (id,
-        <foreach collection="list" item="item" open="" separator="," close=")">
+        <foreach collection="recentList" item="item" open="" separator="," close=")">
             #{item}
         </foreach>
     </select>
 
-    <select id="readInvitedBoards" parameterType="List" resultType="com.pozafly.tripllo.board.model.Board">
-        select *
-            from board
-        where id in
-        <foreach collection="list" item="item" open="(" separator="," close=")">
+    <select id="readInvitedBoards" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">
+        select
+            a.id,
+            a.title,
+            a.bg_color,
+            a.public_yn,
+            a.hashtag,
+            a.like_count,
+            a.created_at,
+            a.created_by,
+            EXISTS
+            (
+                select *
+                from board_has_like
+                where board_id = a.id and user_id = #{userId}
+            ) as own_like
+        from board a
+        where a.id in
+        <foreach collection="invitedList" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
         order by Field (id,
-        <foreach collection="list" item="item" open="" separator="," close=")">
+        <foreach collection="invitedList" item="item" open="" separator="," close=")">
             #{item}
         </foreach>
     </select>
@@ -55,10 +97,10 @@
             a.id as board_id,
             a.title as board_title,
             a.bg_color as board_bg_color,
-            a.user_id as board_user_id,
             a.invited_user as board_invited_user,
             a.public_yn as board_public_yn,
             a.hashtag as board_hashtag,
+            a.like_count as board_like_count,
             a.created_at as board_created_at,
             a.created_by as board_created_by,
             d.picture as board_created_by_picture,
@@ -90,10 +132,10 @@
         <id property="id" column="board_id"/>
         <result property="title" column="board_title"/>
         <result property="bgColor" column="board_bg_color"/>
-        <result property="userId" column="board_user_id"/>
         <result property="invitedUser" column="board_invited_user"/>
         <result property="publicYn" column="board_public_yn" />
         <result property="hashtag" column="board_hashtag"/>
+        <result property="likeCount" column="board_like_count"/>
         <result property="createdAt" column="board_created_at"/>
         <result property="createdBy" column="board_created_by"/>
         <result property="createdByPicture" column="board_created_by_picture"/>
@@ -155,7 +197,7 @@
     -->
 
     <insert id="createBoard" parameterType="Map">
-        insert into board values (null, #{userId}, #{title}, #{bgColor}, null, #{publicYn}, #{hashtag}, now(), #{userId}, null, null)
+        insert into board values (null, #{title}, #{bgColor}, null, #{publicYn}, #{hashtag}, 0, now(), #{userId}, null, null)
         <selectKey resultType="Long" keyProperty="id" order="AFTER" >
             select last_insert_id() as id
         </selectKey>
@@ -180,6 +222,7 @@
             <if test='hashtag != null'>
                 hashtag = #{hashtag},
             </if>
+
             updated_at = now(),
             updated_by = #{userId}
         where id = #{boardId}
