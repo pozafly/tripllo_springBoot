@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://github.com/**"
                 , "http://tripllo.tech.s3-website.ap-northeast-2.amazonaws.com", "http://tripllo.tech", "https://tripllo.tech"));
         configuration.setAllowedMethods(ImmutableList.of("HEAD","GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.addAllowedHeader("*");
+//        configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
         // 토큰을 Authorization 이라는 이름으로 받겠다.
         configuration.setAllowedHeaders(ImmutableList.of("Authorization", "Cache-Control", "Content-Type"));
@@ -75,7 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/logout").permitAll()
                 .antMatchers("/api/email/*").permitAll()
 
-                // 인증된 사용자만 가능하다(즉, 토큰을 준 사람만이 가능한 것임.)
+                // 인증된 사용자만 가능하다(즉, 헤더에 토큰을 준 사람만이 가능한 것임.)
                 .antMatchers("/api/**").authenticated()
                 // role이 ROLE_USER 인 역할만 통과
                 .antMatchers("/api/**").hasRole("USER")

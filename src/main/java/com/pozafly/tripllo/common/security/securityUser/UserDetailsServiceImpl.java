@@ -39,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-                authorities.add(new SimpleGrantedAuthority(user.getRole()));
+                authorities.add(new SimpleGrantedAuthority(user.getRole()));  // Role을 위해
                 return authorities;
             }
             @Override

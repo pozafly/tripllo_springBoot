@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,8 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    private static String secretKey = "triplloApplication";
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     // 토큰 유효시간 60분 * 24 = 24시간
     private long tokenValidTime = 60 * 60 * 24 * 1000L;
@@ -55,7 +57,7 @@ public class JwtTokenProvider {
     }
 
     // 토큰에서 회원 정보 추출
-    public static String getUserPk(String token) {
+    public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
