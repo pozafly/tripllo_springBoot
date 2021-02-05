@@ -42,8 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://github.com/**"
-                , "http://tripllo.tech.s3-website.ap-northeast-2.amazonaws.com", "http://tripllo.tech", "https://tripllo.tech"));
+        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://tripllo.tech"));
         configuration.setAllowedMethods(ImmutableList.of("HEAD","GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 //        configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
@@ -64,8 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 요청에 대한 사용권한 체크
 //                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("profile").permitAll()
-                .antMatchers("/websocket").permitAll()
+                .antMatchers("/profile").permitAll()
+                .antMatchers("/websocket/**").permitAll()
                 // post 방식의 user create(회원가입)은 허용한다.
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 // 회원가입 전 사용하고 싶은 회원 id를 validation 해볼 수 있는 api도 open
@@ -73,13 +72,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인 오픈
                 .antMatchers("/api/login/**").permitAll()
                 .antMatchers("/api/logout").permitAll()
-                .antMatchers("/api/email/*").permitAll()
+                .antMatchers("/api/email/**").permitAll()
 
                 // 인증된 사용자만 가능하다(즉, 헤더에 토큰을 준 사람만이 가능한 것임.)
                 .antMatchers("/api/**").authenticated()
                 // role이 ROLE_USER 인 역할만 통과
                 .antMatchers("/api/**").hasRole("USER")
-                .anyRequest().permitAll() // 그외 나머지 요청은 누구나 접근 가능
+                .anyRequest().authenticated()   // 그외 나머지 요청은 인증가능해야한다.
                 .and()
                 .cors()
                 .and()
