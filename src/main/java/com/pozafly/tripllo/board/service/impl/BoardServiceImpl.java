@@ -58,36 +58,65 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public ResponseEntity<Message> readBoardList(String userId, List<String> recentList, List<String> invitedList) {
-        Map<String, List<Board>> rtnMap = new HashMap<>();
+    public ResponseEntity<Message> readPersonalBoardList(Map<String, String> boardInfo) {
+        List<Board> board = boardDao.readPersonalBoardList(boardInfo);
+        if(!ObjectUtils.isEmpty(board)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(board);
 
-        List<Board> board = boardDao.readBoardList(userId);
-        rtnMap.put("boardList", board);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(null);
 
-        if(!ObjectUtils.isEmpty(recentList)) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("userId", userId);
-            map.put("recentList", recentList);
-
-            List<Board> recentBoard = boardDao.readRecentBoards(map);
-            rtnMap.put("recentBoard", recentBoard);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
+    }
 
-        if(!ObjectUtils.isEmpty(invitedList)) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("userId", userId);
-            map.put("invitedList", invitedList);
+    @Override
+    public ResponseEntity<Message> readRecentBoardList(Map<String, Object> recentInfo) {
 
-            List<Board> invitedBoard = boardDao.readInvitedBoards(map);
-            rtnMap.put("invitedBoard", invitedBoard);
+        List<Board> recentBoard = boardDao.readRecentBoards(recentInfo);
+        if(!ObjectUtils.isEmpty(recentBoard)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(recentBoard);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(null);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
+    }
 
-        headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
-        message.setStatus(StatusEnum.OK);
-        message.setMessage(ResponseMessage.READ_BOARD);
-        message.setData(rtnMap);
+    @Override
+    public ResponseEntity<Message> readInvitedBoardList(Map<String, Object> invitedInfo) {
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        List<Board> invitedBoard = boardDao.readInvitedBoards(invitedInfo);
+        if(!ObjectUtils.isEmpty(invitedBoard)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(invitedBoard);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(null);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }
     }
 
     @Override

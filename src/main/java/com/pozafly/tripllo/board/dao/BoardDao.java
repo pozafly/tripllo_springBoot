@@ -10,7 +10,7 @@ import java.util.Map;
 @Mapper
 public interface BoardDao {
     public Board readBoardOne(Long boardId);
-    public List<Board> readBoardList(String userId);
+    public List<Board> readPersonalBoardList(Map<String, String> boardInfo);
     public int boardCount(Long boardId);
     public List<Board> readRecentBoards(Map<String, Object> map);
     public List<Board> readInvitedBoards(Map<String, Object> map);

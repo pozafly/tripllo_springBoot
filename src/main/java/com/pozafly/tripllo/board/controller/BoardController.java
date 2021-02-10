@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Api(value = "Board V1")
@@ -38,26 +39,62 @@ public class BoardController {
             @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
             @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
     })
-    @GetMapping("{userId}/{recentLists}/{invitedLists}")
-    public ResponseEntity<Message> readBoardList(
-            @ApiParam(value = "유저 id", required = true, example = "pain103")
-            @PathVariable String userId,
+    @GetMapping("/personal/{lastCreatedAt}")
+    public ResponseEntity<Message> readPersonalBoardList(
+            @PathVariable String lastCreatedAt,
+            @AuthenticationPrincipal SecurityUser securityUser
+    ) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", securityUser.getUsername());
+        map.put("lastCreatedAt", lastCreatedAt);
+
+        return boardService.readPersonalBoardList(map);
+    }
+
+    @ApiOperation(value = "보드 최 목록 조회", notes = "유저 ID로 Board 목록을 조회 합니다. 메인 페이지에서 보드를 선택할 때 사용합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
+            @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
+    })
+    @GetMapping("/recent/{recentLists}")
+    public ResponseEntity<Message> readRecentBoardList(
             @PathVariable String recentLists,
-            @PathVariable String invitedLists
+            @AuthenticationPrincipal SecurityUser securityUser
     ) {
         List<String> recentList = null;
         if(!"null".equals(recentLists)) {
             String[] el = recentLists.split(",");
             recentList = new ArrayList<>(Arrays.asList(el));
         }
+        Map<String, Object> recentInfo = new HashMap<>();
+        recentInfo.put("userId", securityUser.getUsername());
+        recentInfo.put("recentList", recentList);
+
+        return boardService.readRecentBoardList(recentInfo);
+    }
+
+    @ApiOperation(value = "보드 목록 조회", notes = "유저 ID로 Board 목록을 조회 합니다. 메인 페이지에서 보드를 선택할 때 사용합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
+            @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
+    })
+    @GetMapping("/invited/{invitedLists}")
+    public ResponseEntity<Message> readInvitedBoardList(
+            @PathVariable String invitedLists,
+            @AuthenticationPrincipal SecurityUser securityUser
+    ) {
         List<String> invitedList = null;
         if(!"null".equals(invitedLists)) {
             String[] el = invitedLists.split(",");
             invitedList = new ArrayList<>(Arrays.asList(el));
         }
+        Map<String, Object> invitedInfo = new HashMap<>();
+        invitedInfo.put("userId", securityUser.getUsername());
+        invitedInfo.put("invitedList", invitedList);
 
-        return boardService.readBoardList(userId, recentList, invitedList);
+        return boardService.readInvitedBoardList(invitedInfo);
     }
+
 
     @ApiOperation(value = "보드 상세 조회", notes = "페이지에서 보드를 눌러 상세 페이지로 들어갔을 때 보드 id로 연관된 list와 card를 조회합니다.")
     @ApiResponses({

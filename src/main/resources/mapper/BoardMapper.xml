@@ -10,7 +10,7 @@
         where id = #{boardId}
     </select>
 
-    <select id="readBoardList" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
+    <select id="readPersonalBoardList" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">
         select
             a.id,
             a.title,
@@ -28,7 +28,18 @@
             ) as own_like
         from board a
         where a.created_by = #{userId}
-        order by created_at desc
+        <choose>
+            <when test='"firstCall".equals(lastCreatedAt)'>
+                order by created_at desc
+                limit 14
+            </when>
+            <otherwise>
+                and created_at <![CDATA[ < ]]> #{lastCreatedAt}
+                order by created_at desc
+                limit 6
+            </otherwise>
+        </choose>
+
     </select>
 
     <select id="boardCount" parameterType="Long" resultType="int">
@@ -63,6 +74,7 @@
         <foreach collection="recentList" item="item" open="" separator="," close=")">
             #{item}
         </foreach>
+        limit 3
     </select>
 
     <select id="readInvitedBoards" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">

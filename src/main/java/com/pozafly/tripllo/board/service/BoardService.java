@@ -8,7 +8,9 @@ import java.util.Map;
 
 public interface BoardService {
     public ResponseEntity<Message> readBoardOne(Long boardId);
-    public ResponseEntity<Message> readBoardList(String userId, List<String> recentList, List<String> invitedList);
+    public ResponseEntity<Message> readPersonalBoardList(Map<String, String> boardInfo);
+    public ResponseEntity<Message> readRecentBoardList(Map<String, Object> recentInfo);
+    public ResponseEntity<Message> readInvitedBoardList(Map<String, Object> invitedInfo);
     public ResponseEntity<Message> readBoardDetail(Long boardId);
     public ResponseEntity<Message> createBoard(Map<String, Object> boardInfo);
     public ResponseEntity<Message> updateBoard(Map<String, Object> boardInfo);

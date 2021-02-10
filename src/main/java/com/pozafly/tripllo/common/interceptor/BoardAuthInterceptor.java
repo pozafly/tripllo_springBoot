@@ -17,6 +17,7 @@ import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,9 +44,11 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
 
         if(httpMethod.equals("GET")) {
             if (methodName.equals("readBoardList")) {
+                Map<String, String> map = new HashMap<>();
+                map.put("userId", userId);
+
                 // pathVariable로 들어온 userId
-                String id = (String) pathVariables.get("userId");
-                List<Board> boardList = boardDao.readBoardList(id);
+                List<Board> boardList = boardDao.readPersonalBoardList(map);
                 if (boardList.size() == 0) return true;
 
                 if (!userId.equals(boardList.get(0).getCreatedBy())) throw new AuthorizationException();
