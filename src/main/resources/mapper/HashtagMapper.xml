@@ -9,40 +9,23 @@
         where name = #{name}
     </select>
 
-    <select id="readBoardByHashtag" parameterType="String" resultMap="HashtagResult">
-        select
-            a.name as hashtag_name,
-            c.id as board_id,
-            c.title as board_title,
-            c.bg_color as board_bg_color,
-            c.public_yn as board_public_yn,
-            c.hashtag as board_hashtag,
-            c.like_count as board_like_count,
-            c.created_at as board_created_at,
-            c.created_by as board_created_by
+    <select id="readBoardByHashtag" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
+        select distinct
+                    c.id,
+                    c.title,
+                    c.bg_color,
+                    c.public_yn,
+                    c.hashtag,
+                    c.like_count,
+                    c.created_at,
+                    c.created_by
         from hashtag a
             left outer join board_has_hashtag b on a.id = b.hashtag_id
             left outer join board c on b.board_id = c.id
-        where a.name CONCAT('%', #{name}, '%')
+        where a.name like CONCAT('%', #{name}, '%')
         and c.public_yn = 'Y'
         order by like_count desc, created_at desc
     </select>
-    <resultMap id="HashtagResult" type="com.pozafly.tripllo.hashtag.model.response.HashtagResult">
-        <result property="title" column="board_title"/>
-        <collection property="boards" ofType="com.pozafly.tripllo.hashtag.model.response.BoardListResult"
-                    resultMap="BoardListsResult" foreignColumn="list_board_id" />
-    </resultMap>
-    <resultMap id="BoardListsResult" type="com.pozafly.tripllo.hashtag.model.response.BoardListResult">
-        <result property="id" column="board_id"/>
-        <result property="userId" column="board_user_id"/>
-        <result property="title" column="board_title"/>
-        <result property="bgColor" column="board_bg_color"/>
-        <result property="publicYn" column="board_public_yn"/>
-        <result property="hashtag" column="board_hashtag"/>
-        <result property="likeCount" column="board_like_count"/>
-        <result property="createdAt" column="board_created_at"/>
-        <result property="createdBy" column="board_created_by"/>
-    </resultMap>
 
     <insert id="createHashtag" parameterType="Map">
         insert into hashtag values (null, #{name})
