@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.nio.charset.Charset;
@@ -37,6 +38,7 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Override
     public ResponseEntity<Message> login(LoginApiRequest request) {
         User user = userDao.readUser(request.getId());
         if (!ObjectUtils.isEmpty(user)) {

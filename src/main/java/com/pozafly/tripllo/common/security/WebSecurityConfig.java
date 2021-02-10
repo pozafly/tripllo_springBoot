@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -38,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-    // 여기는 SWAGGER 의 CORS 설정임.
+    // 여기는 CORS 설정임.
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
@@ -87,5 +88,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // JwtAuthenticationFilter를 UsernamePasswordAuthenticationFilter 전에 넣는다
 
                 ;
+    }
+
+    // swagger ignore 걸어주자
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/v2/**",
+                        "/webjars/**",
+                        "/swagger**",
+                        "/swagger-resources/**")
+        ;
     }
 }
