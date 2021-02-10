@@ -9,7 +9,7 @@
         where name = #{name}
     </select>
 
-    <select id="readBoardByHashtag" parameterType="String" resultType="com.pozafly.tripllo.board.model.Board">
+    <select id="readBoardByHashtag" parameterType="Map" resultType="com.pozafly.tripllo.hashtag.model.response.ResponseHashtagByBoard">
         select distinct
                     c.id,
                     c.title,
@@ -18,12 +18,23 @@
                     c.hashtag,
                     c.like_count,
                     c.created_at,
-                    c.created_by
+                    c.created_by,
+                    EXISTS
+                    (
+                        select *
+                        from board_has_like
+                        where board_id = c.id and user_id = #{userId}
+                    ) as own_like,
+                    d.picture as created_user_picture
         from hashtag a
             left outer join board_has_hashtag b on a.id = b.hashtag_id
             left outer join board c on b.board_id = c.id
-        where a.name like CONCAT('%', #{name}, '%')
-        and c.public_yn = 'Y'
+            left outer join user d on d.id = c.created_by
+        where
+        <if test='hashtagName != null and !"".equals(hashtagName)'>
+            a.name like CONCAT('%', #{hashtagName}, '%') and
+        </if>
+        c.public_yn = 'Y'
         order by like_count desc, created_at desc
     </select>
 
