@@ -39,7 +39,30 @@
                 limit 6
             </otherwise>
         </choose>
+    </select>
 
+    <select id="rerenderBoard" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">
+        select
+            a.id,
+            a.title,
+            a.bg_color,
+            a.public_yn,
+            a.hashtag,
+            a.like_count,
+            a.created_at,
+            a.created_by,
+            EXISTS
+            (
+                select *
+                from board_has_like
+                where board_id = a.id and user_id = #{userId}
+            ) as own_like
+        from board a
+        where a.created_by = #{userId}
+        order by created_at desc
+        <if test='count != null and !"".equals(count)'>
+            limit #{count}
+        </if>
     </select>
 
     <select id="boardCount" parameterType="Long" resultType="int">
