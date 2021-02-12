@@ -164,6 +164,8 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<Message> createBoard(Map<String, Object> boardInfo) {
         if(!StringUtils.isEmpty(boardInfo.get("title"))) {
             boardDao.createBoard(boardInfo);
+            Long boardId = (Long) boardInfo.get("id");
+            boardInfo.put("boardId", boardId);
 
             String hash = (String)boardInfo.get("hashtag");
             Gson gson = new Gson();

@@ -232,7 +232,7 @@
     -->
 
     <insert id="createBoard" parameterType="Map">
-        insert into board values (null, #{title}, #{bgColor}, null, #{publicYn}, #{hashtag}, 0, now(), #{userId}, null, null)
+        insert into board values (null, #{title}, #{userId}, #{bgColor}, null, #{publicYn}, #{hashtag}, 0, now(), #{userId}, null, null)
         <selectKey resultType="Long" keyProperty="id" order="AFTER" >
             select last_insert_id() as id
         </selectKey>

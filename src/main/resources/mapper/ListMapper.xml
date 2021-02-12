@@ -12,6 +12,9 @@
 
     <insert id="createList" parameterType="Map">
         insert into list values (null, #{boardId}, #{title}, #{pos}, now(), #{userId}, null, null)
+        <selectKey resultType="Long" keyProperty="id" order="AFTER" >
+            select last_insert_id() as id
+        </selectKey>
     </insert>
 
     <update id="updateList" parameterType="Map">

@@ -11,6 +11,9 @@
 
     <insert id="createCard" parameterType="Map">
         insert into card values (null, #{listId}, #{title}, #{pos}, null, null, null, 'N', 'N', null, now(), #{userId}, null, null)
+        <selectKey resultType="Long" keyProperty="id" order="AFTER" >
+            select last_insert_id() as id
+        </selectKey>
     </insert>
 
     <update id="updateCard" parameterType="Map">

@@ -12,6 +12,9 @@
 
     <insert id="createChecklistItem" parameterType="Map">
         insert into checklist_item values (null, #{checklistId}, #{item}, 'N', now(), #{userId}, null, null)
+        <selectKey resultType="Long" keyProperty="id" order="AFTER" >
+            select last_insert_id() as id
+        </selectKey>
     </insert>
 
     <update id="updateChecklistItem" parameterType="Map">
