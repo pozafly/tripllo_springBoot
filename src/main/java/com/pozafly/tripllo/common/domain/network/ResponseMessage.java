@@ -80,4 +80,8 @@ public class ResponseMessage {
     public static final String DELETE_LIKE = "LIKE 삭제 성공";
     public static final String NOT_FOUNT_LIKE = "LIKE를 찾을 수 없습니다.";
 
+    // 해시태그
+    public static final String READ_HASHTAG = "해시태그 조회 성공";
+    public static final String NOT_FOUND_HASHTAG = "해시태그를 찾을 수 없습니다.";
+
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 public interface HashtagService {
 
-    public ResponseEntity<Message> readBoardByHashtag(Map<String, String> info);
+    public ResponseEntity<Message> readBoardByHashtag(Map<String, Object> info);
+    public ResponseEntity<Message> readHashtagOrderByCount();
 
 }

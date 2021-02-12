@@ -5,6 +5,7 @@ import com.pozafly.tripllo.common.domain.network.ResponseMessage;
 import com.pozafly.tripllo.common.domain.network.StatusEnum;
 import com.pozafly.tripllo.hashtag.dao.HashtagDao;
 import com.pozafly.tripllo.hashtag.model.response.ResponseHashtagByBoard;
+import com.pozafly.tripllo.hashtag.model.response.ResponseOrderByCount;
 import com.pozafly.tripllo.hashtag.service.HashtagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -28,7 +29,7 @@ public class HashtagServiceImpl implements HashtagService {
     private HashtagDao hashtagDao;
 
     @Override
-    public ResponseEntity<Message> readBoardByHashtag(Map<String, String> info) {
+    public ResponseEntity<Message> readBoardByHashtag(Map<String, Object> info) {
 
         List<ResponseHashtagByBoard> boards = hashtagDao.readBoardByHashtag(info);
 
@@ -46,5 +47,24 @@ public class HashtagServiceImpl implements HashtagService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         }
 
+    }
+
+    @Override
+    public ResponseEntity<Message> readHashtagOrderByCount() {
+        List<ResponseOrderByCount> hashtags = hashtagDao.readHashtagOrderByCount();
+
+        if (!ObjectUtils.isEmpty(hashtags)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_HASHTAG);
+            message.setData(hashtags);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            message.setData(null);
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage(ResponseMessage.NOT_FOUND_HASHTAG);
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }
     }
 }

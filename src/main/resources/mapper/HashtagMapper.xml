@@ -34,8 +34,34 @@
         <if test='hashtagName != null and !"".equals(hashtagName)'>
             a.name like CONCAT('%', #{hashtagName}, '%') and
         </if>
+        <if test='lastLikeCount != null and !"".equals(lastLikeCount)'>
+            (c.like_count <![CDATA[ < ]]> #{lastLikeCount} or
+            (c.like_count = #{lastLikeCount} and
+        </if>
+        <if test='lastCreatedAt != null and !"".equals(lastCreatedAt)'>
+            c.created_at <![CDATA[ < ]]> #{lastCreatedAt})) and
+        </if>
         c.public_yn = 'Y'
         order by like_count desc, created_at desc
+        <choose>
+            <when test='lastCreatedAt != null and !"".equals(lastCreatedAt)'>
+                limit 6
+            </when>
+            <otherwise>
+                limit 15
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="readHashtagOrderByCount" resultType="com.pozafly.tripllo.hashtag.model.response.ResponseOrderByCount">
+        select
+            count(a.board_id) as count,
+            b.name
+        from board_has_hashtag a
+        left outer join hashtag b on a.hashtag_id = b.id
+        group by a.hashtag_id
+        order by count desc
+        limit 5
     </select>
 
     <insert id="createHashtag" parameterType="Map">
