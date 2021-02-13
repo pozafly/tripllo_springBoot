@@ -81,6 +81,7 @@ public class BoardServiceImpl implements BoardService {
     public ResponseEntity<Message> rerenderBoard(Map<String, Object> boardInfo) {
         List<Board> board = boardDao.rerenderBoard(boardInfo);
         if(!ObjectUtils.isEmpty(board)) {
+
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.READ_BOARD);

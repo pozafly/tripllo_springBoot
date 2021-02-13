@@ -15,16 +15,16 @@ public class ScheduleTask {
     private TestUserJob testUserJob;
 
     //    @Scheduled(cron = "0/30 * * * * *", zone = "Asia/Seoul")
-    @Scheduled(cron = "0 0 0/2 * * *", zone = "Asia/Seoul")
-    public void excuteTask() {
-        log.info("스케줄러 시작 시간 : {}", new Date());
-
-        try {
-            testUserJob.excute();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        log.info("스케줄러 완료");
-    }
+//    @Scheduled(cron = "0 0 0/2 * * *", zone = "Asia/Seoul")
+//    public void excuteTask() {
+//        log.info("스케줄러 시작 시간 : {}", new Date());
+//
+//        try {
+//            testUserJob.excute();
+//        } catch(Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        log.info("스케줄러 완료");
+//    }
 }

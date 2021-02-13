@@ -81,8 +81,7 @@ public class CardController {
         map.put("labelColor", card.getLabelColor());
         map.put("location", card.getLocation());
         map.put("dueDate", card.getDueDate());
-System.out.println("@@@@@@@@@@@");
-System.out.println(card.getDueDate());
+
         return cardService.updateCard(map);
 
     }

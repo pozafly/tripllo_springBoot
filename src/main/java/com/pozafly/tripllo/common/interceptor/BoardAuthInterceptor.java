@@ -18,6 +18,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +44,7 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
         String userId = auth.getName();
 
         if(httpMethod.equals("GET")) {
-            if (methodName.equals("readBoardList")) {
+            if (methodName.equals("readPersonalBoardList")) {
                 Map<String, String> map = new HashMap<>();
                 map.put("userId", userId);
 
@@ -53,37 +54,37 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
 
                 if (!userId.equals(boardList.get(0).getCreatedBy())) throw new AuthorizationException();
             } else if (methodName.equals("readBoardDetail")) {
+                // 1. public 에 공개 되었을 때, 모두 접근 가능해야함.
+                // 2. 자기 자신 접근 가능.
+                // 3. 초대된 사람 접근 가능.
+                // 4. 그 외 접근 불가능.
                 Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
 
                 Board board = boardDao.readBoardOne(boardId);
                 if (ObjectUtils.isEmpty(board)) return true;
-                if (!userId.equals(board.getCreatedBy())) {
-                    String inviteUser = board.getInvitedUser();
-                    if(StringUtils.isEmpty(inviteUser)) throw new AuthorizationException();
 
-                    if(!inviteUser.contains(userId)) throw new AuthorizationException();
+                if(!board.getPublicYn().equals("Y")) {
+                    if (!userId.equals(board.getCreatedBy())) {
+                        String inviteUser = board.getInvitedUser();
+
+                        if(StringUtils.isEmpty(inviteUser)) throw new AuthorizationException();  // 제작자가 아닌 사람이 방문했을 때, inviteUser가 없는게 말이 안됨.
+                        if(!inviteUser.contains(userId)) throw new AuthorizationException();  // 그리고 inviteUser에 현재 사용자의 id가 있어야 함.
+                    }
+                } else {
+                    return true;
                 }
             }
         } else if(httpMethod.equals("PUT")) {
-            // 초대 기능 넣었을 경우.
+            // 초대 푸시메세지 기능 넣었을 경우.
             Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
 
-            // board에 invite User 체크 후 권한 획득
-            Board board = boardDao.readBoardOne(boardId);
-            String inviteUser = board.getInvitedUser();
-            if(!StringUtils.isEmpty(inviteUser)) {
-                System.out.println(inviteUser.contains(userId));
-                if(inviteUser.contains(userId)) return true;
-            }
-
-            // 첫번째 inviteUser를 board에 등록할 때 푸시메세지로 함. 그 후 푸시메세지 삭제.
+            // 첫번째 inviteUser를 board에 등록할 때 푸시메세지로 함.
             List<PushMessage> pushMessageList = pushMessageDao.readPushMessage(userId);
             if(!ObjectUtils.isEmpty(pushMessageList)) {
                 for(PushMessage el : pushMessageList) {
                     if(el.getBoardId().equals(boardId)) {
                         Long targetBardId = el.getBoardId();
                         Board targetBoard = boardDao.readBoardOne(targetBardId);
-                        System.out.println(targetBoard.getCreatedBy().equals(el.getSenderId()));
                         if(targetBoard.getCreatedBy().equals(el.getSenderId())) {
                             return true;
                         }
@@ -91,9 +92,24 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
                 }
             }
 
+            // board에 invite User 체크 후 권한 획득
+            Board board = boardDao.readBoardOne(boardId);
+            String inviteUser = board.getInvitedUser();
+
+            LinkedHashMap<String, Object> requestBody = (LinkedHashMap<String, Object>) request.getAttribute("requestBody");
+            String publicYn = String.valueOf(requestBody.get("publicYn"));
+            if(!StringUtils.isEmpty(publicYn)) {
+                System.out.println(!board.getCreatedBy().equals(userId));
+                if(!board.getCreatedBy().equals(userId)) throw new AuthorizationException();
+            }
+
+            if(StringUtils.isEmpty(inviteUser)) throw new AuthorizationException();  // 제작자가 아닌 사람이 방문했을 때, inviteUser가 없는게 말이 안됨.
+            if(!inviteUser.contains(userId)) throw new AuthorizationException();  // 그리고 inviteUser에 현재 사용자의 id가 있어야 함.
+
             return true;
 
         } else if (httpMethod.equals("DELETE")) {
+            // 제작자만 Board 삭제가 가능함.
             Long boardId = Long.parseLong((String) pathVariables.get("boardId"));
 
             Board board = boardDao.readBoardOne(boardId);

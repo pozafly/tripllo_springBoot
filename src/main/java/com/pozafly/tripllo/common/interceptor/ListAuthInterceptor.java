@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.HandlerMapping;
 
@@ -39,17 +40,30 @@ public class ListAuthInterceptor implements HandlerInterceptor {
 
         if (httpMethod.equals("POST")) {
             LinkedHashMap<String, Object> requestBody = (LinkedHashMap<String, Object>) request.getAttribute("requestBody");
-            Long boardId = Long.parseLong( String.valueOf(requestBody.get("boardId")));
+            long boardId = (long)Double.parseDouble(String.valueOf(requestBody.get("boardId")));
 
             Board board = boardDao.readBoardOne(boardId);
-            if(!board.getCreatedBy().equals(userId)) throw new AuthorizationException();
+            if(!board.getCreatedBy().equals(userId)) {
+                String inviteUser = board.getInvitedUser();
+                if(StringUtils.isEmpty(inviteUser)) throw new AuthorizationException();  // 제작자가 아닌 사람이 방문했을 때, inviteUser가 없는게 말이 안됨.
+                if(!inviteUser.contains(userId)) throw new AuthorizationException();  // 그리고 inviteUser에 현재 사용자의 id가 있어야 함.
+            }
+
         } else if (httpMethod.equals("PUT") || httpMethod.equals("DELETE")) {
             Long listId = Long.parseLong((String) pathVariables.get("listId"));
             Lists list = listDao.readList(listId);
+            Long boardId = list.getBoardId();
 
-            if(!ObjectUtils.isEmpty(list)) {
-                if(!list.getCreatedBy().equals(userId)) throw new AuthorizationException();
+            Board board = boardDao.readBoardOne(boardId);
+            if(!board.getCreatedBy().equals(userId)) {
+                String inviteUser = board.getInvitedUser();
+                if(StringUtils.isEmpty(inviteUser)) throw new AuthorizationException();  // 제작자가 아닌 사람이 방문했을 때, inviteUser가 없는게 말이 안됨.
+                if(!inviteUser.contains(userId)) throw new AuthorizationException();  // 그리고 inviteUser에 현재 사용자의 id가 있어야 함.
             }
+
+//            if(!ObjectUtils.isEmpty(list)) {
+//                if(!list.getCreatedBy().equals(userId)) throw new AuthorizationException();
+//            }
         }
         return true;
     }

@@ -41,6 +41,11 @@
         <result property="isChecked" column="item_is_checked"/>
     </resultMap>
 
+    <select id="readChecklistOne" parameterType="Long" resultType="com.pozafly.tripllo.checklist.model.Checklist">
+        select * from checklist
+        where id = #{checklistId}
+    </select>
+
     <select id="countChecklist" parameterType="Long" resultType="int">
         select count(*) from checklist
         where card_id = #{cardId}
