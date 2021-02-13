@@ -143,7 +143,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public ResponseEntity<Message> readBoardDetail(Long boardId) {
         BoardResultMap item = boardDao.readBoardDetail(boardId);
-
+System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+System.out.println(item);
+        System.out.println(item.toString());
         if(!ObjectUtils.isEmpty(item)) {
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));

@@ -36,5 +36,6 @@ public class ResponseBoardDetail {
     private String cardIsChecklist;
     private String cardIsAttachment;
     private LocalDateTime cardDueDate;
+    private int cardIsComment;
 
 }

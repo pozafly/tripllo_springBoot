@@ -17,4 +17,6 @@ public class CardResultMap {
     private String isChecklist;
     private String isAttachment;
     private LocalDateTime dueDate;
+    private int isComment;
+
 }

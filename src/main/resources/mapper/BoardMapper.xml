@@ -154,7 +154,13 @@
             c.location as card_location,
             c.is_checklist as card_is_checklist,
             c.is_attachment as card_is_attachment,
-            c.due_date as card_due_date
+            c.due_date as card_due_date,
+            case when (
+                        exists (select c.id from comment e where c.id = e.card_id)
+                      ) = 0 then null
+                 when (
+                        exists (select c.id from comment e where c.id = e.card_id)
+                      ) = 1 then 1 end  as card_is_comment
         from board a
             left outer join list b on a.id = b.board_id
             left outer join card c on b.id = c.list_id
@@ -196,6 +202,7 @@
         <result property="isChecklist" column="card_is_checklist"/>
         <result property="isAttachment" column="card_is_attachment"/>
         <result property="dueDate" column="card_due_date"/>
+        <result property="isComment" column="card_is_comment"/>
     </resultMap>
 
     <!--
