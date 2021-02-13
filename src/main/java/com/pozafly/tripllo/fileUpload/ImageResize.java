@@ -45,7 +45,6 @@ public class ImageResize {
     }
 
     public static String createFileName(String userId, String extension) {
-        System.out.println("몇번 들어오는지 보자!");
         UUID uuid = UUID.randomUUID();
         Date now = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");

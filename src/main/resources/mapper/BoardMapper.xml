@@ -22,7 +22,7 @@
             a.created_by,
             EXISTS
             (
-                select *
+                select 1
                 from board_has_like
                 where board_id = a.id and user_id = #{userId}
             ) as own_like
@@ -53,7 +53,7 @@
             a.created_by,
             EXISTS
             (
-                select *
+                select 1
                 from board_has_like
                 where board_id = a.id and user_id = #{userId}
             ) as own_like
@@ -84,7 +84,7 @@
             a.created_by,
             EXISTS
             (
-                select *
+                select 1
                 from board_has_like
                 where board_id = a.id and user_id = #{userId}
             ) as own_like
@@ -112,7 +112,7 @@
             a.created_by,
             EXISTS
             (
-                select *
+                select 1
                 from board_has_like
                 where board_id = a.id and user_id = #{userId}
             ) as own_like
@@ -156,10 +156,10 @@
             c.is_attachment as card_is_attachment,
             c.due_date as card_due_date,
             case when (
-                        exists (select c.id from comment e where c.id = e.card_id)
+                        exists (select 1 from comment e where c.id = e.card_id)
                       ) = 0 then null
                  when (
-                        exists (select c.id from comment e where c.id = e.card_id)
+                        exists (select 1 from comment e where c.id = e.card_id)
                       ) = 1 then 1 end  as card_is_comment
         from board a
             left outer join list b on a.id = b.board_id

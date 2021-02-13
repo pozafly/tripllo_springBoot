@@ -53,7 +53,6 @@ public class TestUserJob {
         log.info("delete User 실행");
 
         ResponseEntity<Message> result = userService.rtnIdValid("test");
-        System.out.println(result.getStatusCode().toString().equals("401"));
         // 유저가 존재한다면 지우고 시작한다.
         if (result.getStatusCode().toString().equals("401")) {
             Map<String, String> userInfo = new HashMap<>();

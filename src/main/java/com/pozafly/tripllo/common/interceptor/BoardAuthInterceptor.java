@@ -99,7 +99,6 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
             LinkedHashMap<String, Object> requestBody = (LinkedHashMap<String, Object>) request.getAttribute("requestBody");
             String publicYn = String.valueOf(requestBody.get("publicYn"));
             if(!StringUtils.isEmpty(publicYn)) {
-                System.out.println(!board.getCreatedBy().equals(userId));
                 if(!board.getCreatedBy().equals(userId)) throw new AuthorizationException();
             }
 

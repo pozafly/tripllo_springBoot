@@ -77,9 +77,6 @@ public class ChecklistItemAuthInterceptor implements HandlerInterceptor {
             Long checklistId = checklist.getChecklistId();
             Checklist checklists = checklistDao.readChecklistOne(checklistId);
 
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@");
-            System.out.println(checklist);
-
             if(ObjectUtils.isEmpty(checklists)) return true;
             Long cardId = checklists.getCardId();
             Card card = cardDao.readCard(cardId);

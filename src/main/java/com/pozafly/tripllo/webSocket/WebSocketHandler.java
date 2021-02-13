@@ -3,6 +3,7 @@ package com.pozafly.tripllo.webSocket;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.pozafly.tripllo.pushMessage.dao.PushMessageDao;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -13,6 +14,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.*;
 
+@Log4j2
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
 
@@ -68,7 +70,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
                 targetSession.sendMessage(tmpMsg);
             } else {
                 // 접속중이 아닐때.
-                System.out.println("해당 유저가 접속중이 아닙니다.");
+                log.info("해당 유저가 접속중이 아닙니다.");
             }
         }
     }

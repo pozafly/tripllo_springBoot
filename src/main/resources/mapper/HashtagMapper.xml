@@ -21,7 +21,7 @@
                     c.created_by,
                     EXISTS
                     (
-                        select *
+                        select 1
                         from board_has_like
                         where board_id = c.id and user_id = #{userId}
                     ) as own_like,

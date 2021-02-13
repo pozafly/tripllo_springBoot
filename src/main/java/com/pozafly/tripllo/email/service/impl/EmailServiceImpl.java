@@ -114,7 +114,6 @@ public class EmailServiceImpl implements EmailService {
             idx = (int) (charset.length * Math.random());
             newPassword += charset[idx];
         }
-        System.out.println(newPassword);
         return newPassword;
     }
 }
