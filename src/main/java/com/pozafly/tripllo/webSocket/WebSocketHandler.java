@@ -49,6 +49,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
         JsonParser parser = new JsonParser();
         JsonElement el = parser.parse(msg);
+        String userId = el.getAsJsonObject().get("userId").getAsString();
         String target = el.getAsJsonObject().get("target").getAsString();
         String content = el.getAsJsonObject().get("content").getAsString();
         String boardId = el.getAsJsonObject().get("boardId").getAsString();
@@ -57,7 +58,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
             WebSocketSession targetSession = userSessionsMap.get(target);  // 메시지를 받을 세션 조회
 
             Map<String, Object> map = new HashMap<>();
-            map.put("userId", senderId);
+            map.put("userId", userId);
             map.put("targetId", target);
             map.put("boardId", boardId);
             map.put("content", content);
