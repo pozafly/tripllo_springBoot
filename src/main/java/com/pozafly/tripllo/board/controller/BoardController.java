@@ -56,6 +56,25 @@ public class BoardController {
             @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
             @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
     })
+    @GetMapping("/{searchUser}/{lastCreatedAt}")
+    public ResponseEntity<Message> readSearchUserBoard(
+            @PathVariable String searchUser,
+            @PathVariable String lastCreatedAt,
+            @AuthenticationPrincipal SecurityUser securityUser
+    ) {
+        Map<String, String> map = new HashMap<>();
+        map.put("userId", securityUser.getUsername());
+        map.put("searchUser", searchUser);
+        map.put("lastCreatedAt", lastCreatedAt);
+
+        return boardService.readSearchUserBoard(map);
+    }
+
+    @ApiOperation(value = "보드 목록 조회", notes = "유저 ID로 Board 목록을 조회 합니다. 메인 페이지에서 보드를 선택할 때 사용합니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "보드 상세 정보 조회 성공"),
+            @ApiResponse(code = 404, message = "보드 상세를 조회할 수 없습니다.")
+    })
     @GetMapping("/rerender/{count}")
     public ResponseEntity<Message> rerenderBoard(
             @PathVariable int count,

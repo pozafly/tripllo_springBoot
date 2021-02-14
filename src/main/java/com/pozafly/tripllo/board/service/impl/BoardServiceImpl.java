@@ -78,6 +78,26 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public ResponseEntity<Message> readSearchUserBoard(Map<String, String> boardInfo) {
+        List<Board> board = boardDao.readSearchUserBoard(boardInfo);
+        if(!ObjectUtils.isEmpty(board)) {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(board);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        } else {
+            headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setData(null);
+
+            return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        }
+    }
+
+    @Override
     public ResponseEntity<Message> rerenderBoard(Map<String, Object> boardInfo) {
         List<Board> board = boardDao.rerenderBoard(boardInfo);
         if(!ObjectUtils.isEmpty(board)) {

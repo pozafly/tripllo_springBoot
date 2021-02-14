@@ -41,6 +41,38 @@
         </choose>
     </select>
 
+    <select id="readSearchUserBoard" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">
+        select
+            a.id,
+            a.title,
+            a.bg_color,
+            a.public_yn,
+            a.hashtag,
+            a.like_count,
+            a.created_at,
+            a.created_by,
+            EXISTS
+            (
+                select 1
+                from board_has_like
+                where board_id = a.id and user_id = #{userId}
+            ) as own_like
+        from board a
+        where a.created_by = #{searchUser}
+        and a.public_yn = 'Y'
+        <choose>
+            <when test='"firstCall".equals(lastCreatedAt)'>
+                order by created_at desc
+                limit 16
+            </when>
+            <otherwise>
+                and created_at <![CDATA[ < ]]> #{lastCreatedAt}
+                order by created_at desc
+                limit 8
+            </otherwise>
+        </choose>
+    </select>
+
     <select id="rerenderBoard" parameterType="Map" resultType="com.pozafly.tripllo.board.model.Board">
         select
             a.id,
