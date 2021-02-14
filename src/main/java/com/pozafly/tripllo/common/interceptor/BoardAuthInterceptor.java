@@ -94,6 +94,7 @@ public class BoardAuthInterceptor implements HandlerInterceptor {
 
             // board에 invite User 체크 후 권한 획득
             Board board = boardDao.readBoardOne(boardId);
+            if(userId.equals(board.getCreatedBy())) return true;
             String inviteUser = board.getInvitedUser();
 
             LinkedHashMap<String, Object> requestBody = (LinkedHashMap<String, Object>) request.getAttribute("requestBody");
