@@ -8,6 +8,7 @@ public class Login {
     private String password;
     private String token;
     private String picture;
+    private String social;
     private String bio;
     private String recentBoard;
     private String invitedBoard;

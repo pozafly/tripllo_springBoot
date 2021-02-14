@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
 
                 String token = jwtTokenProvider.createToken(user.getId(), roles); // id, role 정보만 가지고 token을 만든다.
                 LoginApiResponse response = new LoginApiResponse(
-                        token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getBio(), user.getRecentBoard(), user.getInvitedBoard(),
+                        token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getSocial(), user.getBio(), user.getRecentBoard(), user.getInvitedBoard(),
                         user.getCreatedAt(), user.getCreatedBy(), user.getUpdatedAt(), user.getUpdatedBy()
                 );
 
@@ -87,7 +87,7 @@ public class LoginServiceImpl implements LoginService {
 
             String token = jwtTokenProvider.createToken(user.getId(), roles); // id, role 정보만 가지고 token을 만든다.
             LoginApiResponse response = new LoginApiResponse(
-                    token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getBio(), user.getRecentBoard(), user.getInvitedBoard(),
+                    token, user.getId(), user.getEmail(), user.getName(), user.getPicture(), user.getSocial(), user.getBio(), user.getRecentBoard(), user.getInvitedBoard(),
                     user.getCreatedAt(), user.getCreatedBy(), user.getUpdatedAt(), user.getUpdatedBy()
             );
 
