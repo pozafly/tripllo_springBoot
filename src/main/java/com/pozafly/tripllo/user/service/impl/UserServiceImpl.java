@@ -123,8 +123,6 @@ public class UserServiceImpl implements UserService {
 
             // 소셜 로그인 패스워드 만들기
             if(!StringUtils.isEmpty(request.getSocial())) {
-                String newId = "User" + request.getId();
-                request.setId(newId);
                 PasswordUtil pw = new PasswordUtil();
                 String newPw = pw.encryptSHA256(request.getId());
                 request.setPassword(newPw);
