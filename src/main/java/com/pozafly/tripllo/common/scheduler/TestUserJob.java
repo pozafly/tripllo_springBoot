@@ -79,35 +79,19 @@ public class TestUserJob {
         log.info("Make User 종료");
     }
 
-    Long boardId1;
+    Long boardId;
     void makeBoard() {
         log.info("Make Board 실행");
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", "test");
-        map.put("title", "test id를 위한 sample 1 (샘플 Data O)");
+        map.put("title", "test id를 위한 sample Board");
         map.put("bgColor", "#339af0");
         map.put("publicYn", "Y");
         map.put("hashtag", "[\"고양이\"]");
 
         boardDao.createBoard(map);
-        boardId1 = (Long) map.get("id");
-
-        map.put("userId", "test");
-        map.put("title", "sample 2");
-        map.put("bgColor", "#3a4142");
-        map.put("publicYn", "Y");
-        map.put("hashtag", "[\"강아지\"]");
-
-        boardDao.createBoard(map);
-
-        map.put("userId", "test");
-        map.put("title", "마음껏 test 가능.");
-        map.put("bgColor", "#fa5252");
-        map.put("publicYn", "Y");
-        map.put("hashtag", "[\"고양이\"]");
-
-        boardDao.createBoard(map);
+        boardId = (Long) map.get("id");
 
         log.info("Make Board 종료");
     }
@@ -119,7 +103,7 @@ public class TestUserJob {
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", "test");
-        map.put("boardId", boardId1);
+        map.put("boardId", boardId);
         map.put("title", "이곳을 눌러 title변경.");
         map.put("pos", 65535);
 
@@ -127,7 +111,7 @@ public class TestUserJob {
         listId1 = (Long) map.get("id");
 
         map.put("userId", "test");
-        map.put("boardId", boardId1);
+        map.put("boardId", boardId);
         map.put("title", "카드작성 고");
         map.put("pos", 131070);
 
@@ -135,7 +119,7 @@ public class TestUserJob {
         listId2 = (Long) map.get("id");
 
         map.put("userId", "list도 서로간 이동이 가능합니다.");
-        map.put("boardId", boardId1);
+        map.put("boardId", boardId);
         map.put("title", "test");
         map.put("pos", 262140);
 

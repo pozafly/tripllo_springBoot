@@ -21,7 +21,6 @@ public class ScheduleTask {
 
         try {
             testUserJob.excute();
-//            log.info(new Date());
         } catch(Exception e) {
             e.printStackTrace();
         }
