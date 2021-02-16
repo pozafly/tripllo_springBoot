@@ -173,6 +173,12 @@ public class UserServiceImpl implements UserService {
         if(!userIdValid(userId)) {
             User user = userDao.readUser(userId);
 
+
+            if(userId.equals("test")) {
+                Map<String, String> map = new HashMap<>();
+                map.put("userId", userId);
+                userDao.deleteUser(map);
+            }
             if(!StringUtils.isEmpty(user.getSocial())) {
                 userDao.deleteUser(userInfo);
 
