@@ -17,14 +17,14 @@ public class DataApplicationRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        log.info("스케줄러 시작 시간 : {}", new Date());
-//
-//        try {
-//            testUserJob.excute();
-//        } catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        log.info("스케줄러 완료");
+        log.info("스케줄러 시작 시간 : {}", new Date());
+
+        try {
+            testUserJob.excute();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        log.info("스케줄러 완료");
     }
 }
