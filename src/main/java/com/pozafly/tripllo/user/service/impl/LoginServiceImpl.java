@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import java.nio.charset.Charset;
@@ -71,7 +70,7 @@ public class LoginServiceImpl implements LoginService {
         } else {
             log.info("해당 id가 없습니다.");
             message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage(ResponseMessage.NOT_FOUND_USER);
+            message.setMessage(ResponseMessage.NOT_SIGNUP_USER);
             return new ResponseEntity<>(message, headers, HttpStatus.FORBIDDEN);  // 403
         }
 

@@ -51,8 +51,8 @@ public class BoardServiceImpl implements BoardService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             message.setData(null);
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
@@ -70,7 +70,7 @@ public class BoardServiceImpl implements BoardService {
         } else {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             message.setData(null);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -90,7 +90,7 @@ public class BoardServiceImpl implements BoardService {
         } else {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             message.setData(null);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -111,7 +111,7 @@ public class BoardServiceImpl implements BoardService {
         } else {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             message.setData(null);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -132,7 +132,7 @@ public class BoardServiceImpl implements BoardService {
         } else {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             message.setData(null);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -153,7 +153,7 @@ public class BoardServiceImpl implements BoardService {
         } else {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
-            message.setMessage(ResponseMessage.READ_BOARD);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             message.setData(null);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
@@ -174,8 +174,8 @@ public class BoardServiceImpl implements BoardService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             message.setData(null);
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
@@ -228,8 +228,8 @@ public class BoardServiceImpl implements BoardService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             message.setData(null);
-            message.setStatus(StatusEnum.BAD_REQUEST);
-            message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
+            message.setStatus(StatusEnum.OK);
+            message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
@@ -333,7 +333,7 @@ public class BoardServiceImpl implements BoardService {
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch(Exception e) {
             message.setData(null);
-            message.setStatus(StatusEnum.BAD_REQUEST);
+            message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.NOT_FOUND_BOARD);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }

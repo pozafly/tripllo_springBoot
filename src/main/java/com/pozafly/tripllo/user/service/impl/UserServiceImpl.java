@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Message> readIsInviteUser(String id) {
         List<UserApiResponse> userList = userDao.readIsInviteUser(id);
 
-        if (!ObjectUtils.isEmpty(userList.get(0))) {
+        if (userList.size() != 0) {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.READ_USER);
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
-            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.NOT_FOUND_USER);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
