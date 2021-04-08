@@ -34,7 +34,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(webSocketHandler, "/websocket")
-                .setAllowedOrigins("*")
+                .setAllowedOrigins("https://tripllo.tech")
                 .addInterceptors(new HttpHandshakeInterceptor())
                 .withSockJS(); // sockjs 지원
     }

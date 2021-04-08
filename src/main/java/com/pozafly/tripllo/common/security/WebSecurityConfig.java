@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(ImmutableList.of("http://localhost:8080", "https://tripllo.tech"));
+        configuration.setAllowedOrigins(ImmutableList.of("https://tripllo.tech"));
         configuration.setAllowedMethods(ImmutableList.of("HEAD","GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
 //        configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
