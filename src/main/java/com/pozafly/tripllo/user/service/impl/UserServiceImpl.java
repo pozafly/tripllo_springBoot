@@ -136,12 +136,13 @@ public class UserServiceImpl implements UserService {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.CREATED_USER);
-            message.setData(request);
+            message.setData(true);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.ALREADY_USE);
+            message.setData(false);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
     }
