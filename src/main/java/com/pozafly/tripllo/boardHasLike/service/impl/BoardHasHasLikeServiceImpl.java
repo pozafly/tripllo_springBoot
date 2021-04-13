@@ -42,11 +42,11 @@ public class BoardHasHasLikeServiceImpl implements BoardHasLikeService {
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.CREATED_LIKE);
-            message.setData(info);
+//            message.setData(info);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } else {
-            message.setData(null);
+//            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
@@ -65,17 +65,17 @@ public class BoardHasHasLikeServiceImpl implements BoardHasLikeService {
 
             boardHasLikeDao.updateBoardLikeCount(map);
 
-            Map<String, Object> rtnMap = new HashMap<>();
-            rtnMap.put("likeInfo", info);
+//            Map<String, Object> rtnMap = new HashMap<>();
+//            rtnMap.put("likeInfo", info);
 
             headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
             message.setStatus(StatusEnum.OK);
             message.setMessage(ResponseMessage.DELETE_LIKE);
-            message.setData(rtnMap);
+//            message.setData(rtnMap);
 
             return new ResponseEntity<>(message, headers, HttpStatus.OK);
         } catch (Exception e) {
-            message.setData(null);
+//            message.setData(null);
             message.setStatus(StatusEnum.BAD_REQUEST);
             message.setMessage(ResponseMessage.NOT_FOUNT_LIKE);
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);

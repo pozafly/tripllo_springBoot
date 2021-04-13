@@ -12,8 +12,6 @@ public class Comment extends BaseEntity {
     private Long id;
     @ApiModelProperty(example = "1")
     private Long cardId;
-    @ApiModelProperty(example = "pain103")
-    private String userId;
     @ApiModelProperty(example = "코멘트....")
     private String comment;
     @ApiModelProperty(example = "대댓글 여부")
